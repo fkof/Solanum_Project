@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "docs",
+            "outputPath": "docs/Solanum_Project",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SolanumSystem:build:production"
+              "buildTarget": "Solanum_Project:build:production"
             },
             "development": {
-              "buildTarget": "SolanumSystem:build:development"
+              "buildTarget": "Solanum_Project:build:development"
             }
           },
           "defaultConfiguration": "development"
