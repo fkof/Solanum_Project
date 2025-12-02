@@ -1,0 +1,346 @@
+.sidebar {
+  width: 250px;
+  background: white;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 90;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 1rem;
+  right: 6px; //fix para que se vea correctamente el boton
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #00b398;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s;
+  z-index: 110;
+  font-size: 0.9rem;
+}
+
+.toggle-btn:hover {
+  background: #008f7a;
+  transform: scale(1.1);
+}
+
+.menu {
+  padding: 3rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f8f9fa;
+  border-left: 4px solid #00b398;
+  margin-bottom: 0.25rem;
+}
+
+.group-header:hover {
+  background: #e6f7f4;
+}
+
+.group-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.group-icon {
+  font-size: 1.3rem;
+  min-width: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.group-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group-toggle {
+  color: #00b398;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.group-toggle i {
+  font-size: 0.8rem;
+}
+
+.group-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background: #fafafa;
+}
+
+.group-items.expanded {
+  max-height: 500px;
+  transition: max-height 0.3s ease-in;
+}
+
+.collapsed-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  color: #666;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 4px solid transparent;
+  gap: 1rem;
+  margin-left: 0.5rem;
+}
+
+.menu-item:hover {
+  background: #f0fdf9;
+  border-left-color: #00b398;
+  color: #333;
+}
+
+.menu-item.active {
+  background: #e6f7f4;
+  border-left-color: #00b398;
+  color: #00b398;
+  font-weight: 600;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  min-width: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+/* Estilos para sidebar colapsado (Desktop) */
+.sidebar.collapsed .group-header {
+  justify-content: center;
+  padding: 0.75rem;
+  border-left: none;
+}
+
+.sidebar.collapsed .group-name,
+.sidebar.collapsed .group-toggle {
+  display: none;
+}
+
+.sidebar.collapsed .collapsed-item {
+  justify-content: center;
+  padding: 0.75rem;
+  margin-left: 0;
+  border-left: none;
+}
+
+.sidebar.collapsed .menu-label {
+  display: none;
+}
+
+.sidebar.collapsed .menu-item:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 70px;
+  background: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollbar personalizado */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #00b398;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #008f7a;
+}
+
+/* ============================================ */
+/* ESTILOS MÓVILES */
+/* ============================================ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 89;
+}
+
+@media (max-width: 768px) {
+  /* Mostrar overlay cuando el menú está abierto */
+  .sidebar-overlay {
+    display: block;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Sidebar en móvil - Posición fija */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 88px;
+    height: 100vh;
+    width: 280px;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* No aplicar collapsed en móvil */
+  .sidebar.collapsed {
+    width: 280px;
+  }
+
+  /* Sidebar abierto */
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.mobile-closed {
+    transform: translateX(-100%);
+  }
+
+  /* Botón toggle en móvil - SIEMPRE VISIBLE */
+  .toggle-btn {
+    position: fixed;
+    //top: 85px;
+    left: 1rem;
+    right: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    background: #00b398;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Cuando el sidebar está abierto, mover el botón */
+  .sidebar.mobile-open ~ * .toggle-btn,
+  .sidebar.mobile-open .toggle-btn {
+    left: 295px;
+    background: #dc3545;
+  }
+
+  /* Ajustes de menú en móvil */
+  .sidebar .menu {
+    padding-top: 1rem;
+  }
+
+  .group-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .menu-item {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .menu-icon {
+    font-size: 1.4rem;
+  }
+
+  /* Desactivar tooltips en móvil */
+  .sidebar .menu-item:hover::after {
+    display: none;
+  }
+
+  /* Forzar que el menú siempre muestre todo en móvil */
+  .sidebar .group-name,
+  .sidebar .group-toggle,
+  .sidebar .menu-label {
+    display: block !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 85vw;
+    max-width: 300px;
+  }
+
+  .sidebar.collapsed {
+    width: 85vw;
+    max-width: 300px;
+  }
+
+  .toggle-btn {
+    width: 45px;
+    height: 45px;
+  }
+
+  .sidebar.mobile-open .toggle-btn {
+    left: calc(85vw - 30px);
+  }
+}

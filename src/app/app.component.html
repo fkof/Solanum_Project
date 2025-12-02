@@ -1,52 +1,13 @@
-<div>
-  <p-toolbar [style]="{  'background-color':  'var(--p-emerald-500)','top':'0' }">
-    <ng-template #start>
-      <div class="flex items-center gap-2">
-        <img src="https://solanum.com.mx/wp-content/uploads/2022/12/cropped-logo_solanum_web-01-256x64.webp" alt="">
-
-
-      </div>
-    </ng-template>
-
-    <ng-template #end>
-      <div class="flex items-center gap-2">
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          (click)="menu.toggle($event)" [style]="{ width: '32px', height: '32px' }" />
-        <p-menu [model]="items" class="flex justify-center" styleClass="w-full md:w-60" [popup]="true" #menu>
-          <ng-template #start>
-            <a href="/noticias" class="p-menuitem-link flex items-center">
-              <span class="pi pi-fw pi-book"></span>
-              <span class="ml-2">Noticias</span>
-            </a>
-          </ng-template>
-          <ng-template #submenuheader let-item>
-            <span class="text-primary font-bold" style="color: var(--p-emerald-500);">{{ item.label }}</span>
-          </ng-template>
-          <ng-template #item let-item>
-            <a pRipple class="flex items-center p-menu-item-link">
-              <span [class]="item.icon"></span>
-              <span class="ml-2">{{ item.label }}</span>
-              <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-              <span *ngIf="item.shortcut"
-                class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">{{ item.shortcut
-                }}</span>
-            </a>
-          </ng-template>
-          <ng-template #end>
-            <div style="flex-direction: column; padding: 10px;">
-              <div style="display: flex; flex-direction: row;">
-                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2"
-                  shape="circle" />
-                <span class="inline-flex flex-col" style="padding: 5px;">
-                  <span class="font-bold">Amy Elsner</span>
-                  <span class="text-sm">Admin</span>
-                </span>
-              </div>
-            </div>
-          </ng-template>
-        </p-menu>
-      </div>
-    </ng-template>
-  </p-toolbar>
+<app-header (isLogin)="changeLoginState($event)" (dataMenu)="passDataMenu($event)"></app-header>
+<div class="app-layout">
+  <app-sidebar *ngIf="isAuthenticated"></app-sidebar>
+  <div class="main-content" [class.with-sidebar]="isAuthenticated">
+    <router-outlet></router-outlet>
+  </div>
 </div>
-<router-outlet />
+<!-- <p-dialog showHeader="false" [modal]="true" closable="false" [(visible)]="visible"
+class="dialogo"
+>
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+  class="spinDialgo" />
+</p-dialog> -->

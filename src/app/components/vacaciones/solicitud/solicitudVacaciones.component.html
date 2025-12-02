@@ -1,0 +1,182 @@
+<div class="container-general">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-dialog header="Resumen de Solicitud" [modal]="true" [(visible)]="showDialog">
+    <div class="container_solicitud">
+      <h2>Fecha Inicial</h2>
+      <div class="date-box">{{ fechaInicial ? formatearFecha(fechaInicial) : '' }}</div>
+
+      <h2>Fecha Final</h2>
+      <div class="date-box">{{fechaFinal ? formatearFecha(fechaFinal) : '' }}</div>
+
+      <h2>Fecha Regreso</h2>
+      <div class="date-box">{{formatearFecha(this.getFechaRetorno())}}</div>
+
+      <div class="days-count">{{diasPedidos}}</div>
+      <div class="days-label">Días</div>
+
+      <p-button label="Cancelar" icon="pi pi-times" (onClick)="showDialog =false" styleClass="p-button-outlined"
+        [style]="{'margin-right':'10px'}"></p-button>
+
+      <p-button label="Aceptar" (onClick)="envioSolicitud()" icon="pi pi-check" [loading]="loading"
+        styleClass="p-button-primary" class="w-full mx-12"></p-button>
+    </div>
+
+
+  </p-dialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Solicitud de Vacaciones</h2>
+          <p class="header-subtitle">Solicita tus dias de vacaciones</p>
+        </div>
+
+      </div>
+    </ng-template>
+
+
+
+    <div class="vacation-container">
+      <div class="info-block">
+        <div class="main-balance">Tu saldo en días es: <span class="results-count">({{saldoDias }})</span></div>
+        @for (item of saldosAcomulados; track item.idSaldoPeriodo) {
+        <div class="sub-balance" *ngIf="vacAcomuladas">Días Periodo {{item.periodo}}: {{item.saldoDias}}</div>
+        } @empty {
+        <section></section>
+        }
+
+      </div>
+      <div class="search-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label">Fecha Inicial</label>
+            <p-datepicker inputId="FechaInicial" [disabledDates]="disabledDates" [(ngModel)]="fechaInicial"
+              [disabledDays]="[6,0]" [minDate]="minDate" name="FechaInicial" [showIcon]="true" dateFormat="dd-M-yy"
+              class="w-full" [iconDisplay]="'input'"></p-datepicker>
+          </div>
+          <div class="form-field">
+            <label class="field-label">Fecha Final</label>
+            <p-datepicker inputId="FechaFinal" name="FechaFinal" [showIcon]="true" dateFormat="dd-M-yy"
+              [disabledDates]="disabledDates" [disabledDays]="[6,0]" [minDate]="fechaInicial" [(ngModel)]="fechaFinal"
+              class="w-full" [iconDisplay]="'input'"></p-datepicker>
+          </div>
+          <div class="form-field" style="align-self: end;">
+            <p-button label="Solicitar Vacaciones" (onClick)="Solicitar()" icon="pi pi-search" [loading]="loading"
+              styleClass="p-button-primary" class="w-full"></p-button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Separador -->
+    <div class="separator"></div>
+
+    <!-- Tabla de resultados -->
+    <div class="results-section" [ngStyle]="{'max-width': 'fit-content'}">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Tus Solicitudes
+
+      </h3>
+
+      <p-table #dt [value]="solicitudesVacaciones" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{'max-width': 'fit-content'}"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
+        styleClass="p-datatable-gridlines" [responsive]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idSolicitud" style="min-width: 70px">
+              Id <p-sortIcon field="numeroNomina"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombreCompleto" style="min-width: 250px">
+              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaInicio" style="min-width: 150px">
+              Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaFinal" style="min-width: 150px">
+              Fecha Final <p-sortIcon field="fechaFinal"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaRegreso" style="min-width: 160px">
+              Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaCreacion" style="min-width: 160px">
+              Fecha Solicitud <p-sortIcon field="fechaCreacion"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cantidadDias" style="min-width: 90px">
+              Dias <p-sortIcon field="cantidadDias"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="estatus" style="min-width: 200px">
+              Estado Solicitud <p-sortIcon field="estatus"></p-sortIcon>
+            </th>
+            <th pSortableColumn="autorizador" style="min-width: 250px">
+              Jefe Inmendiato <p-sortIcon field="autorizador"></p-sortIcon>
+            </th>
+            <th pSortableColumn="" style="min-width: 150px">
+              Cancelacion <p-sortIcon field=""></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-solicitud>
+          <tr>
+            <td>
+              <span class="numero-nomina">
+                {{ solicitud.idSolicitud }}
+              </span>
+            </td>
+
+            <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
+            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaInicio )}}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaFin) }}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaRegreso) }}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
+            <td><span class="default-texto"> {{ solicitud.cantidadDias }}</span></td>
+            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
+            <td>
+              <div class="action-buttons">
+                <p-button icon="pi pi-times" (onClick)="preguntaCancelarSolicitud(solicitud)"
+                  *ngIf="verBotonCancelar(solicitud)"
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                  [pTooltip]="'Cancelar Solicitud'" tooltipPosition="top"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron Solitudes pendientes.</p>
+
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="7">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando Solicitudes...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </div>
+
+
+
+
+
+  </p-card>
+</div>

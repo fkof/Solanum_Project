@@ -1,0 +1,209 @@
+<div class="container-general">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Gestión de Vacaciones</h2>
+          <p class="header-subtitle">Consulta las vacaciones por empleado</p>
+        </div>
+
+      </div>
+    </ng-template>
+
+
+
+    <div class="vacation-container">
+
+      <div class="search-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label">Nombre Empleado</label>
+
+            <input pInputText id="nombre" [(ngModel)]="nombreBusqueda" name="nombre" class="w-full" />
+
+
+          </div>
+          <div class="form-field">
+            <label class="field-label">Fecha Inicial</label>
+            <p-datepicker inputId="fechaInicial" [disabledDates]="disabledDates" [(ngModel)]="fechaInicial"
+              [disabledDays]="[6,0]" name="fechaInicial" [showIcon]="true" dateFormat="dd-M-yy" class="w-full"
+              [iconDisplay]="'input'"></p-datepicker>
+          </div>
+          <div class="form-field">
+            <label class="field-label">Fecha Final</label>
+            <p-datepicker inputId="fechaFinal" name="fechaFinal" [showIcon]="true" dateFormat="dd-M-yy"
+              [disabledDates]="disabledDates" [disabledDays]="[6,0]" [(ngModel)]="fechaFinal" class="w-full"
+              [iconDisplay]="'input'"></p-datepicker>
+          </div>
+          <div class="form-field">
+            <label class="field-label">Estatus</label>
+            <p-select styleClass="{'padding:0.75rem'}" inputId="empresa" [options]="listEstatus"
+              [(ngModel)]="estatusSeleccionado" name="empresa" optionLabel="nombre" [filter]="true"
+              optionValue="idEstatus" filterBy="name" placeholder="Estatus de solicitudes" [showClear]="true"
+              class="w-full"></p-select>
+          </div>
+          <div class="form-field" style="align-self: end;">
+            <p-button label="Buscar" (onClick)="buscarsolicitudes()" icon="pi pi-search" [loading]="loading"
+              styleClass="p-button-primary" class="w-full"></p-button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Separador -->
+    <div class="separator"></div>
+
+    <!-- Tabla de resultados -->
+    <div class="results-section" [ngStyle]="{'max-width': 'fit-content'}">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Solicitudes
+
+      </h3>
+
+
+      <p-table #dt [value]="solicitudesVacaciones" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{'max-width': 'fit-content'}"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
+        styleClass="p-datatable-gridlines" [responsive]="true">
+        <ng-template #caption>
+          <div class="text-end pb-4">
+            <p-button icon="pi pi-external-link" styleClass="p-button-primary" label="Export"
+              (onClick)="handleExportExcel()" />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idSolicitud" style="min-width: 70px">
+              Id <p-sortIcon field="numeroNomina"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombreCompleto" style="min-width: 250px">
+              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaInicio" style="min-width: 150px">
+              Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaFinal" style="min-width: 150px">
+              Fecha Final <p-sortIcon field="fechaFinal"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaRegreso" style="min-width: 160px">
+              Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaCreacion" style="min-width: 160px">
+              Fecha Solicitud <p-sortIcon field="fechaCreacion"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cantidadDias" style="min-width: 90px">
+              Dias <p-sortIcon field="cantidadDias"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="estatus" style="min-width: 200px">
+              Estado Solicitud <p-sortIcon field="estatus"></p-sortIcon>
+            </th>
+            <th pSortableColumn="motivoRechazo" style="min-width: 200px">
+              Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="autorizador" style="min-width: 250px">
+              Jefe Inmendiato <p-sortIcon field="autorizador"></p-sortIcon>
+            </th>
+            <th pSortableColumn="" style="min-width: 150px">
+              Cancelacion <p-sortIcon field=""></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-solicitud>
+          <tr>
+            <td>
+              <span class="numero-nomina">
+                {{ solicitud.idSolicitud }}
+              </span>
+            </td>
+
+            <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
+            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaInicio )}}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaFin) }}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaRegreso) }}</span></td>
+            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
+            <td><span class="default-texto"> {{ solicitud.cantidadDias }}</span></td>
+            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td> <span class="default-texto"> {{ solicitud.motivoRechazo || '—' }}</span></td>
+            <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
+            <td>
+              <div class="action-buttons">
+                <p-button icon="pi pi-eye" *ngIf="solicitud.estatus==='Pendiente'  "
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn" [pTooltip]="'Ver Solicitud'"
+                  (onClick)="selectSolicitudApprove(solicitud)" tooltipPosition="top"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron Solitudes pendientes.</p>
+
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="7">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando Solicitudes...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+
+    <p-dialog header="Resumen de Solicitud" [modal]="true" [(visible)]="showDialog">
+      <div class="container_solicitud">
+        <h2>Fecha Inicial</h2>
+        <div class="date-box">{{this.formatearFechastr(selectSolicitud?.fechaInicio)}}</div>
+
+        <h2>Fecha Final</h2>
+        <div class="date-box">{{this.formatearFechastr(selectSolicitud?.fechaFin) }}</div>
+
+        <h2>Fecha Regreso</h2>
+        <div class="date-box">{{this.formatearFechastr(selectSolicitud?.fechaRegreso)}}</div>
+
+        <div class="days-count">{{selectSolicitud?.cantidadDias}}</div>
+        <div class="days-label">Días</div>
+
+        <p-button label="Cerrar" icon="pi pi-window-minimize" (onClick)="showDialog =false"
+          styleClass="p-button-outlined" [style]="{'margin-right':'10px'}"></p-button>
+
+        <p-button label="Rechazar Solicitud" icon="pi pi-times" (onClick)="showMotivos =true"
+          styleClass="p-button-outlined" severity="danger" [style]="{'margin-right':'10px'}"></p-button>
+
+        <p-button label="Aprobar" icon="pi pi-check" (onClick)="aprobarSolicitud()" [loading]="loading"
+          styleClass="p-button-primary" class="w-full mx-12"></p-button>
+      </div>
+
+
+    </p-dialog>
+    <p-dialog header="Rechazo de Solicitud" [modal]="true" [(visible)]="showMotivos" [style]="{ width: '25rem' }">
+      <div class="flex items-center gap-4 mb-4" style="margin-bottom: 20px;">
+        <label for="username" class="font-semibold w-24">Motivo de Rechazo</label>
+        <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="motivoRechazo" />
+      </div>
+      <div class="flex justify-end gap-2">
+        <p-button label="Cancelar" severity="secondary" (click)="showMotivos = false" styleClass="p-button-outlined"
+          [style]="{'margin-right':'10px'}" />
+        <p-button label="Rechazar Solicitud" icon="pi pi-times" (onClick)="cancelarSolicitud()" severity="danger"
+          [style]="{'margin-right':'10px'}"></p-button>
+      </div>
+    </p-dialog>
+
+  </p-card>
+</div>

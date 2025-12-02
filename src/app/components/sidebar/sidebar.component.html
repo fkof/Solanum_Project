@@ -1,0 +1,61 @@
+<div class="sidebar-overlay" *ngIf="isMobile && isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+<button class="toggle-btn" *ngIf="isMobile " (click)="toggleSidebar()">
+    
+    <span *ngIf="isMobile && !isMobileMenuOpen">☰</span>
+    <span *ngIf="isMobile && isMobileMenuOpen">✕</span>
+  </button>
+<aside class="sidebar" [class.collapsed]="isCollapsed && !isMobile" [class.mobile-open]="isMobile && isMobileMenuOpen"
+  [class.mobile-closed]="isMobile && !isMobileMenuOpen">
+  
+  <button class="toggle-btn" *ngIf="!isMobile" (click)="toggleSidebar()">
+    <span *ngIf="!isCollapsed && !isMobile">◀</span>
+    <span *ngIf="isCollapsed && !isMobile">▶</span>
+
+  </button>
+  <nav class="menu">
+
+    <div *ngFor="let group of menuGroups" class="menu-group">
+
+      <div class="group-header" (click)="toggleGroup(group)" *ngIf="group.items.length>0">
+        <div class="group-header-content">
+          <span class="group-icon">{{ group.groupIcon }}</span>
+          <span class="group-name" *ngIf="!isCollapsed || isMobile">{{ group.groupName }}</span>
+        </div>
+        <span class="group-toggle" *ngIf="!isCollapsed || isMobile">
+          <i [class]="group.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+        </span>
+      </div>
+
+      <!--div class="group-header" (click)="toggleGroup(group)" *ngIf="group.items.length>0">
+        <div class="group-header-content">
+          <span class="group-icon">{{ group.groupIcon }}</span>
+          <span class="group-name" *ngIf="!isCollapsed">{{ group.groupName }}</span>
+        </div>
+        <span class="group-toggle" *ngIf="!isCollapsed">
+          <i [class]="group.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+        </span>
+      </div-->
+
+      <div class="group-items" [class.expanded]="group.expanded" *ngIf="!isCollapsed || isMobile">
+
+        <a *ngFor="let item of group.items" [routerLink]="item.urlMenu" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: item.urlMenu === '/'}" class="menu-item">
+          <i [class]="item.iconoMenu" class="menu-icon"></i>
+          <span class="menu-label">{{ item.descripcionMenu }}</span>
+        </a>
+
+      </div>
+
+      <!-- Mostrar items cuando está colapsado -->
+      <div class="collapsed-items" *ngIf="isCollapsed">
+        <a *ngFor="let item of group.items" [routerLink]="item.urlMenu" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: item.urlMenu === '/'}" class="menu-item collapsed-item"
+          [title]="item.descripcionMenu">
+          <i [class]="item.iconoMenu" class="menu-icon"></i>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+</aside>

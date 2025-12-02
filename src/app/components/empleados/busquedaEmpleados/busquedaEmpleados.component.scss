@@ -1,0 +1,310 @@
+.busqueda-empleados-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+  }
+  
+  ::ng-deep .p-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  ::ng-deep .p-card .p-card-header {
+    padding: 0;
+    border-bottom: none;
+  }
+  .card-header {
+    background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .header-content {
+    color: white;
+  }
+  
+  .header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
+  }
+  
+  .header-subtitle {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+  }
+  
+  ::ng-deep .p-card .p-card-body {
+    padding: 2rem;
+  }
+  
+  .search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .field-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.25rem;
+  }
+  
+  ::ng-deep .p-float-label {
+    margin-top: 1rem;
+  }
+  /*
+  ::ng-deep .p-inputtext {
+    width: 100%;
+    //padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  
+  ::ng-deep .p-inputtext:enabled:focus {
+    border-color: #00b398;
+    box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+  }
+  */
+
+  ::ng-deep .p-dropdown {
+    width: 100%;
+  }
+  
+  ::ng-deep .p-dropdown .p-dropdown-label {
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  
+  ::ng-deep .p-dropdown:not(.p-disabled).p-focus .p-dropdown-label {
+    border-color: #00b398;
+    box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+  }
+  
+  ::ng-deep .p-dropdown .p-dropdown-label.p-placeholder {
+    color: #999;
+  }
+  
+  ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background: #e6f7f4;
+    color: #00b398;
+  }
+  
+  .button-section {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+  }
+  
+  .separator {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #00b398, transparent);
+    margin: 2rem 0;
+  }
+  
+  .results-section {
+    margin-top: 1rem;
+  }
+  
+  .results-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #00b398;
+    margin: 0 0 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .results-title i {
+    font-size: 1.4rem;
+  }
+  
+  .results-count {
+    background: #00b398;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background: #00b398;
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+    border: none;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr {
+    transition: all 0.2s;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+    background: #f0fdf9;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem;
+    border-color: #f0f0f0;
+  }
+  
+  .numero-nomina {
+    font-weight: 600;
+    color: #00b398;
+    font-family: monospace;
+  }
+  
+  .nombre-empleado {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .empresa-texto,
+  .puesto-texto,
+  .jefe-texto {
+    color: #666;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  ::ng-deep .edit-btn.p-button-info {
+    color: #00b398;
+  }
+  
+  ::ng-deep .edit-btn.p-button-info:hover {
+    background: #e6f7f4;
+  }
+  
+  ::ng-deep .p-button-rounded {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .empty-state,
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #999;
+  }
+  
+  .empty-icon,
+  .loading-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ccc;
+  }
+  
+  .empty-state p,
+  .loading-state p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .empty-state small {
+    color: #bbb;
+    font-size: 0.9rem;
+  }
+  
+  ::ng-deep .p-paginator {
+    background: #f8f9fa;
+    border-top: 2px solid #e0e0e0;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-current {
+    color: #666;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #00b398;
+    color: white;
+    border-color: #00b398;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+    background: #e6f7f4;
+    color: #00b398;
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .form-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .busqueda-empleados-container {
+      padding: 0 1rem;
+      margin: 1rem auto;
+    }
+  
+    .header-title {
+      font-size: 1.5rem;
+    }
+  
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  
+    .button-section {
+      flex-direction: column;
+    }
+  
+    ::ng-deep .p-button {
+      width: 100%;
+    }
+  
+    ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+    ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    ::ng-deep .p-card .p-card-body {
+      padding: 1rem;
+    }
+  
+    .results-title {
+      font-size: 1.1rem;
+    }
+  }

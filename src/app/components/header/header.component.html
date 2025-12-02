@@ -1,0 +1,71 @@
+<header>
+  <p-toast></p-toast>
+    
+  <div class="logo">
+    <h1> <img src="/cropped-logo_solanum_web-01-256x64.webp" height="50"></h1>
+  </div>
+  
+  <div class="header-actions">
+    <ng-container *ngIf="authService.isAuthenticated$ | async; else loginButton">
+      <span class="user-name">Hola, {{ authService.user$ | async }}</span>
+      <div class="user-menu-container">
+        <div class="user-icon" (click)="toggleUserMenu($event)" title="Menú de usuario">
+          👤
+        </div>
+        <div class="user-dropdown" *ngIf="showUserMenu" (click)="$event.stopPropagation()">
+          <div class="dropdown-header">
+            <span class="dropdown-user-name">{{ authService.user$ | async }}</span>
+            <small class="dropdown-user-email">{{correoUsuario}}</small>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-items">
+
+            <a class="dropdown-item" (click)="abrirRestablecerPassword()">
+              <i class="pi pi-key"></i>
+              <span>Restablecer Contraseña</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item logout-item" (click)="onLogout()">
+              <i class="pi pi-sign-out"></i>
+              <span>Cerrar Sesión</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--div class="logout-icon" (click)="onLogout()" title="Cerrar sesión">
+        🚪
+      </div-->
+    </ng-container>
+    <ng-template #loginButton>
+   
+      <!--div class="login-icon" (click)="openModal()" title="Iniciar sesión">
+        👤
+      </div-->
+    </ng-template>
+  </div>
+</header>
+<!-- Modal de Login -->
+<div class="modal" [class.active]="showModal" (click)="onModalBackdropClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-modal" (click)="closeModal()">×</button>
+    <h2>Reseteo de Contraseña</h2>
+   
+        <p-password [(ngModel)]="newPassword" [inputStyleClass]="'p-password'" promptLabel="Escribe tu Contraseña"
+        placeholder="Nueva Contraseña"
+        fluid  weakLabel="Facil" mediumLabel="Media" strongLabel="Compleja" /><br>
+        <p-password [(ngModel)]="confirmPassword" [inputStyleClass]="'p-password'" promptLabel="Escribe tu Contraseña"
+        placeholder="Nueva Contraseña" feedback="false"
+        fluid  weakLabel="Facil" mediumLabel="Media" strongLabel="Compleja" />
+        <p *ngIf="showError" style="color:red;">Contraseñas no coinciden</p>
+        <br>
+      
+        <br>
+        <p-button
+        type="submit"
+        label="Reset password" 
+        icon="pi pi-sign-in"
+        (click)="resetPassword()"
+        styleClass="p-button-primary login-button w-full">
+      </p-button>
+  </div>
+</div>

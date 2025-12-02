@@ -1,0 +1,155 @@
+<div class="lista-roles-container">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Gestión de Roles</h2>
+          <p class="header-subtitle">Administra los roles del sistema</p>
+        </div>
+    
+      </div>
+    </ng-template>
+
+    <p-table #dt [value]="roles" [loading]="loading" [paginator]="true" [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20, 50]" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} roles"
+      [globalFilterFields]="['nombre', 'descripcion']" [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-datatable-gridlines" >
+
+      <ng-template pTemplate="caption">
+        <div class="table-header">
+   
+          <p-iconfield style="min-width: 250px;">
+            <p-inputicon class="pi pi-search" />
+             <input pInputText type="text" [(ngModel)]="searchValue"
+              (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar roles..."
+              class="search-input"/>
+          </p-iconfield>
+          <p-button label="Nuevo Rol" icon="pi pi-plus" (onClick)="nuevoRol()"
+          styleClass="p-button-primary"></p-button>
+          <p-button type="button" icon="pi pi-filter-slash" label="Limpiar" (onClick)="clear(dt)"
+            styleClass="p-button-outlined"></p-button>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id" style="width: 80px">
+            ID <p-sortIcon field="id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="nombre" style="min-width: 200px">
+            Nombre <p-sortIcon field="nombre"></p-sortIcon>
+          </th>
+          <th pSortableColumn="descripcion" style="min-width: 300px">
+            Descripción <p-sortIcon field="descripcion"></p-sortIcon>
+          </th>
+          <th pSortableColumn="estatus" style="width: 120px">
+            Estado <p-sortIcon field="activo"></p-sortIcon>
+          </th>
+          <th style="width: 140px">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-rol>
+        <tr>
+          <td>{{ rol.idRol }}</td>
+          <td>
+            <span class="nombre-rol">{{ rol.nombre }}</span>
+          </td>
+          <td>
+            <span class="descripcion-texto">{{ rol.descripcion }}</span>
+          </td>
+          <td>
+            <p-tag [value]="getEstadoLabel(rol.estatus)" [severity]="getSeverity(rol.estatus)">
+            </p-tag>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <p-button icon="pi pi-pencil" (onClick)="editarRol(rol)"
+                styleClass="p-button-rounded p-button-text p-button-info edit-btn" [pTooltip]="'Editar'"
+                tooltipPosition="top"></p-button>
+              <p-button icon="pi pi-trash" (onClick)="eliminarRol(rol)"
+                styleClass="p-button-rounded p-button-text p-button-danger delete-btn" [pTooltip]="'Eliminar'"
+                tooltipPosition="top"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="empty-message">
+            <div class="empty-state">
+              <i class="pi pi-inbox empty-icon"></i>
+              <p>No se encontraron roles</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="loadingbody">
+        <tr>
+          <td colspan="5">
+            <div class="loading-state">
+              <i class="pi pi-spin pi-spinner loading-icon"></i>
+              <p>Cargando roles...</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-dialog header="Creacion de nuevo Rol" [modal]="true" [(visible)]="addRol" [style]="{ width: '70rem' }"
+      [breakpoints]="{ '1199px': '90vw', '575px': '90vw' }" [maximizable]="true" (onHide)="onHideModal()">
+      <div class="form-container" [style]="{'margin-top': '25px'}">
+        <div class="form-grid">
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="roleName" [(ngModel)]="roleName" class="w-full" />
+              <label for="roleName">Nombre del Rol</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field">
+            <p-floatLabel>
+              <textarea pInputText id="roleDescription" [(ngModel)]="roleDescription" rows="4"
+                class="w-full"></textarea>
+              <label for="roleDescription">Descripción</label>
+            </p-floatLabel>
+          </div>
+        </div>
+
+        <div class="picklist-section">
+          <h3 class="picklist-title">Permisos de Menú</h3>
+          <div class="p-picklist-header">
+            <label class="izquierda">Opción Menú Disponible</label>
+            <label class="derecha">Opción Menú Asignados</label>
+          </div>
+          <p-pickList [source]="sourceMenuItems" [target]="targetMenuItems" [sourceHeader]="headerSource"
+            targetHeader="Menús Asignados" [dragdrop]="true" [responsive]="true" [sourceStyle]="{'height':'400px'}"
+            [targetStyle]="{'height':'400px'}" filterBy="descripcionMenu" sourceFilterPlaceholder="Buscar menú"
+            targetFilterPlaceholder="Buscar menú">
+            <ng-template let-menuItem pTemplate="item">
+              <div class="menu-item">
+                <i [class]="menuItem.iconoMenu" class="menu-icon"></i>
+                <span class="menu-name">{{ menuItem.descripcionMenu }}</span>
+              </div>
+            </ng-template>
+          </p-pickList>
+        </div>
+      </div>
+      <ng-template #footer>
+        <div class="button-section">
+          <p-button label="Guardar Rol" icon="pi pi-check" (onClick)="onSave()"
+            styleClass="p-button-primary"></p-button>
+          <p-button label="Cancelar" icon="pi pi-times" (onClick)="addRol =false" styleClass="p-button-outlined"></p-button>
+        </div>
+      </ng-template>
+    </p-dialog>
+
+
+  </p-card>
+</div>

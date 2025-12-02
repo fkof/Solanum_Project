@@ -1,0 +1,442 @@
+.lista-roles-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+::ng-deep .p-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-card .p-card-header {
+  padding: 0;
+  border-bottom: none;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px 12px 0 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-content {
+  color: white;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: white;
+}
+
+.header-subtitle {
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+
+::ng-deep .p-card .p-card-body {
+  // padding: 0;
+}
+
+.table-header {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 250px;
+}
+
+::ng-deep .search-input {
+  width: 100%;
+  // padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+::ng-deep .search-input:focus {
+  border-color: #00b398;
+  box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+}
+
+::ng-deep .p-datatable {
+  border-radius: 0 0 12px 12px;
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr>th {
+  background: #00b398;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+  border: none;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr {
+  transition: all 0.2s;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+  background: #f0fdf9;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+  padding: 1rem;
+  border-color: #f0f0f0;
+}
+
+.nombre-rol {
+  font-weight: 600;
+  color: #333;
+}
+
+.descripcion-texto {
+  color: #666;
+  line-height: 1.5;
+}
+
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+::ng-deep .edit-btn.p-button-info {
+  color: #00b398;
+}
+
+::ng-deep .edit-btn.p-button-info:hover {
+  background: #e6f7f4;
+}
+
+::ng-deep .delete-btn.p-button-danger:hover {
+  background: #fee;
+}
+
+::ng-deep .p-button-rounded {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.empty-state,
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.empty-icon,
+.loading-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.empty-state p,
+.loading-state p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+::ng-deep .p-paginator {
+  background: #f8f9fa;
+  border-top: 2px solid #e0e0e0;
+  padding: 1rem;
+  border-radius: 0 0 12px 12px;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  color: #666;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #00b398;
+  color: white;
+  border-color: #00b398;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: #e6f7f4;
+  color: #00b398;
+}
+
+::ng-deep .p-confirmdialog .p-dialog-header {
+  // background: #00b398;
+  // color: white;
+  border-radius: 11px 11px 0px 0px;
+}
+
+::ng-deep .p-confirmdialog .p-confirm-dialog-message {
+  margin-left: 0;
+}
+
+::ng-deep .p-button-danger {
+  background: #dc3545;
+  border-color: #dc3545;
+}
+
+::ng-deep .p-button-danger:hover {
+  background: #c82333;
+  border-color: #bd2130;
+}
+
+::ng-deep .save-button.p-button-success {
+  background: #00b398;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+::ng-deep .save-button.p-button-success:hover {
+  background: #008f7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4);
+}
+
+.button-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  // border-top: 2px solid #f0f0f0;
+}
+
+.button-section {
+  flex-direction: row;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .lista-roles-container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  ::ng-deep .nuevo-button {
+    width: 100%;
+  }
+
+  .table-header {
+    flex-direction: column;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  ::ng-deep .p-datatable .p-datatable-thead>tr>th,
+  ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 576px) {
+  ::ng-deep .p-datatable-responsive .p-datatable-tbody>tr>td {
+    text-align: left;
+    display: block;
+    border: 0 none;
+    width: 100% !important;
+    float: left;
+    clear: left;
+  }
+
+  ::ng-deep .p-datatable-responsive .p-datatable-tbody>tr>td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    width: 30%;
+    display: inline-block;
+  }
+}
+
+
+//region de formulario de agregar rol
+.p-toast {
+  z-index: 9999;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.picklist-section {
+  margin-top: 1rem;
+}
+
+.picklist-title {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+::ng-deep .p-picklist {
+  display: flex;
+  gap: 1rem;
+}
+
+::ng-deep .p-picklist-list-wrapper {
+  flex: 1;
+}
+
+.p-picklist-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+
+  background: #00b398;
+  color: white;
+  padding: 0.75rem 1rem;
+
+  font-weight: 600;
+}
+
+.izquierda {
+  text-align: left;
+}
+
+.derecha {
+  text-align: right;
+}
+
+::ng-deep .p-picklist-filter-container {
+  padding: 0.75rem;
+  background: #f8f9fa;
+}
+
+::ng-deep .p-picklist-filter-container .p-picklist-filter {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+::ng-deep .p-picklist-list {
+  border: 2px solid #e0e0e0;
+  border-radius: 0 0 8px 8px;
+  background: white;
+}
+
+::ng-deep .p-picklist-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-picklist-item:hover {
+  background: #f0fdf9;
+}
+
+::ng-deep .p-picklist-item.p-highlight {
+  background: #00b398;
+  color: white;
+}
+
+::ng-deep .p-picklist-item.p-highlight .menu-icon {
+  color: white;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.menu-icon {
+  font-size: 1.2rem;
+  color: #00b398;
+}
+
+.menu-name {
+  font-size: 1rem;
+}
+
+::ng-deep .p-picklist-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+
+::ng-deep .p-picklist-buttons .p-button {
+  background: #00b398;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-picklist-buttons .p-button:hover {
+  background: #008f7a;
+  transform: scale(1.1);
+}
+
+
+
+@media (max-width: 768px) {
+  .roles-container {
+    padding: 0 1rem;
+  }
+
+  ::ng-deep .p-picklist {
+    flex-direction: column;
+  }
+
+  ::ng-deep .p-picklist-buttons {
+    flex-direction: row;
+    padding: 1rem 0;
+  }
+}

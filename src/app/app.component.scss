@@ -1,0 +1,150 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #d7eeed 0%, #90d8cd 100%);
+}
+
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 73px);
+}
+
+.main-content {
+  flex: 1;
+  transition: margin-left 0.3s;
+}
+
+.main-content.with-sidebar {
+  margin-left: 0;
+}
+/**/
+
+
+
+
+
+
+//Botones
+
+::ng-deep .p-button-primary{
+  background: #00b398 !important;
+}
+::ng-deep .p-button-primary:hover{
+  background: #008f7a !important;
+  //transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4) !important;
+}
+::ng-deep .p-button-outlined {
+ // padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border-color: #00b398;
+  color: #00b398;
+}
+
+::ng-deep .p-button-outlined:hover {
+  background: #f0fdf9;
+  border-color: #008f7a;
+  color: #008f7a;
+}
+/////
+
+/*tags*/
+::ng-deep .p-tag.p-tag-success {
+  background: #d4edda;
+  color: #155724;
+}
+
+::ng-deep .p-tag.p-tag-danger {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+// en tags
+
+
+
+
+//text box
+
+::ng-deep .p-float-label {
+  margin-top: 1rem;
+}
+
+::ng-deep .p-inputtext,
+::ng-deep .p-inputtextarea {
+  width: 100%;
+  //padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-inputtext:focus,
+::ng-deep .p-inputtextarea:focus {
+  border-color: #00b398;
+  box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+}
+
+::ng-deep .p-float-label label {
+  color: #666;
+  font-size: 1rem;
+}
+
+::ng-deep .p-float-label input:focus ~ label,
+::ng-deep .p-float-label textarea:focus ~ label,
+::ng-deep .p-float-label .p-inputwrapper-focus ~ label,
+::ng-deep .p-float-label input.p-filled ~ label,
+::ng-deep .p-float-label textarea.p-filled ~ label {
+  color: #00b398;
+}
+  
+  ::ng-deep .p-inputtext {
+    width: 100%;
+    //padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+  
+  ::ng-deep .p-inputtext:enabled:focus {
+    border-color: #00b398;
+    box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+  }
+
+//upload button
+::ng-deep .p-fileupload-choose-button {
+  background: #00b398 !important;
+  border: none;
+  color: white;
+  //padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  //transition: all 0.2s;
+}
+
+::ng-deep .p-fileupload-choose:hover {
+  background: #008f7a !important;
+  //transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4) !important;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+}
+
+.dialogo {
+  height: 57px;
+  width: 60px ;
+  padding-left: '15px';
+  align-items: 'center';
+  overflow: 'hidden';
+}
+.spinDialgo{
+   width: '50px';
+   height: '50px'
+}

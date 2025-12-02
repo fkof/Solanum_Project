@@ -1,0 +1,343 @@
+  ::ng-deep .p-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  ::ng-deep .p-card .p-card-header {
+      padding: 0;
+      border-bottom: none;
+  }
+
+  .card-header {
+      background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px 12px 0 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+  }
+
+  .header-content {
+      color: white;
+  }
+
+  .header-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      color: white;
+  }
+
+  .header-subtitle {
+      font-size: 1rem;
+      margin: 0;
+      opacity: 0.9;
+  }
+
+  ::ng-deep .p-card .p-card-body {
+      padding: 2rem;
+  }
+
+  .separator {
+      height: 2px;
+      background: linear-gradient(to right, transparent, #00b398, transparent);
+      margin: 2rem 0;
+  }
+
+  .results-section {
+      margin-top: 1rem;
+  }
+
+  .results-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #00b398;
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+  }
+
+  .results-title i {
+      font-size: 1.4rem;
+  }
+
+  .results-count {
+      background: #00b398;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+  }
+
+
+  .search-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+  }
+
+  .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+  }
+
+  .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+  }
+
+  .field-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 0.25rem;
+  }
+
+  ::ng-deep .p-float-label {
+      margin-top: 1rem;
+  }
+  .abierto{ 
+    max-width: '130rem'
+ }
+  .cerrado{
+        max-width: '120rem'
+  }
+//texto dentro de tables
+ .numero-nomina {
+    font-weight: 600;
+    color: #00b398;
+    font-family: monospace;
+  }
+  
+  .nombre-empleado {
+    font-weight: 600;
+    color: #333;
+  }
+   .default-texto {
+    color: #666;
+  }
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    background: #00b398;
+    color: white;
+    padding: 1rem;
+    font-weight: 600;
+    border: none;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr {
+    transition: all 0.2s;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+    background: #f0fdf9;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem;
+    border-color: #f0f0f0;
+  }
+    ::ng-deep .p-paginator {
+    background: #f8f9fa;
+    border-top: 2px solid #e0e0e0;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-current {
+    color: #666;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #00b398;
+    color: white;
+    border-color: #00b398;
+  }
+  
+  ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+    background: #e6f7f4;
+    color: #00b398;
+  }
+  
+.empty-state-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+  .empty-state,
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #999;
+  }
+  
+  .empty-icon,
+  .loading-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ccc;
+  }
+  
+  .empty-state p,
+  .loading-state p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .empty-state small {
+    color: #bbb;
+    font-size: 0.9rem;
+  }
+  /* #region Vacaciones Container */
+  .vacation-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem;
+      font-family: Arial, sans-serif;
+  }
+
+  .info-block {
+      flex: 1 1 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+
+  .main-balance {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00b398;
+      margin-bottom: 0.5rem;
+  }
+
+  .sub-balance {
+      font-size: 1rem;
+      color: #7f8c8d;
+      margin-bottom: 0.3rem;
+  }
+
+  .request-block {
+      flex: 1 1 300px;
+    //  display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+
+  .request-block label {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: #34495e;
+  }
+
+  .request-block input {
+      padding: 0.4rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+  }
+
+  .request-btn {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+  }
+
+  .request-btn:hover {
+      background-color: #219150;
+  }
+
+  /* 📱 Responsive: en pantallas pequeñas */
+  @media (max-width: 600px) {
+      .vacation-container {
+          flex-direction: column;
+      }
+
+      .info-block {
+          order: -1;
+          /* Mueve los textos arriba */
+          align-items: flex-start;
+      }
+
+      .main-balance {
+          font-size: 1.7rem;
+      }
+
+      .sub-balance {
+          font-size: 1rem;
+      }
+
+      .request-block {
+          width: 100%;
+      }
+  }
+
+  /* #endregion */
+
+
+
+
+
+  /* #region responsive */
+  @media (max-width: 1024px) {
+      .form-grid {
+          grid-template-columns: repeat(2, 1fr);
+      }
+  }
+
+  @media (max-width: 768px) {
+      .busqueda-empleados-container {
+          padding: 0 1rem;
+          margin: 1rem auto;
+      }
+
+      .header-title {
+          font-size: 1.5rem;
+      }
+
+      .form-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+      }
+
+      .button-section {
+          flex-direction: column;
+      }
+
+      ::ng-deep .p-button {
+          width: 100%;
+      }
+
+      ::ng-deep .p-datatable .p-datatable-thead>tr>th,
+      ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+      }
+  }
+
+  @media (max-width: 576px) {
+      ::ng-deep .p-card .p-card-body {
+          padding: 1rem;
+      }
+
+      .results-title {
+          font-size: 1.1rem;
+      }
+  }
+
+  /* #endregion */

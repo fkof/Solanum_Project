@@ -1,0 +1,165 @@
+<div class="empleado-roles-container">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <h2 class="header-title">Gestión de usuarios</h2>
+        <p class="header-subtitle">Asigna los roles a colaboradores en el sistema y modificación de estatus</p>
+      </div>
+    </ng-template>
+    <!-- Formulario de búsqueda -->
+    <div class="search-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Nombre Colaborador</label>
+          <input pInputText id="nombre" [(ngModel)]="nombreBusqueda" name="nombre" class="w-full" />
+
+
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Número de Nómina</label>
+          <input pInputText id="numeroNomina" [(ngModel)]="numeroNominaBusqueda" name="numeroNomina" class="w-full" />
+
+        </div>
+        <div class="button-section">
+          <p-button label="Buscar" icon="pi pi-search" (onClick)="buscarUsuario()" [loading]="loading"
+            styleClass="p-button-primary" ></p-button>
+          <p-button  label="Limpiar" icon="pi pi-filter-slash" (onClick)="limpiar()"
+            styleClass="p-button-outlined"></p-button>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+
+    <!-- Separador -->
+    <div class="separator" *ngIf="busquedaRealizada"></div>
+
+    <!-- Tabla de resultados -->
+    <div class="results-section" *ngIf="busquedaRealizada">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Resultados de la Búsqueda
+        <span class="results-count" *ngIf="usuarioList.length > 0">({{ usuarioList.length }})</span>
+      </h3>
+
+      <p-table #dt [value]="usuarioList" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios"
+        [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines" [responsive]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="numeroNomina" style="min-width: 150px">
+              Número de Nómina <p-sortIcon field="numeroNomina"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombreCompleto" style="min-width: 250px">
+              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="rolesDescripcion" style="min-width: 250px">
+              Roles asignados <p-sortIcon field="rolesDescripcion"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="activo" style="min-width: 200px">
+              Estatus <p-sortIcon field="activo"></p-sortIcon>
+            </th>
+            <th style="width: 100px">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-usuario>
+          <tr>
+            <td>
+              <span class="numero-nomina">{{ usuario.numeroNomina }}</span>
+            </td>
+            <td>
+              <span class="nombre-empleado">{{ usuario.nombreCompleto }}</span>
+            </td>
+
+            <td>
+              <span class="puesto-texto">{{ usuario.rolesDescripcion }}</span>
+            </td>
+            <td>
+              <p-tag [value]="getEstadoLabel(usuario.activo)" [severity]="getSeverity(usuario.activo)">
+              </p-tag>
+            </td>
+            <td>
+              <div class="action-buttons">
+
+                <p-button icon="pi pi-pencil" (onClick)="editarEmpleado(usuario)" [pTooltip]="'Editar'"
+                  styleClass="p-button-rounded p-button-text p-button-info edit-btn" tooltipPosition="top"></p-button>
+                <!-- <p-button icon="pi pi-trash" (onClick)="cambioEstado(usuario)" *ngIf="usuario.activo"  [pTooltip]="'Cambiar Estatus'"
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                  tooltipPosition="top"></p-button>
+                  <p-button icon="pi pi-check" (onClick)="cambioEstado(usuario)" *ngIf="!usuario.activo" [pTooltip]="'Cambiar Estatus'"
+                  styleClass="p-button-rounded p-button-text p-button-success delete-btn"
+                  tooltipPosition="top"></p-button> -->
+                  <p-button icon="pi pi-key" (onClick)="resetPassword(usuario)"  [pTooltip]="'Resetear Password'"
+                  styleClass="p-button-rounded p-button-text p-button-success"
+                  tooltipPosition="top"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron usuarios con los criterios especificados</p>
+                <small>Intenta con otros usuarios de búsqueda</small>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="6">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando colaboradores...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+  <p-dialog header="Asignación de Roles" [modal]="true" [(visible)]="visible" >
+    <div class="picklist-section">
+      <div class="p-picklist-header">
+        <label class="izquierda">Roles Disponibles</label>
+        <label class="derecha">Roles asignados</label>
+      </div>
+      <p-pickList [source]="rolesDisponibles"  [target]="rolesAsignados" 
+        [dragdrop]="true" [responsive]="true" [sourceStyle]="{'height':'400px'}" 
+        [targetStyle]="{'height':'400px'}" filterBy="nombre" sourceFilterPlaceholder="Buscar rol" 
+        targetFilterPlaceholder="Buscar rol" >
+        <ng-template let-rol pTemplate="item">
+          <div class="rol-item">
+            <div class="rol-info">
+              <span class="rol-name">{{ rol.nombre }}</span>
+              <span class="rol-description">{{ rol.descripcion }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+
+    <!-- Botón de guardar -->
+     {{rolesAsignados.length}}
+    <div class="save-section">
+      <p-button label="Guardar Asignación" icon="pi pi-check" (onClick)="guardarRoles()" [disabled]="rolesAsignados.length==0"
+        styleClass="p-button-primary"></p-button>
+    </div>
+  </p-dialog>
+  <!-- Sección de asignación de roles -->
+
+</div>

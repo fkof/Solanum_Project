@@ -1,0 +1,114 @@
+<div class="login-container">
+    <p-toast></p-toast>
+    
+    <div class="login-content">
+      <!-- Lado izquierdo - Branding -->
+      <div class="login-brand">
+        <div class="brand-content">
+          <div class="logo-container">
+            <div class="logo">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="#00b398"/>
+                <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <h1 class="brand-title">Sistema de Gestión</h1>
+          <p class="brand-subtitle">Administración de Recursos Humanos</p>
+          <div class="brand-features">
+            <div class="feature-item">
+              <i class="pi pi-check-circle"></i>
+              <span>Gestión de colaboradores</span>
+            </div>
+            <div class="feature-item">
+              <i class="pi pi-check-circle"></i>
+              <span>Control de vacaciones</span>
+            </div>
+            <div class="feature-item">
+              <i class="pi pi-check-circle"></i>
+              <span>Administración de permisos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Lado derecho - Formulario de login -->
+      <div class="login-form-container">
+        <p-card class="login-card">
+          <ng-template pTemplate="header">
+            <div class="card-header">
+              <h2>Iniciar Sesión</h2>
+              <p>Ingresa tus credenciales para acceder</p>
+            </div>
+          </ng-template>
+  
+          <form class="login-form" (ngSubmit)="onLogin()">
+            <div class="form-field">
+              <label class="field-label">Empresa *</label>
+              <p-select 
+                [options]="empresas" 
+                [(ngModel)]="empresaSeleccionada"
+                name="empresa"
+                optionLabel="razonSocial"
+                placeholder="Selecciona tu empresa"
+                [filter]="true"
+                filterBy="razonSocial"
+                class="w-full"
+                [disabled]="loading">
+              </p-select>
+            </div>
+  
+            <div class="form-field">
+              <p-floatLabel>
+                <input 
+                  pInputText 
+                  id="usuario" 
+                  [(ngModel)]="usuario"
+                  name="usuario"
+                  (keypress)="onKeyPress($event)"
+                  [disabled]="loading"
+                  class="w-full" 
+                  autocomplete="username" />
+                <label for="usuario">Usuario *</label>
+              </p-floatLabel>
+            </div>
+  
+            <div class="form-field">
+              <p-floatLabel>
+                <p-password 
+                  inputId="password"
+                  [(ngModel)]="password"
+                  name="password"
+                  (keypress)="onKeyPress($event)"
+                  [disabled]="loading"
+                  [feedback]="false"
+                  [toggleMask]="true"
+                  class="w-full"
+                  autocomplete="current-password">
+                </p-password>
+                <label for="password">Contraseña *</label>
+              </p-floatLabel>
+            </div>
+  
+            <div class="form-actions">
+              <p-button 
+                type="submit"
+                label="Iniciar Sesión" 
+                icon="pi pi-sign-in"
+                [loading]="loading"
+                styleClass="p-button-primary login-button w-full">
+              </p-button>
+            </div>
+  
+            <div class="form-footer">
+              <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+          </form>
+        </p-card>
+  
+        <div class="login-footer">
+          <p>© 2026 Sistema de Gestión. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </div>

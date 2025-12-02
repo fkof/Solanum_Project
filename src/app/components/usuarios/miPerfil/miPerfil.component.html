@@ -1,0 +1,389 @@
+<div class="perfil-container">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <h2 class="header-title">Mi Perfil</h2>
+        <span class="header-subtitle">Información del colaborador </span>
+      </div>
+    </ng-template>
+    <div class="profile-container" *ngIf="perfil==null">
+      <!-- Imagen circular -->
+      <div class="profile-image">
+        <p-skeleton shape="circle" size="6rem"></p-skeleton>
+      </div>
+
+
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-user"></i>
+          Información Personal
+        </h3>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-briefcase"></i>
+          Información Laboral
+        </h3>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-sitemap"></i>
+          Jerarquía Organizacional
+        </h3>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+          <div class="info-item">
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+            <p-skeleton width="15rem" height="1rem"></p-skeleton>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="perfil-content" *ngIf="perfil!=null">
+      <!-- Sección de foto y nombre -->
+      <div class="perfil-foto-section">
+        <div class="foto-container">
+          <img [src]="fotoBD" [alt]="perfil.nombre" class="foto-perfil">
+        </div>
+        <h2 class="nombre-completo">{{ perfil.nombreCompleto }}</h2>
+        <p class="numero-nomina-badge">{{ perfil.numeroNomina }}</p>
+      </div>
+
+      <p-divider></p-divider>
+
+      <!-- Grid de información personal -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-user"></i>
+          Información Personal
+        </h3>
+        <form class="card flex justify-center">
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Fecha de Nacimiento</span>
+              <span class="info-value">{{ perfil.fechaNacimiento }}</span>
+            </div>
+
+            <div class="info-item">
+              <span class="info-label">Correo Personal</span>
+              <span class="info-value">{{ perfil.correoPersonal }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Lugar de Recidencia</span>
+              <p-select [options]="lugarRecidencia" inputId="lugarResidencia" [filter]="true"
+                [ngClass]="{'invalido':!informacionAdicional.idLugarResidencia}" optionLabel="lugarResidencia"
+                [ngModelOptions]="{standalone: true}" optionValue="idLugarResidencia"
+                [(ngModel)]="informacionAdicional.idLugarResidencia" placeholder="Busca el lugar de residencia"
+                class="w-full md:w-56" />
+            </div>
+            <div class="info-item">
+              <span class="info-label">Genero </span>
+              <p-select [options]="genero" inputId="departamento" [(ngModel)]="informacionAdicional.idGenero"
+                [filter]="true" [ngClass]="{'invalido':!informacionAdicional.idGenero}"
+                [ngModelOptions]="{standalone: true}" optionValue="id" optionLabel="descripcion"
+                placeholder="Seleccione un genero" class="w-full md:w-56" />
+            </div>
+            <div class="info-item">
+              <span class="info-label">Grado de estudios </span>
+              <p-select [options]="gradoEstudios" inputId="gradoEstudios"
+                [(ngModel)]="informacionAdicional.idGradoEstudios" [filter]="true"
+                [ngClass]="{'invalido':!informacionAdicional.idGradoEstudios}" [ngModelOptions]="{standalone: true}"
+                optionLabel="descripcion" optionValue="id" placeholder="Seleccione un grado de estudios"
+                class="w-full md:w-56" />
+            </div>
+            <div class="info-item">
+              <span class="info-label">Titulo Universitario</span>
+              <input pInputText id="tituloUniversitario" [(ngModel)]="informacionAdicional.tituloUniversitario"
+                name="tituloUniversitario" class="w-full" />
+
+
+
+            </div>
+            <div class="info-item">
+              <span class="info-label">Estado Civil</span>
+              <p-select [options]="estadoCivil" inputId="departamento" [(ngModel)]="informacionAdicional.idEstadoCivil"
+                [filter]="true" [ngClass]="{'invalido':!informacionAdicional.idEstadoCivil}" optionValue="id"
+                [ngModelOptions]="{standalone: true}" optionLabel="descripcion" placeholder="Seleccione un estado civil"
+                class="w-full md:w-56" />
+            </div>
+            <div class="info-item">
+              <span class="info-label">Cant. Hijos</span>
+              <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <p-select [options]="cantHijos" inputId="departamento" [(ngModel)]="selectHijos" [filter]="true"
+                  [ngModelOptions]="{standalone: true}" placeholder="Seleccione un genero" class="w-full md:w-56" />
+                <p-button icon="pi pi-plus" *ngIf="selectHijos>0"
+                  styleClass="p-button-rounded p-button-text p-button-info edit-btn" (onClick)="addHijo()"
+                  tooltipPosition="top"></p-button>
+              </div>
+
+            </div>
+            <div class="info-item-table">
+
+              <p-table [value]="hijos" [scrollable]="true" [resizableColumns]="true"
+                [tableStyle]="{ 'min-width': '340px'}" scrollHeight="200px">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th width="10%">...</th>
+                    <th width="40%">Nombre</th>
+                    <th width="40%">Fecha de Nacimiento</th>
+
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                  <tr>
+                    <td width="10%">
+                      <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-text p-button-info edit-btn"
+                        (onClick)="editHijo(rowData)" tooltipPosition="top"></p-button>
+                      <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-text p-button-danger edit-btn"
+                        tooltipPosition="top"></p-button>
+                    </td>
+                    <td width="40%">{{ rowData.nombre }}</td>
+                    <td width="40%" style="text-align: center;">{{ formatearFechastr(rowData.fechaNacimiento) }}</td>
+
+                  </tr>
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="3" class="empty-message">
+                      <div class="empty-state">
+                        <i class="pi pi-search empty-icon"></i>
+                        <small>No se encontraron Hijos dados de alta</small>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="loadingbody">
+                  <tr>
+                    <td colspan="3">
+                      <div class="loading-state">
+                        <i class="pi pi-spin pi-spinner loading-icon"></i>
+                        <p>Buscando Hijos de Colaboradores...</p>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+
+
+
+            </div>
+
+          </div>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Contacto de Emergencia</span>
+              <input pInputText id="contactoEmergencia" [(ngModel)]="informacionAdicional.contactoEmergencia"
+                name="contactoEmergencia" />
+            </div>
+            <div class="info-item">
+              <span class="info-label">Parentesco </span>
+              <p-select [options]="parentesco" inputId="departamento" [(ngModel)]="informacionAdicional.idParentesco"
+                [filter]="true" [ngClass]="{'invalido':!informacionAdicional.idParentesco}"
+                [ngModelOptions]="{standalone: true}" optionValue="id" optionLabel="descripcion"
+                placeholder="Seleccione un parentesco" class="w-full md:w-56" />
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <p-divider></p-divider>
+
+      <!-- Grid de información laboral -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-briefcase"></i>
+          Información Laboral
+        </h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Empresa</span>
+            <span class="info-value">{{ perfil.empresa!='null'?perfil.empresa:"N/A" }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Correo Empresarial</span>
+            <span class="info-value">{{ perfil.correoEmpresarial!=''?perfil.correoEmpresarial:"N/A" }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fecha de Ingreso</span>
+            <span class="info-value highlight">{{ perfil.fechaIngreso }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Puesto</span>
+            <span class="info-value">{{ perfil.puesto }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Departamento</span>
+            <span class="info-value">{{ perfil.departamento }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Número de Nómina</span>
+            <span class="info-value">{{ perfil.numeroNomina }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Ubicacion </span>
+            <p-select [options]="ubicacion" inputId="ubicacion" [(ngModel)]="informacionAdicional.idUbicacion"
+              [filter]="true" [ngClass]="{'invalido':!informacionAdicional.idUbicacion}"
+              [ngModelOptions]="{standalone: true}" optionValue="idUbicacion" optionLabel="ubicacion"
+              placeholder="Seleccione una ubicacion" class="w-full md:w-56" />
+          </div>
+          <div class="info-item">
+            <span class="info-label">Horario </span>
+            <p-select [options]="horarios" inputId="departamento" [(ngModel)]="informacionAdicional.idHorario"
+              [filter]="true" [ngClass]="{'invalido':!informacionAdicional.idHorario}"
+              [ngModelOptions]="{standalone: true}" optionValue="idHorario" optionLabel="horario"
+              placeholder="Seleccione un horario" class="w-full md:w-56" />
+          </div>
+          <div class="info-item">
+            <span class="info-label">Uso transporte </span>
+            <div class="flex items-center">
+              <p-radiobutton name="pizza" [value]="true" [(ngModel)]="informacionAdicional.usaTransporte"
+                inputId="ingredient1" (onClick)="onSelect($event)" />
+              <label for="ingredient1" class="ml-2" style="margin-right: 10px;">Sí
+              </label>
+              <p-radiobutton name="pizza" [value]="false" [(ngModel)]="informacionAdicional.usaTransporte"
+                inputId="ingredient1" (onClick)="onSelect($event)" />
+              <label for="ingredient1" class="ml-2">No</label>
+            </div>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Parada </span>
+            <p-select [options]="transportes" inputId="departamento" [disabled]="!informacionAdicional.usaTransporte"
+              [(ngModel)]="informacionAdicional.idTransporte" [filter]="true"
+              [ngClass]="{'invalido':!informacionAdicional.idTransporte && informacionAdicional.usaTransporte}"
+              [ngModelOptions]="{standalone: true}" optionValue="idParada" optionLabel="parada"
+              placeholder="Seleccione una parada" class="w-full md:w-56" />
+          </div>
+        </div>
+      </div>
+
+      <p-divider></p-divider>
+
+      <!-- Grid de jerarquía -->
+      <div class="info-section">
+        <h3 class="section-title">
+          <i class="pi pi-sitemap"></i>
+          Jerarquía Organizacional
+        </h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Jefe Inmediato</span>
+            <span class="info-value">{{jefeInmediato }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="info-label">Gerente de Departamento</span>
+            <span class="info-value">{{ gerenteDepartamento }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="button-section">
+        <p-button label="Guardar" icon="pi pi-check" (onClick)="onSaveInformacionAdicional()"
+          styleClass="p-button-primary"></p-button>
+
+      </div>
+    </div>
+    <p-dialog header="Agregar Hijo" [modal]="true" [(visible)]="addHijos" [style]="{ width: '50rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true" (onHide)="onHideModal()">
+      <div class="form-container" [style]="{'margin-top': '25px'}">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label" for="nombre">Nombre</label>
+            <input pInputText id="nombre" class="w-full" [(ngModel)]="hijosSeleccionados.nombre" />
+
+
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Genero</label>
+            <p-select [options]="genero" inputId="departamento" [(ngModel)]="hijosSeleccionados.idGenero"
+              [filter]="true" [ngClass]="{'invalido':!hijosSeleccionados.idGenero}" optionValue="id"
+              [ngModelOptions]="{standalone: true}" optionLabel="descripcion" placeholder="Seleccione un genero"
+              class="w-full md:w-56" appendTo="body" />
+          </div>
+          <div class="form-field">
+            <label class="field-label">Fecha Nacimiento</label>
+            <p-datepicker inputId="fechaNacimiento" [(ngModel)]="hijosSeleccionados.fechaNacimiento"
+              name="FechaNacimiento" [showIcon]="true" dateFormat="dd-M-yy" class="w-full" appendTo="body"
+              [iconDisplay]="'input'"></p-datepicker>
+          </div>
+        </div>
+
+
+      </div>
+      <ng-template #footer>
+        <div class="button-section">
+          <p-button label="Guardar" icon="pi pi-check" (onClick)="onSave()" styleClass="p-button-primary"></p-button>
+          <p-button label="Cancelar" icon="pi pi-times" (onClick)="addHijos =false"
+            styleClass="p-button-outlined"></p-button>
+        </div>
+      </ng-template>
+    </p-dialog>
+  </p-card>
+</div>

@@ -1,0 +1,223 @@
+.registro-empleado-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+::ng-deep .p-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-card .p-card-header {
+  background: #00b398;
+  color: white;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 12px 12px 0 0;
+}
+
+::ng-deep .p-card .p-card-body {
+  padding: 2rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #00b398;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e6f7f4;
+}
+
+.section-title i {
+  font-size: 1.4rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.8rem;
+  //font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+  margin-left: 0.8rem;
+}
+
+.form-field.full-width {
+  grid-column: span 2;
+}
+
+.form-field.with-button {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.form-field.with-button p-floatLabel {
+  flex: 1;
+}
+
+::ng-deep .p-float-label {
+  margin-top: 1rem;
+}
+
+::ng-deep .p-inputtext,
+::ng-deep .p-calendar {
+  width: 100%;
+}
+
+::ng-deep .p-inputtext,
+::ng-deep .p-calendar input {
+  //padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-inputtext:enabled:focus,
+::ng-deep .p-calendar:not(.p-disabled).p-inputwrapper-focus input {
+  border-color: #00b398;
+  box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+}
+
+::ng-deep .p-inputtext:disabled {
+  background: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
+}
+
+::ng-deep .p-float-label label {
+  color: #666;
+  font-size: 1rem;
+}
+
+::ng-deep .p-float-label input:focus~label,
+::ng-deep .p-float-label .p-inputwrapper-focus~label,
+::ng-deep .p-float-label input.p-filled~label {
+  color: #00b398;
+}
+
+::ng-deep .p-dropdown {
+  width: 100%;
+}
+
+::ng-deep .p-dropdown .p-dropdown-label {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-dropdown:not(.p-disabled).p-focus .p-dropdown-label {
+  border-color: #00b398;
+  box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+}
+
+::ng-deep .p-dropdown .p-dropdown-label.p-placeholder {
+  color: #999;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: #e6f7f4;
+  color: #00b398;
+}
+
+::ng-deep .p-calendar .p-datepicker {
+  border: 2px solid #00b398;
+}
+
+::ng-deep .p-datepicker table td.p-datepicker-today>span {
+  background: #e6f7f4;
+  color: #00b398;
+}
+
+::ng-deep .p-datepicker table td>span.p-highlight {
+  background: #00b398;
+  color: white;
+}
+
+.upload-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+
+
+.preview-foto {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  border: 2px solid #00b398;
+}
+
+
+.button-section {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 2px solid #f0f0f0;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .registro-empleado-container {
+    padding: 0 1rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-field.full-width {
+    grid-column: span 1;
+  }
+
+  .form-field.with-button {
+    flex-direction: column;
+  }
+
+  .button-section {
+    flex-direction: column;
+  }
+
+  ::ng-deep .p-button {
+    width: 100%;
+  }
+}

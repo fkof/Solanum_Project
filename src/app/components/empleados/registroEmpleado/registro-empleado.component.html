@@ -1,0 +1,181 @@
+<div class="registro-empleado-container">
+  <p-toast></p-toast>
+
+  <p-card header="Registro de Colaborador">
+    <form class="form-container">
+
+      <!-- Información Personal -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-user"></i>
+          Información Personal
+        </h3>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="nombres" [(ngModel)]="nombres" name="nombres" class="w-full"
+                [ngClass]="{'invalido':nombres==''}" />
+              <label for="nombres">Nombre(s) *</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="apellidoPaterno" [(ngModel)]="apellidoPaterno" name="apellidoPaterno"
+                [ngClass]="{'invalido':apellidoPaterno==''}" class="w-full" />
+              <label for="apellidoPaterno">Apellido Paterno *</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="apellidoMaterno" [(ngModel)]="apellidoMaterno" name="apellidoMaterno"
+                class="w-full" />
+              <label for="apellidoMaterno">Apellido Materno</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field">
+            <p-floatLabel>
+              <p-datepicker inputId="fechaNacimiento" [(ngModel)]="fechaNacimiento" name="fechaNacimiento"
+                [showIcon]="true" dateFormat="dd-M-yy" class="w-full" [iconDisplay]="'input'"></p-datepicker>
+              <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+            </p-floatLabel>
+          </div>
+
+
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="correoPersonal" [(ngModel)]="correoPersonal" name="correoPersonal" type="email"
+                [ngClass]="{'invalido':correoPersonal==''}" class="w-full" />
+              <label for="correoPersonal">Correo Personal *</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field">
+            <p-floatLabel>
+              <input pInputText id="correoEmpresarial" [(ngModel)]="correoEmpresarial" name="correoEmpresarial"
+                type="email" class="w-full" />
+              <label for="correoEmpresarial">Correo Empresarial</label>
+            </p-floatLabel>
+          </div>
+          <div class="form-field">
+            <label class="upload-label"></label>
+            <p-fileUpload mode="basic" chooseLabel="Seleccionar foto" ref={fileUploadRef} accept="image/*"
+              [maxFileSize]="2097152" invalidFileSizeMessageSummary="'{0}', archivo excede el peso permitido"
+              invalidFileSizeMessageDetail="El peso maximo permitido es de: {0}"
+              invalidFileTypeMessageDetail=", favor de seleccionar un formato valido"
+              invalidFileTypeMessageSummary="'{0}', Archivo invalido solamente se perminten imagenes"
+              (onSelect)="onUploadFoto($event)" [auto]="true" chooseIcon="pi pi-upload"></p-fileUpload>
+
+          </div>
+          <div class="form-field">
+
+            <label class="upload-label"></label>
+            <img src="/Un ícono minimalista.png" class="preview-foto" alt="Vista previa" *ngIf="!fotografia">
+            <img [src]="fotografia" class="preview-foto" alt="Vista previa" *ngIf="fotografia">
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Información Laboral -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-briefcase"></i>
+          Información Laboral
+        </h3>
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label class="field-label">Empresa *</label>
+            <p-multiselect inputId="empresa" [options]="empresas" [(ngModel)]="empresaSeleccionada" name="empresa"
+              [ngClass]="{'invalido':empresaSeleccionada.length==0}" optionLabel="razonSocial" [filter]="true"
+              filterBy="razonSocial" (onChange)="onEmpresaChange()" placeholder="Seleccione una empresa"
+              class="w-full"></p-multiselect>
+
+          </div>
+          <div class="form-field" style="margin-top: 25px;">
+            <p-floatLabel>
+              <p-datepicker inputId="fechaIngreso" [(ngModel)]="fechaIngreso" name="fechaIngreso"
+                [iconDisplay]="'input'" [showIcon]="true" dateFormat="dd-M-yy" class="w-full"></p-datepicker>
+              <label for="fechaIngreso">Fecha de Ingreso *</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="form-field" style="margin-top: 25px;">
+            <p-floatLabel>
+              <input pInputText id="numeroNomina" [(ngModel)]="numeroNomina" name="numeroNomina" class="w-full"
+                [ngClass]="{'invalido':numeroNomina==''}" />
+              <label for="numeroNomina">Número de Nómina *</label>
+            </p-floatLabel>
+          </div>
+
+
+          <div class="form-field">
+            <label class="field-label">Departamento *</label>
+            <p-select [options]="departamentos" inputId="departamento" [(ngModel)]="departamentoSeleccionado"
+              [filter]="true" [ngClass]="{'invalido':!departamentoSeleccionado}" [ngModelOptions]="{standalone: true}"
+              optionLabel="nombre" (onChange)="onDepartamentoChange()" placeholder="Seleccione un departamento"
+              class="w-full md:w-56" />
+
+
+            <!--p-dropdown inputId="departamento" [options]="departamentos" [(ngModel)]="departamentoSeleccionado"
+              name="departamento" optionLabel="name" (onChange)="onDepartamentoChange()" [filter]="true" filterBy="name"
+              placeholder="Seleccione un departamento" class="w-full"></p-dropdown-->
+          </div>
+
+          <div class="form-field">
+            <label class="field-label">Puesto *</label>
+
+            <p-select inputId="puesto" [options]="puestos" [(ngModel)]="puestoSeleccionado" name="puesto"
+              [ngClass]="{'invalido':!puestoSeleccionado}" optionLabel="nombre" [filter]="true" filterBy="nombre"
+              placeholder="Seleccione un puesto" class="w-full"></p-select>
+          </div>
+
+          <div class="form-field">
+            <label class="field-label" for="gerenteDepartamento">Gerente de Departamento</label>
+            <input pInputText id="gerenteDepartamento" [(ngModel)]="gerenteDepartamento" name="gerenteDepartamento"
+              [disabled]="true" class="w-full" />
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Jerarquía -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <i class="pi pi-sitemap"></i>
+          Jerarquía Organizacional
+        </h3>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label" for="jefeInmediato">Jefe Inmediato *</label>
+
+
+            <!-- <p-autocomplete [(ngModel)]="jefeInmediato" [suggestions]="filteredJefeInmediato"
+                (completeMethod)="filterJefeInmediato($event)" optionLabel="name" /> -->
+
+            <p-select [options]="jefeImediatos" inputId="jefeImediatos" [(ngModel)]="jefeInmediatoSelect"
+              [filter]="true" [ngClass]="{'invalido':!jefeInmediato}" optionLabel="nombreCompleto"
+              [ngModelOptions]="{standalone: true}" (onFilter)="filterJefeInmediato($event)"
+              placeholder="Busca el jefe inmediato" class="w-full md:w-56" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="button-section">
+        <p-button label="Guardar Colaborador" icon="pi pi-save" (onClick)="guardarEmpleado()"
+          styleClass="p-button-primary"></p-button>
+        <p-button *ngIf="idEmpleado == '0'" label="Limpiar" icon="pi pi-times" (onClick)="limpiarFormulario()"
+          styleClass="p-button-outlined"></p-button>
+        <p-button label="Regresar" icon="pi pi-arrow-left" (onClick)="regresar()"
+          styleClass="p-button-outlined"></p-button>
+      </div>
+    </form>
+  </p-card>
+</div>

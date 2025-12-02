@@ -1,0 +1,153 @@
+<div class="container-general">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Gestión de Colaboradores</h2>
+          <p class="header-subtitle">Encuentra Colaboradores por diferentes criterios</p>
+        </div>
+
+      </div>
+    </ng-template>
+    <!-- Formulario de búsqueda -->
+    <div class="search-form">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="field-label">Nombre Colaborador</label>
+          <input pInputText id="nombre" [(ngModel)]="nombreBusqueda" name="nombre" class="w-full" />
+
+
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Número de Nómina</label>
+          <input pInputText id="numeroNomina" [(ngModel)]="numeroNominaBusqueda" name="numeroNomina" class="w-full" />
+
+        </div>
+
+        <div class="form-field">
+          <label class="field-label">Empresa</label>
+          <p-select styleClass="{'padding:0.75rem'}" inputId="empresa" [options]="empresas"
+            [(ngModel)]="empresaSeleccionada" name="empresa" optionLabel="razonSocial" [filter]="true" filterBy="name"
+            placeholder="Seleccione una empresa" [showClear]="true" class="w-full"></p-select>
+        </div>
+      </div>
+
+      <div class="button-section">
+        <p-button label="Nuevo Colaborador" icon="pi pi-plus" (onClick)="nuevoEmpleado()" [loading]="loading"
+          styleClass="p-button-primary"></p-button>
+        <p-button label="Buscar" icon="pi pi-search" (onClick)="buscarEmpleados()" [loading]="loading"
+          styleClass="p-button-primary"></p-button>
+        <p-button label="Limpiar" icon="pi pi-filter-slash" (onClick)="limpiarBusqueda()"
+          styleClass="p-button-outlined"></p-button>
+      </div>
+    </div>
+
+    <!-- Separador -->
+    <div class="separator" *ngIf="busquedaRealizada"></div>
+
+    <!-- Tabla de resultados -->
+    <div class="results-section" *ngIf="busquedaRealizada">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Resultados de la Búsqueda
+        <span class="results-count" *ngIf="empleados.length > 0">({{ empleados.length }})</span>
+      </h3>
+
+      <p-table #dt [value]="empleados" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Colaborador"
+        [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines" [responsive]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+
+            <th pSortableColumn="numeroNomina" style="min-width: 150px">
+              Número de Nómina <p-sortIcon field="numeroNomina"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombreCompleto" style="min-width: 250px">
+              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="empresa" style="min-width: 250px">
+              Empresa <p-sortIcon field="empresa"></p-sortIcon>
+            </th>
+            <th pSortableColumn="puesto" style="min-width: 150px">
+              Puesto <p-sortIcon field="puesto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="estatus" style="min-width: 150px">
+              Estado <p-sortIcon field="estatus"></p-sortIcon>
+            </th>
+            <th pSortableColumn="jefeInmediato" style="min-width: 200px">
+              Jefe Inmediato <p-sortIcon field="jefeInmediato"></p-sortIcon>
+            </th>
+            <th style="width: 100px">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-empleado>
+          <tr>
+
+            <td>
+              <span class="numero-nomina">{{ empleado.numeroNomina }}</span>
+            </td>
+            <td>
+              <span class="nombre-empleado">{{ empleado.nombreCompleto }}</span>
+            </td>
+            <td>
+              <span class="empresa-texto">{{ empleado.empresa }}</span>
+            </td>
+            <td>
+              <span class="puesto-texto">{{ empleado.puesto }}</span>
+            </td>
+            <td>
+              <p-tag [value]="getEstadoLabel(empleado.estatus)" [severity]="getSeverity(empleado.estatus)">
+              </p-tag>
+            </td>
+            <td>
+              <span class="jefe-texto">{{ empleado.jefeInmediato }}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+
+                <p-button icon="pi pi-pencil" (onClick)="editarEmpleado(empleado)" [pTooltip]="'Editar'"
+                  styleClass="p-button-rounded p-button-text p-button-info edit-btn" tooltipPosition="top"></p-button>
+                <p-button icon="pi pi-trash" (onClick)="borrarEmpleado(empleado)" *ngIf="empleado.estatus"
+                  [pTooltip]="'Cambiar Estatus'" styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                  tooltipPosition="top"></p-button>
+                <p-button icon="pi pi-check" (onClick)="borrarEmpleado(empleado)" *ngIf="!empleado.estatus"
+                  [pTooltip]="'Cambiar Estatus'" styleClass="p-button-rounded p-button-text p-button-success delete-btn"
+                  tooltipPosition="top"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron colaboradores con los criterios especificados</p>
+                <small>Intenta con otros criterios de búsqueda</small>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="6">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando colaboradores...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+</div>

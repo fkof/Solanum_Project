@@ -1,68 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AvatarModule } from 'primeng/avatar'; // Import PrimeNG AvatarModule
-import { MenuItem } from 'primeng/api';
-import { Menu, MenuModule } from 'primeng/menu';
+
+import { MenuModule } from 'primeng/menu';
 import { BadgeModule } from 'primeng/badge';
 import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 
+
+import { HeaderComponent } from './components/header/header.component';
+import { AuthService } from './services/auth.services';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { MenuItem } from './models/menuItem';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoadingServices } from './services/loading.services';
+//import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-root',
-  imports: [CommonModule,RouterOutlet, ButtonModule, ToolbarModule, AvatarModule, MenuModule, BadgeModule, RippleModule,Menu],
+  imports: [CommonModule,ProgressSpinnerModule, RouterOutlet, DialogModule,SidebarComponent, ButtonModule, ToolbarModule, AvatarModule, MenuModule, BadgeModule, RippleModule, HeaderComponent],
   templateUrl: './app.component.html',
+ // providers: [AuthService],
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'SolanumSystem';
-  items: MenuItem[] | undefined;
-  constructor(private router: Router) {}
+  dataMenu:MenuItem[]=[];
+  isAuthenticated:boolean=false;
+  visible:boolean=false;
 
-  ngOnInit() {
-    this.items = [
-      {
-        separator: true
-      },
-      {
-        label: 'Administración',
-        items: [
-          {
-            label: 'Panel',
-            icon: 'pi pi-objects-column',
-            command: () => {
-              alert('Panel clicked!');
-              this.router.navigate(['/noticias']);
-          }
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-search',
-          }
-        ]
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Settings',
-            icon: 'pi pi-cog',
-          },
-          {
-            label: 'Messages',
-            icon: 'pi pi-inbox',
-            badge: '2'
-          },
-          {
-            label: 'Logout',
-            icon: 'pi pi-sign-out',
-          }
-        ]
-      },
-      {
-        separator: true
-      }
-    ];
+  constructor(private router: Router,private authService:AuthService, private loadingServices:LoadingServices) {
+      
+  }
+ngOnInit(): void {
+   //this.translateService.setTranslation('es');
+  this.loadingServices.showLoading$.subscribe({
+    next:data=>{
+      this.visible=data;
+    }
+  })
+}
+  changeLoginState(e:boolean){
+    this.isAuthenticated=e;
+  }
+  passDataMenu(e:MenuItem[]){
+    console.log("desde passdatamneu",e)
+    this.dataMenu = e;
   }
 }

@@ -1,0 +1,421 @@
+.empleado-roles-container {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+::ng-deep .p-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.card-header {
+  background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+  padding: 2rem;
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+.header-subtitle {
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.p-card .p-card-body {
+  padding: 2rem;
+}
+
+
+
+.search-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+//busqueda
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+.button-section {
+  display: flex;
+  gap: 1rem;
+  
+  justify-content: flex-end;
+  padding-top: 1.7rem;
+}
+.empty-state,
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #999;
+}
+
+.empty-icon,
+.loading-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.empty-state p,
+.loading-state p {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.empty-state small {
+  color: #bbb;
+  font-size: 0.9rem;
+}
+.numero-nomina {
+  font-weight: 600;
+  color: #00b398;
+  font-family: monospace;
+}
+
+.nombre-empleado {
+  font-weight: 600;
+  color: #333;
+}
+
+.empresa-texto,
+.puesto-texto,
+.jefe-texto {
+  color: #666;
+}
+
+
+.search-button {
+  background: #00b398;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.search-button:hover {
+  background: #008f7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4);
+}
+
+
+
+.separator {
+  height: 2px;
+  background: linear-gradient(to right, transparent, #00b398, transparent);
+  margin: 10px 0;
+}
+
+.results-section {
+  margin-top: 1rem;
+}
+
+.results-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #00b398;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+//tabla
+.results-count {
+  background: #00b398;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: #00b398;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+  border: none;
+}
+.action-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+  transition: all 0.2s;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background: #f0fdf9;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem;
+  border-color: #f0f0f0;
+}
+
+// fin tabla
+.results-title i {
+  font-size: 1.4rem;
+}
+
+.picklist-section {
+  margin-top: 1rem;
+}
+
+.picklist-title {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+::ng-deep .p-picklist {
+  display: flex;
+  gap: 1rem;
+}
+
+::ng-deep .p-picklist-list-wrapper {
+  flex: 1;
+}
+.p-picklist-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+
+  background: #00b398;
+  color: white;
+  padding: 0.75rem 1rem;
+  
+  font-weight: 600;
+}
+
+.izquierda {
+  text-align: left;
+}
+
+.derecha {
+  text-align: right;
+}
+
+
+::ng-deep .p-picklist-filter-container {
+  padding: 0.75rem;
+  background: #f8f9fa;
+}
+
+::ng-deep .p-picklist-filter-container .p-picklist-filter {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+::ng-deep .p-picklist-list {
+  border: 2px solid #e0e0e0;
+  border-radius: 0 0 8px 8px;
+  background: white;
+}
+
+::ng-deep .p-picklist-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-picklist-item:hover:not(.p-highlight) {
+  background: #f0fdf9;
+}
+
+::ng-deep .p-picklist-item.p-highlight {
+  background: #00b398;
+  color: white;
+}
+
+::ng-deep .p-picklist.p-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.rol-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rol-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rol-name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.rol-description {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+::ng-deep .p-picklist-item.p-highlight .rol-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+::ng-deep .p-picklist-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+
+::ng-deep .p-picklist-buttons .p-button {
+  background: #00b398;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+::ng-deep .p-picklist-buttons .p-button:hover:not(:disabled) {
+  background: #008f7a;
+  transform: scale(1.1);
+}
+
+::ng-deep .p-picklist-buttons .p-button:disabled {
+  opacity: 0.4;
+}
+
+.save-section {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+::ng-deep .save-button.p-button-success {
+  background: #00b398;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+::ng-deep .save-button.p-button-success:enabled:hover {
+  background: #008f7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4);
+}
+
+::ng-deep .save-button.p-button-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Toast customization */
+::ng-deep .p-toast-message-success .p-toast-message-icon,
+::ng-deep .p-toast-message-success .p-toast-icon-close {
+  color: #00b398;
+}
+
+::ng-deep .p-toast-message-success {
+  border-left: 4px solid #00b398;
+}
+ /* Responsive */
+ @media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .empleado-roles-container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+
+  ::ng-deep .p-button {
+    width: 100%;
+  }
+
+
+
+
+  
+  ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  ::ng-deep .p-card .p-card-body {
+    padding: 1rem;
+  }
+
+  .results-title {
+    font-size: 1.1rem;
+  }
+}

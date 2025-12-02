@@ -1,0 +1,126 @@
+<div class="container-general">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Configuración de Vacaciones</h2>
+          <p class="header-subtitle">Configura comportamiento del modulo de vacaciones.</p>
+        </div>
+
+      </div>
+    </ng-template>
+    <p-dialog header="Edit Profile" [modal]="true" [(visible)]="showDialog" [style]="{ width: '25rem' }">
+      <span class="p-text-secondary block mb-8">Update your information.</span>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="username" class="font-semibold w-24">Username</label>
+        <input pInputText id="username" class="flex-auto" autocomplete="off" />
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Email</label>
+        <input pInputText id="email" class="flex-auto" autocomplete="off" />
+      </div>
+      <div class="flex justify-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="showDialog = false" />
+        <p-button label="Save" (click)="showDialog = false" />
+      </div>
+    </p-dialog>
+    <!-- Tabla de resultados -->
+    <div class="results-section">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Configuración
+
+      </h3>
+
+      <p-table #dt [value]="configuraciones" [loading]="loading" [paginator]="true" [rows]="10"
+        dataKey="idConfiguracion" editMode="row" [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
+        [tableStyle]="{'min-width': 'fit-content'}"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} configuraciones" [scrollable]="true"
+        styleClass="p-datatable-gridlines" [responsive]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idConfiguracion" style="min-width: 70px">
+              Id <p-sortIcon field="idConfiguracion"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre" >
+              Nombre <p-sortIcon field="nombre"></p-sortIcon>
+            </th>
+            <th pSortableColumn="valor" >
+              Valor <p-sortIcon field="valor"></p-sortIcon>
+            </th>
+            <th style="min-width: 150px">
+              Acciones
+            </th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-config let-editing="editing" let-ri="rowIndex">
+          <tr [pEditableRow]="config">
+            <td>
+              <span class="numero-nomina">
+                {{ config.idConfiguracion }}
+              </span>
+            </td>
+
+            <td> <span class="nombre-empleado"> {{ config.nombre }} </span></td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input pInputText type="text" name="{{config.idConfiguracion}}" [(ngModel)]="config.valor"  class="p-inputtextEdicion"/>
+                </ng-template>
+                <ng-template #output>
+                  <span class="default-texto"> {{ config.valor }}</span>
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <div class="flex items-center justify-center gap-2">
+                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" [pTooltip]="'Editar'" 
+                  (click)="onRowEditInit(config)" text rounded severity="info"></button>
+                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                  (click)="onRowEditSave(config,ri)" text rounded severity="success" [pTooltip]="'Aceptar'" ></button>
+                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                  (click)="onRowEditCancel(config, ri)" text rounded severity="danger" [pTooltip]="'Cancelar'" 
+                  styleClass="p-button-rounded p-button-text  p-button-danger p-button-danger delete-btn"></button>
+               
+              </div>
+            </td>
+          
+
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron configuraciones</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="6">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando configuraciones...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </div>
+
+
+
+
+
+  </p-card>
+</div>
