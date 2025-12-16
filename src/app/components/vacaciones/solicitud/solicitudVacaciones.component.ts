@@ -64,15 +64,13 @@ export class SolicitudVacacionesEmp implements OnInit {
         this.vacacionesServices.getConfiguracion().subscribe({
             next: data => {
                 let _minDiasAnti = data.find(x => x.idConfiguracion == 5)?.valor;
-                let _vacAcomuladas = data.find(x => x.idConfiguracion == 3)?.valor;
+                //  let _vacAcomuladas = data.find(x => x.idConfiguracion == 3)?.valor;
                 let _minDias = data.find(x => x.idConfiguracion == 1)?.valor;
 
 
                 if (_minDias != null)
-                    this.minDiasSol = _minDias;
+                    this.minDiasSol = parseInt(_minDias);
 
-                if (_vacAcomuladas != null)
-                    this.vacAcomuladas = parseInt(_vacAcomuladas.toString()) == 1;
 
                 if (_minDiasAnti != null)
                     this.minDate.setDate(this.minDate.getDate() + parseInt(_minDiasAnti.toString()));
@@ -157,7 +155,7 @@ export class SolicitudVacacionesEmp implements OnInit {
 
         this.showDialog = true;
         this.diasPedidos = diasDiff
- 
+
     }
     envioSolicitud() {
         this.showDialog = false;
@@ -171,6 +169,7 @@ export class SolicitudVacacionesEmp implements OnInit {
             idUsuarioCreacion: this.idEmpleado,
             correo: this.correoEmpleado
         }
+        this.loading = true;
         this.vacacionesServices.postSolicitudVacaciones(this.solicitudRequest).subscribe({
             next: data => {
                 this.messageService.add({
@@ -192,6 +191,8 @@ export class SolicitudVacacionesEmp implements OnInit {
                     detail: error
 
                 });
+            }, complete: () => {
+                this.loading = false;
             }
         })
     }
@@ -202,7 +203,8 @@ export class SolicitudVacacionesEmp implements OnInit {
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Aceptar',
             rejectLabel: 'Cancelar',
-            acceptButtonStyleClass: 'p-button-danger',
+            rejectButtonStyleClass: 'p-button-danger',
+            //  acceptButtonStyleClass: 'p-button-success',
             accept: () => {
                 // Aquí harías la llamada al servicio para eliminar
                 this.cancelarSolicitud(solicitud.idSolicitud);
@@ -215,7 +217,7 @@ export class SolicitudVacacionesEmp implements OnInit {
         let dataSend = {
             idSolicitud: idSolicitud,
             idEstatus: 4,
-            motivoRechazo: 'Cancelacion por parte del empleado',
+            motivoRechazo: 'Cancelacion por parte del colaborador',
             idUsuarioModificacion: this.idEmpleado
         }
         this.vacacionesServices.putActualizarSolicitud(dataSend).subscribe({
@@ -312,6 +314,7 @@ export class SolicitudVacacionesEmp implements OnInit {
         return `${dia}-${mes}-${año}`;
     }
     getSolicitudesPendientes() {
+        this.loading = true;
         this.vacacionesServices.getSolicitudesPendientesParaEmpleadoLogueado(this.idEmpleado).subscribe({
             next: data => {
                 this.solicitudesVacaciones = data;
@@ -323,21 +326,23 @@ export class SolicitudVacacionesEmp implements OnInit {
                     detail: error
 
                 });
+            }, complete: () => {
+                this.loading = false;
             }
         })
     }
     getSaldosDias() {
-        this.saldoDias =0;
+        this.saldoDias = 0;
         this.vacacionesServices.getSaldos(this.idEmpleado).subscribe({
             next: saldos => {
                 this.saldosAcomulados = saldos;
                 if (saldos.length > 0) {
-                    this.saldoDias =0;
+                    this.saldoDias = 0;
                     saldos.forEach(element => {
                         this.saldoDias += element.saldoDias
                     });
-                }else{
-                    this.saldoDias =0;
+                } else {
+                    this.saldoDias = 0;
                 }
 
             }, error: error => {
@@ -363,7 +368,7 @@ export class SolicitudVacacionesEmp implements OnInit {
                 return 'info';
         }
     }
-    verBotonCancelar(solicitud:SolicitudVacaciones):boolean{
-    return new Date(solicitud.fechaInicio)>=new Date()
-  }
+    verBotonCancelar(solicitud: SolicitudVacaciones): boolean {
+        return new Date(solicitud.fechaInicio) >= new Date()
+    }
 }

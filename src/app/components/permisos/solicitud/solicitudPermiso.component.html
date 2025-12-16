@@ -1,0 +1,129 @@
+<div class="container-general">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+  <p-card>
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <div class="header-content">
+          <h2 class="header-title">Mis Permiso</h2>
+          <p class="header-subtitle">Solicita tus permisos.</p>
+        </div>
+
+      </div>
+    </ng-template>
+
+
+
+    <div class="permisos-container">
+
+      <div class="search-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="field-label">Fecha Permiso</label>
+            <p-datepicker inputId="fechaInicial" [(ngModel)]="fechaPermiso" name="fechaInicial" [showIcon]="true"
+              [maxDate]="maxDate" [minDate]="minDate" dateFormat="dd-M-yy" class="w-full"
+              [disabledDates]="disabledDates" [iconDisplay]="'input'"></p-datepicker>
+          </div>
+          <div class="form-field">
+            <label class="field-label">Tipo de Permiso</label>
+            <p-dropdown [options]="tipoPermiso" optionLabel="descripcion" optionValue="idTipoPermiso"
+              [(ngModel)]="selectedTipoPermiso" name="tipoPermiso"></p-dropdown>
+          </div>
+
+          <div class="form-field" style="align-self: end;">
+            <p-button label="Solicitar Permiso" icon="pi pi-check" [loading]="loading" styleClass="p-button-primary"
+              (onClick)="handleSolcitud()" class="w-full"></p-button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Separador -->
+    <div class="separator"></div>
+
+    <!-- Tabla de resultados -->
+    <div class="results-section" [ngStyle]="{'max-width': 'fit-content'}">
+      <h3 class="results-title">
+        <i class="pi pi-list"></i>
+        Tus Solicitudes
+      </h3>
+
+      <p-table #dt [value]="solicitudesPermiso" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '70rem' }"
+        styleClass="p-datatable-gridlines"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
+        [responsive]="true">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="idSolicitud" style="width: 80px">
+              ID <p-sortIcon field="idSolicitud"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tipoPermiso" style="min-width: 200px">
+              Tipo Permiso <p-sortIcon field="tipoPermiso"></p-sortIcon>
+            </th>
+            <th pSortableColumn="fechaPermiso" style="min-width: 300px">
+              Fecha Permiso <p-sortIcon field="fechaPermiso"></p-sortIcon>
+            </th>
+            <th pSortableColumn="estatus" style="width: 120px">
+              Estado <p-sortIcon field="estatus"></p-sortIcon>
+            </th>
+            <th style="width: 140px">Acciones</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-solicitud>
+          <tr>
+            <td>
+              <span class="numero-nomina">
+                {{ solicitud.idSolicitud }}
+              </span>
+            </td>
+
+            <td> <span class="nombre-empleado"> {{ solicitud.tipoPermiso }} </span></td>
+            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaPermiso )}}</span></td>
+            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td>
+              <div class="action-buttons">
+
+                <p-button icon="pi pi-times" (onClick)="preguntaCancelarSolicitud(solicitud)"
+                  *ngIf="verBotonCancelar(solicitud)"
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                  [pTooltip]="'Cancelar Solicitud'" tooltipPosition="top"></p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="empty-message">
+              <div class="empty-state">
+                <i class="pi pi-search empty-icon"></i>
+                <p>No se encontraron Solitudes pendientes.</p>
+
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="5">
+              <div class="loading-state">
+                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                <p>Buscando Solicitudes...</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+    </div>
+
+
+
+
+
+  </p-card>
+</div>

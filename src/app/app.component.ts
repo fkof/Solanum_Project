@@ -21,33 +21,33 @@ import { LoadingServices } from './services/loading.services';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule,ProgressSpinnerModule, RouterOutlet, DialogModule,SidebarComponent, ButtonModule, ToolbarModule, AvatarModule, MenuModule, BadgeModule, RippleModule, HeaderComponent],
+  imports: [CommonModule, ProgressSpinnerModule, RouterOutlet, DialogModule, SidebarComponent, ButtonModule, ToolbarModule, AvatarModule, MenuModule, BadgeModule, RippleModule, HeaderComponent],
   templateUrl: './app.component.html',
- // providers: [AuthService],
+  // providers: [AuthService],
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'SolanumSystem';
-  dataMenu:MenuItem[]=[];
-  isAuthenticated:boolean=false;
-  visible:boolean=false;
+  dataMenu: MenuItem[] = [];
+  isAuthenticated: boolean = false;
+  visible: boolean = false;
 
-  constructor(private router: Router,private authService:AuthService, private loadingServices:LoadingServices) {
-      
+  constructor(private router: Router, private authService: AuthService, private loadingServices: LoadingServices) {
+
   }
-ngOnInit(): void {
-   //this.translateService.setTranslation('es');
-  this.loadingServices.showLoading$.subscribe({
-    next:data=>{
-      this.visible=data;
-    }
-  })
-}
-  changeLoginState(e:boolean){
-    this.isAuthenticated=e;
+  ngOnInit(): void {
+    //this.translateService.setTranslation('es');
+    this.loadingServices.showLoading$.subscribe({
+      next: data => {
+        this.visible = data;
+      }
+    })
   }
-  passDataMenu(e:MenuItem[]){
-    console.log("desde passdatamneu",e)
+  changeLoginState(e: boolean) {
+    this.isAuthenticated = e;
+  }
+  passDataMenu(e: MenuItem[]) {
+    console.log("desde passdatamneu", e)
     this.dataMenu = e;
   }
 }

@@ -25,6 +25,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { LoadingServices } from '../../../services/loading.services';
 import { DatePickerModule } from 'primeng/datepicker';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { ProgressSpinner } from "primeng/progressspinner";
+import { Dialog } from "primeng/dialog";
 
 @Component({
   selector: 'app-registro-empleado',
@@ -44,7 +46,9 @@ import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocompl
     InputGroupAddonModule,
     SelectModule,
     MultiSelectModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    ProgressSpinner,
+    Dialog
   ],
   providers: [MessageService],
   templateUrl: './registro-empleado.component.html',
@@ -79,12 +83,16 @@ export class RegistroEmpleadoComponent implements OnInit {
   filteredJefeInmediato: Empleado[] = [];
   jefeImediatos: any[] = [];
   jefeInmediatoSelect: any | null = null;
+  loading: boolean = false;
+  usuarioLogueado: number = 0;
   constructor(private messageService: MessageService,
     private route: ActivatedRoute,
     private CatalogosService: CatalogosService, private router: Router,
     private EmpleadosService: EmpleadosService, private loadingService: LoadingServices) {
     this.cargarCatalogos();
     this.loadingService.setLogin(false);
+    let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+    this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
   }
 
 
@@ -129,11 +137,11 @@ export class RegistroEmpleadoComponent implements OnInit {
 
 
 
-            this.jefeInmediato = data.numeroNominaJefe;
+            this.jefeInmediato = data.jefeInmediato;
             this.validarJefe()
             this.datosComunes = {
               fechaModificacion: new DatePipe('en-US').transform(new Date(), 'yyyy-MM-dd') ?? '', fechaCreacion: data.fechaCreacion,
-              idUsuarioCreacion: data.idUsuarioCreacion, idUsuarioModificacion: 999
+              idUsuarioCreacion: data.idUsuarioCreacion, idUsuarioModificacion: this.usuarioLogueado
             }
             this.loadingService.setLogin(false);
           },
@@ -276,7 +284,7 @@ export class RegistroEmpleadoComponent implements OnInit {
     //this.filteredJefeInmediato = filtered;
   }
   validarJefe() {
-    if (!this.jefeInmediato || this.jefeInmediato.trim() === '') {
+    if (!this.jefeInmediato) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Advertencia',
@@ -390,15 +398,13 @@ export class RegistroEmpleadoComponent implements OnInit {
     this.gerenteDepartamento = '';
     this.jefeInmediatoNomina = '';
     this.empezoCapturaNomina = false;
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Formulario limpiado',
-      detail: 'Todos los campos han sido restablecidos'
-    });
+    this.jefeInmediatoSelect = null;
+    this.loading = false;
+    this.loadingService.setLogin(false);
   }
 
   guardarEmpleado() {
-
+    console.log(this.jefeInmediatoSelect)
     // Validaciones
     if (!this.nombres || !this.apellidoPaterno || !this.fechaNacimiento ||
       !this.correoPersonal || !this.fechaIngreso ||
@@ -412,7 +418,7 @@ export class RegistroEmpleadoComponent implements OnInit {
       return;
     }
 
-    if (!this.jefeValidado) {
+    if (!this.jefeInmediatoSelect?.idEmpleado) {
       this.messageService.add({
         severity: 'error',
         summary: 'Jefe no validado',
@@ -450,12 +456,13 @@ export class RegistroEmpleadoComponent implements OnInit {
       departamento: this.departamentoSeleccionado.nombre,
       idPuesto: this.puestoSeleccionado.idPuesto,
       puesto: this.puestoSeleccionado.nombre,
-      numeroNominaJefe: this.jefeInmediatoSelect.numeroNomina,
-      idUsuarioCreacion: 9999,
+      idJefeInmediato: this.jefeInmediatoSelect.idEmpleado,
+      idUsuarioCreacion: this.usuarioLogueado,
       extensionFotografia: this.extensionFotografia,
+      jefeInmediato: this.jefeInmediatoSelect.nombreCompleto,
       fotografiaConversion: this.fotografia.split(',')[1],
     }
-
+    this.loadingService.setLogin(true);
     console.log('Guardando empleado:', dataSend);
     if (dataSend.idEmpleado == 0) {
       this.EmpleadosService.crearEmpleado(dataSend).subscribe({
@@ -473,6 +480,7 @@ export class RegistroEmpleadoComponent implements OnInit {
     } else {
       this.EmpleadosService.actualizarEmpleado(dataSend).subscribe({
         next: () => {
+          this.loadingService.setLogin(false);
           this.messageService.add({
             severity: 'success',
             summary: 'Empleado Actualizado',

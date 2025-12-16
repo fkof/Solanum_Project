@@ -130,8 +130,8 @@
               <span class="info-value">{{ perfil.correoPersonal }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">Lugar de Recidencia</span>
-              <p-select [options]="lugarRecidencia" inputId="lugarResidencia" [filter]="true"
+              <span class="info-label">Lugar de Residencia</span>
+              <p-select [options]="lugarResidencia" inputId="lugarResidencia" [filter]="true"
                 [ngClass]="{'invalido':!informacionAdicional.idLugarResidencia}" optionLabel="lugarResidencia"
                 [ngModelOptions]="{standalone: true}" optionValue="idLugarResidencia"
                 [(ngModel)]="informacionAdicional.idLugarResidencia" placeholder="Busca el lugar de residencia"

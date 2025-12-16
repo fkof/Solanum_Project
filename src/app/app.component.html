@@ -11,3 +11,8 @@ class="dialogo"
   <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
   class="spinDialgo" />
 </p-dialog> -->
+<p-dialog [modal]="true" [(visible)]="visible" [style]="{ width: '95px' }" [closable]="false" [draggable]="false"
+  [showHeader]="false">
+  <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px',marginTop:'20px' }" />
+</p-dialog>

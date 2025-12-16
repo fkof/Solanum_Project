@@ -55,8 +55,8 @@ export class MiPerfilComponent implements OnInit {
   fotoBD: String = "";
   jefeInmediato: string = "";
   gerenteDepartamento: string = ""
-  lugarRecidenciaSelect: LugarResidencia = {} as LugarResidencia;
-  lugarRecidencia: LugarResidencia[] = []
+  lugarResidenciaSelect: LugarResidencia = {} as LugarResidencia;
+  lugarResidencia: LugarResidencia[] = []
   generoSelect: dtoSelect | undefined;
   genero: dtoSelect[] = []
   gradoEstudiosSelect: dtoSelect | undefined;
@@ -115,7 +115,7 @@ export class MiPerfilComponent implements OnInit {
     })
     this.catalogosService.obtenerLugarResidencia().subscribe({
       next: (data) => {
-        this.lugarRecidencia = data;
+        this.lugarResidencia = data;
       }, error: (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
       }
@@ -239,7 +239,7 @@ export class MiPerfilComponent implements OnInit {
           this.perfil.fechaIngreso = this.formatearFecha(new Date(this.perfil.fechaIngreso))
           this.perfil.fechaNacimiento = this.formatearFecha(new Date(this.perfil.fechaNacimiento))
           this.fotoBD = `data:image/${data.extensionFotografia};base64` + ',' + data.fotografiaConversion
-          this.getDataJerarquica(data.numeroNominaJefe, data.idDepartamento);
+          this.getDataJerarquica(data.idJefeInmediato, data.idDepartamento);
 
         }
       })

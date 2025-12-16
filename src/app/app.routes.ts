@@ -13,6 +13,9 @@ import { AuthGuard } from './interceptors/auth.guard';
 import { ConfiguracionVacaciones } from './components/vacaciones/configuracion/configuracionVacaciones.component';
 import { HistorialSolicitudes } from './components/vacaciones/historialSolicitudes/historialSolicitudes.component';
 import { VacacionesAAprobar } from './components/vacaciones/vacacionesAAprobar/vacacionesAAprobar.component';
+import { SolicitudPermisoComponent } from './components/permisos/solicitud/solicitudPermiso.component';
+import { HistorialPermisosSolicitudes } from './components/permisos/historial/historialPermisosSolicitudes.component';
+import { PermisosAAprobar } from './components/permisos/permisosAAprobar/permisosAAprobar.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -27,5 +30,9 @@ export const routes: Routes = [
   { path: 'solVacaciones', component: SolicitudVacacionesEmp, canActivate: [AuthGuard] },
   { path: 'solVacacionesEmpleado', component: HistorialSolicitudes, canActivate: [AuthGuard] },
   { path: 'confVacaciones', component: ConfiguracionVacaciones, canActivate: [AuthGuard] },
-  { path: 'vacacionesAAprobar', component: VacacionesAAprobar, canActivate: [AuthGuard] }
+  { path: 'vacacionesAAprobar', component: VacacionesAAprobar, canActivate: [AuthGuard] },
+  { path: 'solPermisos', component: SolicitudPermisoComponent, canActivate: [AuthGuard] },
+  { path: 'solPermisosEmpleados', component: HistorialPermisosSolicitudes, canActivate: [AuthGuard] },
+  { path: 'permisosAAprobar', component: PermisosAAprobar, canActivate: [AuthGuard] }
+
 ];

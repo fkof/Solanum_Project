@@ -55,10 +55,13 @@ export class UsuariosComponent {
   rolesAsignados: Rol[] = [];
   loading: boolean = false
   targetHeader: string = "testing"
-  idUsuarioEdicion:number = 0;
+  idUsuarioEdicion: number = 0;
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService,
     private rolService: RolService, private usuarioServices: UsuarioService) {
     //  this.inicializarRoles();
+
+    let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+    this.idUsuarioEdicion = dataPerfil.usuario.idEmpleado;
   }
 
   inicializarRoles(usuario: Usuario) {
@@ -83,7 +86,7 @@ export class UsuariosComponent {
       this.messageService.add({
         severity: 'warn',
         summary: 'Advertencia',
-        detail: 'Por favor ingresa un número de empleado o nombre para iniciar la busqueda'
+        detail: 'Por favor ingresa un número de colaborador o nombre para iniciar la busqueda'
       });
       return;
     }
@@ -108,20 +111,13 @@ export class UsuariosComponent {
     this.numeroNominaBusqueda = '';
     this.nombreBusqueda = '';
     this.rolesAsignados = [];
-    this.idUsuarioEdicion= 0;
+    this.idUsuarioEdicion = 0;
     //this.inicializarRoles();
 
   }
 
   guardarRoles() {
-    if (!this.nombreBusqueda) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Primero debes buscar un empleado'
-      });
-      return;
-    }
+
 
     if (this.rolesAsignados.length === 0) {
       this.messageService.add({
@@ -137,19 +133,19 @@ export class UsuariosComponent {
     let dataSend = {
       "idUsuario": this.idUsuarioEdicion,
       "idRoles": rolesNombres,
-      "idUsuarioCreacion": 999
+      "idUsuarioCreacion": this.idUsuarioEdicion
     }
     this.usuarioServices.asignarRolesUsuario(dataSend).subscribe({
-      next:data=>{
+      next: data => {
         this.messageService.add({
           severity: 'success',
           summary: 'Roles guardados',
           detail: data.mensaje
         });
-        this.visible=false;
-        this.idUsuarioEdicion=0;
+        this.visible = false;
+        this.idUsuarioEdicion = 0;
         this.buscarUsuario();
-      },error:error=>{
+      }, error: error => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -157,7 +153,7 @@ export class UsuariosComponent {
         });
       }
     })
-  
+
 
 
   }
@@ -177,37 +173,38 @@ export class UsuariosComponent {
   }
   editarEmpleado(usuario: Usuario) {
     this.visible = true;
-    this.idUsuarioEdicion= usuario.idUsuario;
+    this.idUsuarioEdicion = usuario.idUsuario;
     this.inicializarRoles(usuario);
   }
-  resetPassword(usuario:Usuario){
-    let dataSend = {correo:usuario.correo,nuevaPassword:'0000'}
+  resetPassword(usuario: Usuario) {
+    let dataSend = { correo: usuario.correo, nuevaPassword: '0000' }
     this.usuarioServices.reestablecerContrasena(dataSend).subscribe({
-      next:data=>{
+      next: data => {
         this.messageService.add({
           severity: 'success',
           summary: 'Exito',
-          detail: data.mensaje??''
+          detail: data.mensaje ?? ''
         });
-        
+
       }
-      
+
     })
   }
   cambioEstado(usuario: Usuario) {
     this.confirmationService.confirm({
-      message: `¿Estás seguro de ${usuario.activo?'desactivar':"activar"} el usuario: "${usuario.nombreCompleto}"?`,
+      message: `¿Estás seguro de ${usuario.activo ? 'desactivar' : "activar"} el usuario: "${usuario.nombreCompleto}"?`,
       header: 'Confirmar Edicion de estado',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Aceptar',
       rejectLabel: 'Cancelar',
-      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-danger',
+      //acceptButtonStyleClass: 'p-button-success',
       accept: () => {
 
         let dataSend = {
           "idUsuario": usuario.idUsuario,
           "activo": !usuario.activo,
-          "idUsuarioModificacion": 9999
+          "idUsuarioModificacion": this.idUsuarioEdicion
         }
 
         this.usuarioServices.cambiarEstadoUsuario(dataSend).subscribe({

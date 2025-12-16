@@ -9,9 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { TableModule } from 'primeng/table';
-import { SolicitudVacaciones } from '../../../models/solicitudesVacaciones';
 import { SideBarService } from '../../../services/sideBar.services';
-import { VacacionesServices } from '../../../services/vacaciones.services';
 import { EstatusVacaciones } from '../../../models/estatusVacaciones';
 import { SelectModule } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,21 +17,24 @@ import { RolService } from '../../../services/rol.services';
 import { Rol } from '../../../models/rol';
 import { TooltipModule } from 'primeng/tooltip';
 import { Tag, TagModule } from 'primeng/tag';
+import { SolicitudPermiso } from '../../../models/SolicitudPermiso';
+import { PermisoServices } from '../../../services/permisos.services';
+import { VacacionesServices } from '../../../services/vacaciones.services';
 @Component({
-    selector: 'vacacionesAAprobar',
-    templateUrl: 'vacacionesAAprobar.component.html',
-    styleUrls: ['./vacacionesAAprobar.component.scss'],
+    selector: 'permisosAAprobar',
+    templateUrl: 'permisosAAprobar.component.html',
+    styleUrls: ['./permisosAAprobar.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, InputTextModule, TooltipModule, TagModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule, SelectModule],
     providers: [MessageService, ConfirmationService]
 })
 
-export class VacacionesAAprobar implements OnInit {
+export class PermisosAAprobar implements OnInit {
     loading: boolean = false;
     disabledDates: Date[] = [];
     fechaInicial: Date | null = null;
     fechaFinal: Date | null = null;
-    solicitudesVacaciones: SolicitudVacaciones[] = []
+    solicitudesPermisos: SolicitudPermiso[] = []
     isCollapsed: boolean = false
     listEstatus: EstatusVacaciones[] = [];
     estatusSeleccionado: number = 0
@@ -43,9 +44,11 @@ export class VacacionesAAprobar implements OnInit {
     rolesList: Rol[] = [];
     motivoRechazo: string = "";
     showDialog: boolean = false;
-    selectSolicitud: SolicitudVacaciones | null = null;
+    selectSolicitud: SolicitudPermiso | null = null;
     showMotivos: boolean = false;
-    constructor(private messageService: MessageService, public sidebarService: SideBarService, private vacacionesService: VacacionesServices, private rolService: RolService) {
+    constructor(private messageService: MessageService, public sidebarService: SideBarService, private permisosService: PermisoServices,
+        private vacacionesService: VacacionesServices,
+        private rolService: RolService) {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idAutorizandor = dataPerfil.usuario.idEmpleado;
@@ -79,9 +82,9 @@ export class VacacionesAAprobar implements OnInit {
             fechaInicio: this.fechaInicial?.toLocaleDateString('en-US'),
             fechaFin: this.fechaFinal?.toLocaleDateString('en-US')
         }
-        this.vacacionesService.getSolicitudesVacaciones(dataSend).subscribe({
+        this.permisosService.getSolicitudesPermiso(dataSend).subscribe({
             next: solicitudes => {
-                this.solicitudesVacaciones = solicitudes;
+                this.solicitudesPermisos = solicitudes;
                 this.loading = false;
             }
         })
@@ -110,7 +113,7 @@ export class VacacionesAAprobar implements OnInit {
         import('xlsx').then((xlsx) => {
             let EXCEL_EXTENSION = '.xlsx';
 
-            const worksheet = xlsx.utils.json_to_sheet(this.solicitudesVacaciones);
+            const worksheet = xlsx.utils.json_to_sheet(this.solicitudesPermisos);
             const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
             const excelBuffer = xlsx.write(workbook, {
                 bookType: 'xlsx',
@@ -146,7 +149,7 @@ export class VacacionesAAprobar implements OnInit {
         switch (estatus) {
             case 'Pendiente':
                 return 'warn';
-            case 'Autorizada':
+            case 'Aprobada':
                 return 'success';
             case 'Rechazada':
                 return 'danger';
@@ -154,7 +157,7 @@ export class VacacionesAAprobar implements OnInit {
                 return 'info';
         }
     }
-    selectSolicitudApprove(solicitud: SolicitudVacaciones) {
+    selectSolicitudApprove(solicitud: SolicitudPermiso) {
         this.selectSolicitud = solicitud;
         this.showDialog = true;
     }
@@ -165,12 +168,12 @@ export class VacacionesAAprobar implements OnInit {
             motivoRechazo: this.motivoRechazo,
             idUsuarioModificacion: this.idAutorizandor
         }
-        this.vacacionesService.putActualizarSolicitud(dataSend).subscribe({
+        this.permisosService.actualizarSolicitudPermiso(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Solicitud Rechazada',
-                    detail: 'La solicitud de vacaciones ha sido rechazada correctamente'
+                    detail: 'La solicitud del permiso ha sido rechazada correctamente'
 
                 })
                 this.showDialog = false;
@@ -196,12 +199,12 @@ export class VacacionesAAprobar implements OnInit {
             motivoRechazo: 'Aprobación por parte del autorizador',
             idUsuarioModificacion: this.idAutorizandor
         }
-        this.vacacionesService.putActualizarSolicitud(dataSend).subscribe({
+        this.permisosService.actualizarSolicitudPermiso(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Solicitud Aprobada',
-                    detail: 'La solicitud de vacaciones ha sido aprobada correctamente'
+                    detail: 'La solicitud del permiso ha sido aprobada correctamente'
 
                 })
                 this.showDialog = false;

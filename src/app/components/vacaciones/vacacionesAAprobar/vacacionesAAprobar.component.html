@@ -6,7 +6,7 @@
       <div class="card-header">
         <div class="header-content">
           <h2 class="header-title">Gestión de Vacaciones</h2>
-          <p class="header-subtitle">Consulta las vacaciones por empleado</p>
+          <p class="header-subtitle">Consulta las vacaciones por colaborador</p>
         </div>
 
       </div>
@@ -19,7 +19,7 @@
       <div class="search-form">
         <div class="form-grid">
           <div class="form-field">
-            <label class="field-label">Nombre Empleado</label>
+            <label class="field-label">Nombre Colaborador</label>
 
             <input pInputText id="nombre" [(ngModel)]="nombreBusqueda" name="nombre" class="w-full" />
 
@@ -28,13 +28,13 @@
           <div class="form-field">
             <label class="field-label">Fecha Inicial</label>
             <p-datepicker inputId="fechaInicial" [disabledDates]="disabledDates" [(ngModel)]="fechaInicial"
-              [disabledDays]="[6,0]" name="fechaInicial" [showIcon]="true" dateFormat="dd-M-yy" class="w-full"
+              name="fechaInicial" [showIcon]="true" dateFormat="dd-M-yy" class="w-full"
               [iconDisplay]="'input'"></p-datepicker>
           </div>
           <div class="form-field">
             <label class="field-label">Fecha Final</label>
             <p-datepicker inputId="fechaFinal" name="fechaFinal" [showIcon]="true" dateFormat="dd-M-yy"
-              [disabledDates]="disabledDates" [disabledDays]="[6,0]" [(ngModel)]="fechaFinal" class="w-full"
+              [disabledDates]="disabledDates" [(ngModel)]="fechaFinal" class="w-full"
               [iconDisplay]="'input'"></p-datepicker>
           </div>
           <div class="form-field">
@@ -85,8 +85,8 @@
             <th pSortableColumn="fechaInicio" style="min-width: 150px">
               Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaFinal" style="min-width: 150px">
-              Fecha Final <p-sortIcon field="fechaFinal"></p-sortIcon>
+            <th pSortableColumn="fechaFin" style="min-width: 150px">
+              Fecha Final <p-sortIcon field="fechaFin"></p-sortIcon>
             </th>
             <th pSortableColumn="fechaRegreso" style="min-width: 160px">
               Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>

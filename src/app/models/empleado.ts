@@ -17,19 +17,20 @@ export interface Empleado extends commons {
     departamento: string,
     idPuesto: number,
     puesto: string,
-    numeroNominaJefe: string,
+    idJefeInmediato: string,
     extensionFotografia: string,
-    idEmpleado:number,
-    fotografiaConversion:string
+    idEmpleado: number,
+    fotografiaConversion: string,
+    jefeInmediato: string
 
 }
 
-export interface EmpleadoBusqueda{
-    idEmpleado:number
-    numeroNomina:string,
-    nombreCompleto:string,
-    empresa:string,
-    puesto:string,
-    estatus:boolean,
-    jefeInmediato?:string,
+export interface EmpleadoBusqueda {
+    idEmpleado: number
+    numeroNomina: string,
+    nombreCompleto: string,
+    empresa: string,
+    puesto: string,
+    estatus: boolean,
+    jefeInmediato?: string,
 }

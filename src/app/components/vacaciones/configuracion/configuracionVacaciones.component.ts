@@ -12,7 +12,7 @@ import { TableModule } from 'primeng/table';
 import { SolicitudVacaciones } from '../../../models/solicitudesVacaciones';
 import { SideBarService } from '../../../services/sideBar.services';
 import { VacacionesServices } from '../../../services/vacaciones.services';
-
+import { EditorModule } from 'primeng/editor';
 import { ConfiguracionVacaciones as Conf } from '../../../models/configuracionVacaciones';
 
 @Component({
@@ -20,7 +20,7 @@ import { ConfiguracionVacaciones as Conf } from '../../../models/configuracionVa
     templateUrl: 'configuracionVacaciones.component.html',
     styleUrls: ['./configuracionVacaciones.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule,
-        FormsModule, ButtonModule, TableModule, TooltipModule],
+        FormsModule, ButtonModule, TableModule, TooltipModule, EditorModule],
     providers: [MessageService, ConfirmationService]
 })
 
@@ -30,7 +30,7 @@ export class ConfiguracionVacaciones implements OnInit {
     disabledDates: Date[] = [];
     fechaInicial: Date | null = null;
     fechaFinal: Date | null = null;
-    solicitudesVacaciones:SolicitudVacaciones[]=[];
+    solicitudesVacaciones: SolicitudVacaciones[] = [];
     isCollapsed: boolean = false
     veAcomulables: boolean = false;
     //Borrar pa riba
@@ -69,7 +69,7 @@ export class ConfiguracionVacaciones implements OnInit {
 
     onRowEditSave(config: Conf, index: number) {
 
-        if (config.valor >= 0) {
+        if (config.valor.length >= 0) {
             let valoresnuevo = this.clonedConfig[config.idConfiguracion as number];
             valoresnuevo.valor = config.valor;
             let dataSend = {
@@ -79,7 +79,7 @@ export class ConfiguracionVacaciones implements OnInit {
             }
             this.vacacionesService.putConfiguracion(dataSend).subscribe({
                 next: data => {
-                    this.messageService.add({ severity: 'success', summary: 'Extio', detail: data.mensaje});
+                    this.messageService.add({ severity: 'success', summary: 'Extio', detail: data.mensaje });
                 }
             })
 

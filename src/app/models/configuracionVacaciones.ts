@@ -1,7 +1,7 @@
 export interface ConfiguracionVacaciones {
     idConfiguracion: number;
     nombre: string;
-    valor: number;
+    valor: string;
     descripcion: string;
     fechaCreacion: Date;
     idUsuarioCreacion: number;

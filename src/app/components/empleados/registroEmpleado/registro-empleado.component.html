@@ -1,5 +1,10 @@
 <div class="registro-empleado-container">
   <p-toast></p-toast>
+  <p-dialog [modal]="true" [(visible)]="loading" [style]="{ width: '95px' }" [closable]="false" [draggable]="false"
+    [showHeader]="false">
+    <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s"
+      [style]="{ width: '50px', height: '50px',marginTop:'20px' }" />
+  </p-dialog>
 
   <p-card header="Registro de Colaborador">
     <form class="form-container">
@@ -160,7 +165,7 @@
                 (completeMethod)="filterJefeInmediato($event)" optionLabel="name" /> -->
 
             <p-select [options]="jefeImediatos" inputId="jefeImediatos" [(ngModel)]="jefeInmediatoSelect"
-              [filter]="true" [ngClass]="{'invalido':!jefeInmediato}" optionLabel="nombreCompleto"
+              [filter]="true" [ngClass]="{'invalido':!jefeInmediatoSelect}" optionLabel="nombreCompleto"
               [ngModelOptions]="{standalone: true}" (onFilter)="filterJefeInmediato($event)"
               placeholder="Busca el jefe inmediato" class="w-full md:w-56" />
           </div>

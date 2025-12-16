@@ -38,7 +38,7 @@ import { TagModule } from 'primeng/tag';
     TooltipModule,
     TagModule
   ],
-  providers: [MessageService,ConfirmationService],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './busquedaEmpleados.component.html',
   styleUrls: ['./busquedaEmpleados.component.scss']
 })
@@ -53,68 +53,73 @@ export class BusquedaEmpleadosComponent implements OnInit {
   empleados: EmpleadoBusqueda[] = [];
   loading: boolean = false;
   busquedaRealizada: boolean = false;
-  totalRegistros:number=0;
+  totalRegistros: number = 0;
+  usuarioLogueado: number = 0;
   constructor(
     private messageService: MessageService,
-    private catalogoService:CatalogosService,
-    private empleadoService:EmpleadosService,
+    private catalogoService: CatalogosService,
+    private empleadoService: EmpleadosService,
     private router: Router,
     private confirmationService: ConfirmationService
 
-  ) {}
+  ) {
+    let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+    this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
+
+  }
 
   ngOnInit() {
     this.cargarEmpresas();
   }
 
   cargarEmpresas() {
-   this.catalogoService.obtenerEmpresas().subscribe({
-    next:(data)=>{
-      this.empresas=data;
-    },error:(data)=>{
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: data
-      });
-    }
-   })
+    this.catalogoService.obtenerEmpresas().subscribe({
+      next: (data) => {
+        this.empresas = data;
+      }, error: (data) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: data
+        });
+      }
+    })
   }
 
   buscarEmpleados() {
     // Validación: al menos un criterio de búsqueda
-   
+
     this.loading = true;
     this.busquedaRealizada = true;
 
-   
-   // Ejemplo con servicio real:
-     const filtros = {
-       nombre: !this.nombreBusqueda?'':this.nombreBusqueda,
-       numeroNomina: !this.numeroNominaBusqueda?'':this.numeroNominaBusqueda,
-       empresaId: !this.empresaSeleccionada?.idEmpresa?'':this.empresaSeleccionada?.idEmpresa
-     };
-    
-     this.empleadoService.buscarEmpleados(filtros).subscribe({
-       next: (data) => {
+
+    // Ejemplo con servicio real:
+    const filtros = {
+      nombre: !this.nombreBusqueda ? '' : this.nombreBusqueda,
+      numeroNomina: !this.numeroNominaBusqueda ? '' : this.numeroNominaBusqueda,
+      empresaId: !this.empresaSeleccionada?.idEmpresa ? '' : this.empresaSeleccionada?.idEmpresa
+    };
+
+    this.empleadoService.buscarEmpleados(filtros).subscribe({
+      next: (data) => {
         console.log(data)
-         this.empleados = data;
-         this.totalRegistros=this.empleados.length;
-         this.loading = false;
-         // Mostrar mensaje de éxito
-       },
-       error: (error) => {
-         this.messageService.add({
-           severity: 'error',
-           summary: 'Error',
-           detail: 'No se pudo realizar la búsqueda'
-         });
-         this.loading = false;
-       }
-     });
+        this.empleados = data;
+        this.totalRegistros = this.empleados.length;
+        this.loading = false;
+        // Mostrar mensaje de éxito
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo realizar la búsqueda'
+        });
+        this.loading = false;
+      }
+    });
   }
-  nuevoEmpleado(){
-    
+  nuevoEmpleado() {
+
     this.router.navigate(['/registro-empleado']);
   }
 
@@ -141,20 +146,20 @@ export class BusquedaEmpleadosComponent implements OnInit {
     });
 
     // Navegar a la página de edición
-     this.router.navigate(['/empleados/editar', empleado.idEmpleado]);
+    this.router.navigate(['/empleados/editar', empleado.idEmpleado]);
   }
-  borrarEmpleado(empleado: EmpleadoBusqueda){
+  borrarEmpleado(empleado: EmpleadoBusqueda) {
     this.confirmationService.confirm({
-      message: `¿Estás seguro de ${empleado.estatus?'desactivar':"activar"} el empleado: "${empleado.nombreCompleto}"?`,
+      message: `¿Estás seguro de ${empleado.estatus ? 'desactivar' : "activar"} el empleado: "${empleado.nombreCompleto}"?`,
       header: 'Confirmar edición de empleado',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Aceptar',
       rejectLabel: 'Cancelar',
       rejectButtonStyleClass: 'p-button-danger',
-      //acceptButtonStyleClass: 'p-button-danger',
+
       accept: () => {
         // Aquí harías la llamada al servicio para eliminar
-        this.empleadoService.eliminarEmpleado(empleado.idEmpleado,9999,!empleado.estatus).subscribe({
+        this.empleadoService.eliminarEmpleado(empleado.idEmpleado, this.usuarioLogueado, !empleado.estatus).subscribe({
           next: (data) => {
 
             this.messageService.add({
@@ -163,8 +168,8 @@ export class BusquedaEmpleadosComponent implements OnInit {
               detail: `El rol "${empleado.nombreCompleto}" ha sido actualizado`
             });
 
-              this.buscarEmpleados();
-          
+            this.buscarEmpleados();
+
           },
           error: (error) => {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: error });

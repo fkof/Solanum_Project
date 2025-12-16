@@ -5,8 +5,8 @@
     <ng-template pTemplate="header">
       <div class="card-header">
         <div class="header-content">
-          <h2 class="header-title">Mis Solicitudes de Vacaciones</h2>
-          <p class="header-subtitle">Consulta el historico de tus solicitudes de vacaciones.</p>
+          <h2 class="header-title">Mis Solicitudes de Permisos</h2>
+          <p class="header-subtitle">Consulta el historico de tus solicitudes de permisos.</p>
         </div>
 
       </div>
@@ -14,7 +14,7 @@
 
 
 
-    <div class="vacation-container">
+    <div class="permiso-container">
 
       <div class="search-form">
         <div class="form-grid">
@@ -49,7 +49,7 @@
 
       </h3>
 
-      <p-table #dt [value]="solicitudesVacaciones" [loading]="loading" [paginator]="true" [rows]="10"
+      <p-table #dt [value]="solicitudesPermiso" [loading]="loading" [paginator]="true" [rows]="10"
         [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{'max-width': 'fit-content'}"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
         styleClass="p-datatable-gridlines" [responsive]="true">
@@ -62,26 +62,15 @@
             <th pSortableColumn="nombreCompleto" style="min-width: 250px">
               Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaInicio" style="min-width: 150px">
-              Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
-            </th>
-            <th pSortableColumn="fechaFin" style="min-width: 150px">
-              Fecha Final <p-sortIcon field="fechaFin"></p-sortIcon>
-            </th>
-            <th pSortableColumn="fechaRegreso" style="min-width: 160px">
-              Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>
+            <th pSortableColumn="fechaPermiso" style="min-width: 160px">
+              Fecha Permiso <p-sortIcon field="fechaPermiso"></p-sortIcon>
             </th>
             <th pSortableColumn="fechaCreacion" style="min-width: 160px">
               Fecha Solicitud <p-sortIcon field="fechaCreacion"></p-sortIcon>
             </th>
-            <th pSortableColumn="cantidadDias" style="min-width: 90px">
-              Dias <p-sortIcon field="cantidadDias"></p-sortIcon>
-            </th>
-
             <th pSortableColumn="estatus" style="min-width: 200px">
               Estado Solicitud <p-sortIcon field="estatus"></p-sortIcon>
             </th>
-
             <th pSortableColumn="motivoRechazo" style="min-width: 250px">
               Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>
             </th>
@@ -100,11 +89,8 @@
             </td>
 
             <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
-            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaInicio )}}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaFin) }}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaRegreso) }}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
-            <td><span class="default-texto"> {{ solicitud.cantidadDias }}</span></td>
+            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaPermiso )}}</span></td>
+            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaCreacion )}}</span></td>
             <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
             <td><span class="default-texto"> {{ solicitud.motivoRechazo }}</span></td>
             <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
@@ -117,7 +103,7 @@
             <td colspan="7" class="empty-message">
               <div class="empty-state">
                 <i class="pi pi-search empty-icon"></i>
-                <p>No se encontraron Solitudes pendientes.</p>
+                <p>No se encontraron Solicitudes.</p>
 
               </div>
             </td>

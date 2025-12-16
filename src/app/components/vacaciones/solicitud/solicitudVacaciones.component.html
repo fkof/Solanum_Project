@@ -62,7 +62,7 @@
               class="w-full" [iconDisplay]="'input'"></p-datepicker>
           </div>
           <div class="form-field" style="align-self: end;">
-            <p-button label="Solicitar Vacaciones" (onClick)="Solicitar()" icon="pi pi-search" [loading]="loading"
+            <p-button label="Solicitar Vacaciones" (onClick)="Solicitar()" icon="pi pi-check" [loading]="loading"
               styleClass="p-button-primary" class="w-full"></p-button>
           </div>
         </div>
@@ -96,8 +96,8 @@
             <th pSortableColumn="fechaInicio" style="min-width: 150px">
               Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaFinal" style="min-width: 150px">
-              Fecha Final <p-sortIcon field="fechaFinal"></p-sortIcon>
+            <th pSortableColumn="fechaFin" style="min-width: 150px">
+              Fecha Final <p-sortIcon field="fechaFin"></p-sortIcon>
             </th>
             <th pSortableColumn="fechaRegreso" style="min-width: 160px">
               Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>

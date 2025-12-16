@@ -35,23 +35,27 @@ import { SelectModule } from 'primeng/select';
 })
 export class LoginComponent {
   empresaSeleccionada: Empresa | null = null;
-  empresas:Empresa[] =[]
+  empresas: Empresa[] = []
   usuario: string = '';
   password: string = '';
   loading: boolean = false;
+  idEmpleado: number = 0;
 
- 
   constructor(
     private authService: AuthService,
     private messageService: MessageService,
     private catalogoService: CatalogosService,
     private router: Router,
-  ) { 
+  ) {
+
+    if (sessionStorage.getItem("isLogin") != undefined) {
+      this.router.navigate(['/main']);
+    }
     this.catalogoService.obtenerEmpresas().subscribe({
-      next:data=>{
-        this.empresas=data;
+      next: data => {
+        this.empresas = data;
       },
-      error:error=>{
+      error: error => {
         this.messageService.add({
           severity: 'warn',
           summary: 'Error al obtener la data de empresas',
@@ -83,16 +87,16 @@ export class LoginComponent {
 
     this.loading = true;
 
-    this.authService.login(this.usuario, this.password,this.empresaSeleccionada.idEmpresa).subscribe({
-      next:data=>{
+    this.authService.login(this.usuario, this.password, this.empresaSeleccionada.idEmpresa).subscribe({
+      next: data => {
         sessionStorage.setItem("isLogin", 'true');
-        sessionStorage.setItem("token",data.token)
+        sessionStorage.setItem("token", data.token)
         sessionStorage.setItem("dataPerfil", JSON.stringify(data));
         this.authService.setUsuario(data.usuario.nombreCompleto);
         this.authService.setIsAuthenticated(true);
         //this.isAuthenticatedSubject.next(true)
         this.router.navigate(['/main']);
-      },error:error=>{
+      }, error: error => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error de autenticación',
@@ -102,8 +106,8 @@ export class LoginComponent {
       }
     });
     // window.location.href="/main";
-  
- }
+
+  }
 
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {

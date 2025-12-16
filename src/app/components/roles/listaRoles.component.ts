@@ -62,13 +62,17 @@ export class ListaRolesComponent implements OnInit {
   headerSource = "Menús Disponibles";
   isEdit: boolean = false;
   idRol: number = 0;
+  usuarioLogueado: number = 0;
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private router: Router,
     private rolService: RolService,
     private usuarioService: UsuarioService,
-  ) { }
+  ) {
+    let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+    this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
+  }
 
   ngOnInit() {
     this.cargarRoles();
@@ -148,10 +152,11 @@ export class ListaRolesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Sí, eliminar',
       rejectLabel: 'Cancelar',
-      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-danger',
+      //  acceptButtonStyleClass: 'p-button-success',
       accept: () => {
         // Aquí harías la llamada al servicio para eliminar
-        this.rolService.delete(rol.idRol, 9999).subscribe({
+        this.rolService.delete(rol.idRol, this.usuarioLogueado).subscribe({
           next: (data) => {
 
             this.messageService.add({
@@ -194,7 +199,7 @@ export class ListaRolesComponent implements OnInit {
         nombre: this.roleName,
         descripcion: this.roleDescription,
         idMenus: selectedMenus,
-        idUsuarioModificacion: 999
+        idUsuarioModificacion: this.usuarioLogueado
 
       }
       console.log("data a enviar :", dataSend)

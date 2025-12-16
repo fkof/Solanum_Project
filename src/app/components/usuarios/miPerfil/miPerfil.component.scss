@@ -142,6 +142,45 @@
   border-color: #f0f0f0;
 }
 
+::ng-deep .p-datatable .p-datatable-thead>tr>th {
+  background: #00b398;
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+  border: none;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr {
+  transition: all 0.2s;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr:hover {
+  background: #f0fdf9;
+}
+
+
+::ng-deep .p-paginator {
+  background: #f8f9fa;
+  border-top: 2px solid #e0e0e0;
+  padding: 1rem;
+  border-radius: 0 0 8px 8px;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  color: #666;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #00b398;
+  color: white;
+  border-color: #00b398;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: #e6f7f4;
+  color: #00b398;
+}
+
 .empty-state,
 .loading-state {
   display: flex;

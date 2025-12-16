@@ -45,10 +45,10 @@
             <th pSortableColumn="idConfiguracion" style="min-width: 70px">
               Id <p-sortIcon field="idConfiguracion"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombre" >
+            <th pSortableColumn="nombre">
               Nombre <p-sortIcon field="nombre"></p-sortIcon>
             </th>
-            <th pSortableColumn="valor" >
+            <th pSortableColumn="valor">
               Valor <p-sortIcon field="valor"></p-sortIcon>
             </th>
             <th style="min-width: 150px">
@@ -69,7 +69,10 @@
             <td>
               <p-cellEditor>
                 <ng-template #input>
-                  <input pInputText type="text" name="{{config.idConfiguracion}}" [(ngModel)]="config.valor"  class="p-inputtextEdicion"/>
+                  <input pInputText type="text" name="{{config.idConfiguracion}}" [(ngModel)]="config.valor"
+                    class="p-inputtextEdicion" *ngIf="config.idConfiguracion != 7" />
+                  <p-editor [(ngModel)]="config.valor" [style]="{ height: '320px' }"
+                    *ngIf="config.idConfiguracion == 7" />
                 </ng-template>
                 <ng-template #output>
                   <span class="default-texto"> {{ config.valor }}</span>
@@ -78,17 +81,17 @@
             </td>
             <td>
               <div class="flex items-center justify-center gap-2">
-                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" [pTooltip]="'Editar'" 
-                  (click)="onRowEditInit(config)" text rounded severity="info"></button>
+                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                  [pTooltip]="'Editar'" (click)="onRowEditInit(config)" text rounded severity="info"></button>
                 <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                  (click)="onRowEditSave(config,ri)" text rounded severity="success" [pTooltip]="'Aceptar'" ></button>
+                  (click)="onRowEditSave(config,ri)" text rounded severity="success" [pTooltip]="'Aceptar'"></button>
                 <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                  (click)="onRowEditCancel(config, ri)" text rounded severity="danger" [pTooltip]="'Cancelar'" 
+                  (click)="onRowEditCancel(config, ri)" text rounded severity="danger" [pTooltip]="'Cancelar'"
                   styleClass="p-button-rounded p-button-text  p-button-danger p-button-danger delete-btn"></button>
-               
+
               </div>
             </td>
-          
+
 
           </tr>
         </ng-template>
