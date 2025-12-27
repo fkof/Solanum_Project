@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Rol } from '../models/rol';
 import { environment } from '../../environments/environment';
-const url = environment?.apiUrl || 'http://localhost:3000/api';
+import { HomeConfig, HomeImage } from '../models/homeConfig';
 /*export interface Role {
     id: number | string;
     name: string;
@@ -15,51 +14,44 @@ const url = environment?.apiUrl || 'http://localhost:3000/api';
 @Injectable({
     providedIn: 'root'
 })
-export class RolService {
-    private baseUrl = url + '/Rol';
+export class HomeService {
+    private baseUrl = '/Home';
+    private apiUrl: string;
     private httpOptions = {
         headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Accept': '*/*',
-            // add Authorization header here if needed
+            'Content-Type': 'application/json'
         })
     };
+    constructor(private http: HttpClient) {
+        this.apiUrl = environment?.apiUrl || 'http://localhost:3000/api';
 
-    constructor(private http: HttpClient) { }
-
-    // Obtener todos los roles
-    getAll(): Observable<Rol[]> {
-        return this.http.get<Rol[]>(this.baseUrl)
+    }
+    /**
+     * Obtiene la configuración de la página de inicio
+     * @returns Observable<HomeConfig>
+     */
+    obtenerHome(): Observable<HomeConfig> {
+        return this.http.get<HomeConfig>(`${this.apiUrl}/Home/home`)
+            .pipe(catchError(this.handleError));
+    }
+    /**
+     * Actualiza la configuración de la página de inicio
+     * @param homeConfig HomeConfig
+     * @returns Observable<HomeConfig>
+     */
+    actualizarHome(homeConfig: HomeConfig): Observable<HomeConfig> {
+        return this.http.put<HomeConfig>(`${this.apiUrl}/Home/home`, homeConfig)
+            .pipe(catchError(this.handleError));
+    }
+    getAllImagenes(): Observable<HomeImage[]> {
+        return this.http.get<HomeImage[]>(`${this.apiUrl}/Home/Imagen`)
+            .pipe(catchError(this.handleError));
+    }
+    agregarImagenHome(dataSend: any): Observable<HomeImage> {
+        return this.http.post<HomeImage>(`${this.apiUrl}/Home/Imagen`, dataSend)
             .pipe(catchError(this.handleError));
     }
 
-    // Obtener un role por id
-    getById(id: number | string): Observable<Rol> {
-        const url = `${this.baseUrl}/${id}`;
-        return this.http.get<Rol>(url)
-            .pipe(catchError(this.handleError));
-    }
-
-    // Crear un role
-    create(role: Partial<Rol>): Observable<Rol> {
-        //https://solanum.ledesing.com.mx/api/rol/Actualizar
-        return this.http.post<Rol>(this.baseUrl, role, this.httpOptions)
-            .pipe(catchError(this.handleError));
-    }
-
-    // Editar/actualizar un role
-    update(role: Partial<Rol>): Observable<Rol> {
-        const url = this.baseUrl;
-        return this.http.put<Rol>(url, role, this.httpOptions)
-            .pipe(catchError(this.handleError));
-    }
-
-    // Borrar un role
-    delete(id: number, usuario: number): Observable<void> {
-        const url = `${this.baseUrl}?id=${id}&idUsuario=${usuario}`;
-        return this.http.delete<void>(url, this.httpOptions)
-            .pipe(catchError(this.handleError));
-    }
 
     // Manejo básico de errores
     private handleError(error: any): Observable<never> {

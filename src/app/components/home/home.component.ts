@@ -1,14 +1,34 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GalleriaModule } from 'primeng/galleria';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { HomeService } from '../../services/home.services';
+import { MessageService } from 'primeng/api';
+import { HomeConfig, HomeImage } from '../../models/homeConfig';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, GalleriaModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [MessageService]
 })
 export class HomeComponent {
+  configuracion: any = { texto: "" }
+  sanitizedHtmlSnippet: SafeHtml = '';
+  homeConfig: HomeConfig = {
+    titulo: "",
+    subTitulo: "",
+    mensaje: ""
+  };
+  imagenesCarrusel: HomeImage[] = [];
+  constructor(private sanitizer: DomSanitizer, private homeServices: HomeService, private messageService: MessageService) {
+    this.configuracion = localStorage.getItem("configuracion") ?? "{}";
+    this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.configuracion);
+    this.getConfig();
+    this.getImagenes();
+  }
+
   responsiveOptions: any[] = [
     {
       breakpoint: '1300px',
@@ -31,16 +51,36 @@ export class HomeComponent {
     alt: 'lorem ipsum dolor sit amet consectetur adipiscing elit dolor sit amet consectetur adipiscing elit',
     title: 'Title 2'
   },];
-  cards = [
-    {
-      icon: '🏖️',
-      title: 'Solicitudes de Vacaciones',
-      description: 'Gestiona y envía tus solicitudes de vacaciones. Consulta tu saldo disponible y el historial de solicitudes anteriores.'
-    },
-    {
-      icon: '📋',
-      title: 'Solicitudes de Permisos',
-      description: 'Solicita permisos por diferentes motivos. Revisa el estado de tus solicitudes pendientes y aprobadas.'
-    }
-  ];
+  getConfig() {
+    this.homeServices.obtenerHome().subscribe({
+      next: (data) => {
+        console.log(data)
+        this.homeConfig = data;
+        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
+
+      }, error: (data) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: data
+        });
+      }
+    })
+  }
+  getImagenes() {
+    this.homeServices.getAllImagenes().subscribe({
+      next: (data) => {
+        console.log(data)
+        this.imagenesCarrusel = data;
+        //  this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
+
+      }, error: (data) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: data
+        });
+      }
+    })
+  }
 }
