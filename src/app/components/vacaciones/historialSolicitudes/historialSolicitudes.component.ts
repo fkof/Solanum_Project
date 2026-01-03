@@ -13,13 +13,14 @@ import { SolicitudVacaciones } from '../../../models/solicitudesVacaciones';
 import { SideBarService } from '../../../services/sideBar.services';
 import { VacacionesServices } from '../../../services/vacaciones.services';
 import { TagModule } from 'primeng/tag';
+import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
 @Component({
     selector: 'historialSolicitudes',
     templateUrl: 'historialSolicitudes.component.html',
     styleUrls: ['./historialSolicitudes.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, TagModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule],
-    providers: [MessageService, ConfirmationService]
+    providers: [MessageService, ConfirmationService, GlobalHelpers]
 })
 
 export class HistorialSolicitudes implements OnInit {
@@ -30,7 +31,8 @@ export class HistorialSolicitudes implements OnInit {
     solicitudesVacaciones: SolicitudVacaciones[] = []
     isCollapsed: boolean = false
     idEmpleado: number = 0;
-    constructor(private messageService: MessageService, public sidebarService: SideBarService, private vacacionesServices: VacacionesServices) {
+    constructor(private messageService: MessageService, public sidebarService: SideBarService,
+        private vacacionesServices: VacacionesServices, public globalHelpers: GlobalHelpers) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idEmpleado = dataPerfil.usuario.idEmpleado;
     }
@@ -51,7 +53,7 @@ export class HistorialSolicitudes implements OnInit {
             idEmpleado: this.idEmpleado,
             idAutorizador: "",
             idEstatus: "",
-            fechaInicio:  this.fechaInicial?.toLocaleDateString('en-US'),
+            fechaInicio: this.fechaInicial?.toLocaleDateString('en-US'),
             fechaFin: this.fechaFinal?.toLocaleDateString('en-US')
         }
         this.vacacionesServices.getSolicitudesVacaciones(dataSend).subscribe({
@@ -70,39 +72,5 @@ export class HistorialSolicitudes implements OnInit {
             }
         })
     }
-    formatearFechastr(fechastr: string): string {
-        let fecha = new Date(fechastr);
 
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
-    getSeverityStatus(estatus: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {
-        switch (estatus) {
-            case 'Pendiente':
-                return 'warn';
-            case 'Aprobada':
-                return 'success';
-            case 'Rechazada':
-                return 'danger';
-            default:
-                return 'info';
-        }
-    }
-     formatearFecha(fecha: Date): string {
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
- 
 }

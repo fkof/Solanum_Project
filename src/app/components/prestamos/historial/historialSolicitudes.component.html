@@ -5,8 +5,8 @@
     <ng-template pTemplate="header">
       <div class="card-header">
         <div class="header-content">
-          <h2 class="header-title">Mis Solicitudes de Vacaciones</h2>
-          <p class="header-subtitle">Consulta el historico de tus solicitudes de vacaciones.</p>
+          <h2 class="header-title">Mis Solicitudes de Prestamos</h2>
+          <p class="header-subtitle">Consulta el historico de tus solicitudes de Prestamos.</p>
         </div>
 
       </div>
@@ -14,7 +14,7 @@
 
 
 
-    <div class="vacation-container">
+    <div class="prestamos-container">
 
       <div class="search-form">
         <div class="form-grid">
@@ -42,51 +42,37 @@
     <div class="separator"></div>
 
     <!-- Tabla de resultados -->
-    <div class="results-section" [ngStyle]="{'max-width': 'fit-content'}">
+    <div class="results-section">
       <h3 class="results-title">
         <i class="pi pi-list"></i>
         Tus Solicitudes
 
       </h3>
 
-      <p-table #dt [value]="solicitudesVacaciones" [loading]="loading" [paginator]="true" [rows]="10"
-        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{'max-width': 'fit-content'}"
+      <p-table #dt [value]="solicitudesPrestamos" [loading]="loading" [paginator]="true" [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
         styleClass="p-datatable-gridlines" [responsive]="true">
 
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="idSolicitud" style="min-width: 70px">
-              Id <p-sortIcon field="numeroNomina"></p-sortIcon>
+            <th pSortableColumn="idSolicitud" style="width: 80px">
+              ID <p-sortIcon field="idSolicitud"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombreCompleto" style="min-width: 250px">
-              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
+            <th pSortableColumn="montoSolicitado" style="min-width: 200px">
+              Monto Solicitado <p-sortIcon field="montoSolicitado"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaInicio" style="min-width: 150px">
-              Fecha Inicial <p-sortIcon field="fechaInicio"></p-sortIcon>
+            <th pSortableColumn="cantidadRebaje" style="min-width: 220px">
+              Descuento por semana <p-sortIcon field="cantidadRebaje"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaFin" style="min-width: 150px">
-              Fecha Final <p-sortIcon field="fechaFin"></p-sortIcon>
+            <th pSortableColumn="fechaCreacion" style="min-width: 220px">
+              Fecha Creacion <p-sortIcon field="fechaCreacion"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaRegreso" style="min-width: 160px">
-              Fecha Regreso <p-sortIcon field="fechaRegreso"></p-sortIcon>
+            <th pSortableColumn="estatus" style="width: 120px">
+              Estado <p-sortIcon field="estatus"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaCreacion" style="min-width: 160px">
-              Fecha Solicitud <p-sortIcon field="fechaCreacion"></p-sortIcon>
-            </th>
-            <th pSortableColumn="cantidadDias" style="min-width: 90px">
-              Dias <p-sortIcon field="cantidadDias"></p-sortIcon>
-            </th>
-
-            <th pSortableColumn="estatus" style="min-width: 200px">
-              Estado Solicitud <p-sortIcon field="estatus"></p-sortIcon>
-            </th>
-
-            <th pSortableColumn="motivoRechazo" style="min-width: 250px">
+            <th pSortableColumn="motivoRechazo">
               Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>
-            </th>
-            <th pSortableColumn="autorizador" style="min-width: 250px">
-              Jefe Inmendiato <p-sortIcon field="autorizador"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
@@ -99,23 +85,19 @@
               </span>
             </td>
 
-            <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
-            <td> <span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaInicio) }}</span></td>
-            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaFin) }}</span></td>
-            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaRegreso) }}</span></td>
-            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
-            <td><span class="default-texto"> {{ solicitud.cantidadDias }}</span></td>
+            <td> <span class="nombre-empleado"> {{ solicitud.montoSolicitado }} </span></td>
+            <td> <span class="default-texto"> {{ solicitud.cantidadRebaje }}</span></td>
+            <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( solicitud.fechaCreacion )}}</span>
+            </td>
             <td> <p-tag [value]="solicitud.estatus" [severity]="globalHelpers.getSeverityStatus(solicitud.estatus)" />
             </td>
-            <td><span class="default-texto"> {{ solicitud.motivoRechazo }}</span></td>
-            <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
-
+            <td> <span class="default-texto"> {{ solicitud.motivoRechazo || '—' }}</span></td>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7" class="empty-message">
+            <td colspan="5" class="empty-message">
               <div class="empty-state">
                 <i class="pi pi-search empty-icon"></i>
                 <p>No se encontraron Solitudes pendientes.</p>
@@ -127,7 +109,7 @@
 
         <ng-template pTemplate="loadingbody">
           <tr>
-            <td colspan="7">
+            <td colspan="5">
               <div class="loading-state">
                 <i class="pi pi-spin pi-spinner loading-icon"></i>
                 <p>Buscando Solicitudes...</p>
@@ -136,7 +118,6 @@
           </tr>
         </ng-template>
       </p-table>
-
     </div>
 
 

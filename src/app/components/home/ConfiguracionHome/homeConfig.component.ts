@@ -72,7 +72,7 @@ export class HomeConfigComponent implements OnInit {
 
     ];
 
-    constructor(private messageService: MessageService, private sanitizer: DomSanitizer, private homeServices: HomeService) {
+    constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private homeServices: HomeService) {
         this.getConfig();
         this.getImagenes();
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
@@ -226,5 +226,35 @@ export class HomeConfigComponent implements OnInit {
             ruta: ""
         }
         this.fileUpload.clear();
+    }
+    deleteImageHome(idImagen: number) {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de eliminar esta imagen?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.loading = true;
+                this.homeServices.deleteImageHome(idImagen).subscribe({
+                    next: (data) => {
+                        this.loading = false;
+                        this.getImagenes()
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Exito',
+                            detail: 'Imagen eliminada correctamente'
+                        });
+                    }, error: (data) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: data
+                        });
+                    }
+                })
+            }
+        })
     }
 }

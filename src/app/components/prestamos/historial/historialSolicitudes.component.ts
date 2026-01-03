@@ -11,28 +11,29 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { TableModule } from 'primeng/table';
 import { SideBarService } from '../../../services/sideBar.services';
 import { TagModule } from 'primeng/tag';
-import { SolicitudPermiso } from '../../../models/SolicitudPermiso';
-import { PermisoServices } from '../../../services/permisos.services';
+import { SolicitudPrestamos } from '../../../models/solicitudPrestamos';
+import { PrestamosServices } from '../../../services/prestamos.services';
 import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
+
 @Component({
-    selector: 'historialPermisosSolicitudes',
-    templateUrl: 'historialPermisosSolicitudes.component.html',
-    styleUrls: ['./historialPermisosSolicitudes.component.scss'],
+    selector: 'historialSolicitudes',
+    templateUrl: 'historialSolicitudes.component.html',
+    styleUrls: ['./historialSolicitudes.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, TagModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule],
     providers: [MessageService, ConfirmationService, GlobalHelpers]
 })
 
-export class HistorialPermisosSolicitudes implements OnInit {
+export class HistorialSolicitudesPrestamos implements OnInit {
     loading: boolean = false;
     disabledDates: Date[] = [];
     fechaInicial: Date | null = null;
     fechaFinal: Date | null = null;
-    solicitudesPermiso: SolicitudPermiso[] = []
+    solicitudesPrestamos: SolicitudPrestamos[] = []
     isCollapsed: boolean = false
     idEmpleado: number = 0;
     constructor(private messageService: MessageService, public sidebarService: SideBarService,
-        private permisoServices: PermisoServices, public globalHelpers: GlobalHelpers) {
+        private prestamosServices: PrestamosServices, public globalHelpers: GlobalHelpers) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idEmpleado = dataPerfil.usuario.idEmpleado;
     }
@@ -56,9 +57,9 @@ export class HistorialPermisosSolicitudes implements OnInit {
             fechaInicio: this.fechaInicial?.toLocaleDateString('en-US'),
             fechaFin: this.fechaFinal?.toLocaleDateString('en-US')
         }
-        this.permisoServices.getSolicitudesPermiso(dataSend).subscribe({
+        this.prestamosServices.getSolicitudesPrestamos(dataSend).subscribe({
             next: solicitudes => {
-                this.solicitudesPermiso = solicitudes;
+                this.solicitudesPrestamos = solicitudes;
                 this.loading = false;
 
             }, error: error => {

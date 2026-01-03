@@ -51,7 +51,10 @@ export class HomeService {
         return this.http.post<HomeImage>(`${this.apiUrl}/Home/Imagen`, dataSend)
             .pipe(catchError(this.handleError));
     }
-
+    deleteImageHome(idImagen: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/Home/Imagen/${idImagen}`)
+            .pipe(catchError(this.handleError));
+    }
 
     // Manejo básico de errores
     private handleError(error: any): Observable<never> {

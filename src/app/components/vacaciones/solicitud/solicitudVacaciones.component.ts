@@ -20,6 +20,7 @@ import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { SolicitudVacacionesRequest } from '../../../models/solicitudVacacionesRequest';
 import { TooltipModule } from 'primeng/tooltip';
+import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
 registerLocaleData(localeEs, 'es-MX'); //Esto no es un import, pero va justo despues de ellos!
 
 @Component({
@@ -28,7 +29,7 @@ registerLocaleData(localeEs, 'es-MX'); //Esto no es un import, pero va justo des
     styleUrls: ['./solicitudVacaciones.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, TooltipModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule, TagModule],
-    providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }]
+    providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }, GlobalHelpers]
 })
 
 export class SolicitudVacacionesEmp implements OnInit {
@@ -49,7 +50,9 @@ export class SolicitudVacacionesEmp implements OnInit {
     solicitudRequest: SolicitudVacacionesRequest = {} as SolicitudVacacionesRequest;
     correoEmpleado: string = "";
 
-    constructor(private messageService: MessageService, private confirmationService: ConfirmationService, public sidebarService: SideBarService, private vacacionesServices: VacacionesServices) {
+    constructor(private messageService: MessageService, private confirmationService: ConfirmationService,
+        public sidebarService: SideBarService, private vacacionesServices: VacacionesServices,
+        public globalHelpers: GlobalHelpers) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idEmpleado = dataPerfil.usuario.idEmpleado;
         this.correoEmpleado = dataPerfil.usuario.correo;
@@ -291,28 +294,7 @@ export class SolicitudVacacionesEmp implements OnInit {
             disabledDate.getDate() === date.getDate()
         );
     }
-    formatearFecha(fecha: Date): string {
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
-    formatearFechastr(fechastr: string): string {
-        let fecha = new Date(fechastr);
-
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
     getSolicitudesPendientes() {
         this.loading = true;
         this.vacacionesServices.getSolicitudesPendientesParaEmpleadoLogueado(this.idEmpleado).subscribe({
@@ -356,18 +338,7 @@ export class SolicitudVacacionesEmp implements OnInit {
             }
         })
     }
-    getSeverityStatus(estatus: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {
-        switch (estatus) {
-            case 'Pendiente':
-                return 'warn';
-            case 'Aprobada':
-                return 'success';
-            case 'Rechazada':
-                return 'danger';
-            default:
-                return 'info';
-        }
-    }
+
     verBotonCancelar(solicitud: SolicitudVacaciones): boolean {
         return new Date(solicitud.fechaInicio) >= new Date()
     }

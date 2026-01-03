@@ -86,7 +86,7 @@
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <p-button icon="pi pi-trash"
+                                            <p-button icon="pi pi-trash" (onClick)="deleteImageHome(img.idImagen)"
                                                 styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
                                                 [pTooltip]="'Eliminar'" tooltipPosition="top"></p-button>
                                         </div>
@@ -167,7 +167,7 @@
             <input pInputText id="titulo" class="flex-auto" autocomplete="off" [(ngModel)]="homeimg.titulo" />
         </div>
         <div class="flex items-center gap-4 mb-8" style="padding-bottom: 1rem;">
-            <label for="descripcion" class="font-semibold w-24">Descripcion</label>
+            <label for="descripcion" class="font-semibold w-24">Descripción</label>
             <input pInputText id="descripcion" class="flex-auto" autocomplete="off" [(ngModel)]="homeimg.descripcion" />
         </div>
         <div class="flex items-center gap-4 mb-8" style="padding-bottom: 1rem;">

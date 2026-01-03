@@ -4,13 +4,13 @@
   <p-dialog header="Resumen de Solicitud" [modal]="true" [(visible)]="showDialog">
     <div class="container_solicitud">
       <h2>Fecha Inicial</h2>
-      <div class="date-box">{{ fechaInicial ? formatearFecha(fechaInicial) : '' }}</div>
+      <div class="date-box">{{ fechaInicial ? this.globalHelpers.formatearFecha(fechaInicial) : '' }}</div>
 
       <h2>Fecha Final</h2>
-      <div class="date-box">{{fechaFinal ? formatearFecha(fechaFinal) : '' }}</div>
+      <div class="date-box">{{fechaFinal ? this.globalHelpers.formatearFecha(fechaFinal) : '' }}</div>
 
       <h2>Fecha Regreso</h2>
-      <div class="date-box">{{formatearFecha(this.getFechaRetorno())}}</div>
+      <div class="date-box">{{this.globalHelpers.formatearFecha(this.getFechaRetorno())}}</div>
 
       <div class="days-count">{{diasPedidos}}</div>
       <div class="days-label">Días</div>
@@ -130,12 +130,16 @@
             </td>
 
             <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
-            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaInicio )}}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaFin) }}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaRegreso) }}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
+            <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( solicitud.fechaInicio )}}</span>
+            </td>
+            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaFin) }}</span></td>
+            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaRegreso) }}</span>
+            </td>
+            <td><span class="default-texto"> {{ globalHelpers.formatearFechastr(solicitud.fechaCreacion) }}</span>
+            </td>
             <td><span class="default-texto"> {{ solicitud.cantidadDias }}</span></td>
-            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td> <p-tag [value]="solicitud.estatus" [severity]="globalHelpers.getSeverityStatus(solicitud.estatus)" />
+            </td>
             <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
             <td>
               <div class="action-buttons">

@@ -13,41 +13,42 @@ import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
 import { SideBarService } from "../../../services/sideBar.services";
 import { DropdownModule } from "primeng/dropdown";
-import { VacacionesServices } from "../../../services/vacaciones.services";
 import { TooltipModule } from "primeng/tooltip";
-import { PermisoServices } from "../../../services/permisos.services";
-import { TipoPermiso } from "../../../models/tipoPermiso";
-import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PrestamosServices } from "../../../services/prestamos.services";
+import { CantidadRebaje } from "../../../models/cantidadRebaje";
+import { MessageModule, Message } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
+import { GlobalHelpers } from "../../../helpers/GlobalHerpers";
 @Component({
-    selector: 'app-solicitudPermiso',
-    templateUrl: './solicitudPermiso.component.html',
-    styleUrls: ['./solicitudPermiso.component.scss'],
+    selector: 'app-solicitudPrestamo',
+    templateUrl: './solicitudPrestamo.component.html',
+    styleUrls: ['./solicitudPrestamo.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, TagModule,
-        FormsModule, ButtonModule, DatePickerModule, TableModule, DropdownModule, TooltipModule],
+        FormsModule, ButtonModule, DatePickerModule, TableModule, DropdownModule, TooltipModule, InputTextModule, InputNumberModule, Message, PanelModule],
     providers: [MessageService, ConfirmationService, SideBarService, GlobalHelpers]
 })
-export class SolicitudPermisoComponent {
+export class SolicitudPrestamoComponent {
     loading: boolean = false;
-    fechaPermiso: Date = new Date();
-    maxDate: Date = new Date();
-    minDate: Date = new Date();
+
     isCollapsed: boolean = false
     idEmpleado: number = 0;
-    tipoPermiso: TipoPermiso[] = [];
-    selectedTipoPermiso: number = 0;
-    disabledDates: Date[] = [];
+    motivo: string = "";
+    montoSolicitado: number = 0;
     solicitudesPermiso: any[] = [];
+    cantidadRebaje: CantidadRebaje[] = [];
+    veResumen: boolean = false;
+    selectedCantidadRebaje: CantidadRebaje | null = null;
+    simulacionAmortizacion: any[] = [];
     constructor(private messageService: MessageService,
         private confirmationService: ConfirmationService,
         public sidebarService: SideBarService,
-        public vacacionesServices: VacacionesServices,
-        public permisoServices: PermisoServices,
-        public globalHelpers: GlobalHelpers) {
-        this.maxDate.setMonth(this.maxDate.getMonth() + 3);
+        public prestamosServices: PrestamosServices,
+        public globalHelpers: GlobalHelpers
+    ) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idEmpleado = dataPerfil.usuario.idEmpleado;
-        this.fechaPermiso.setDate(this.fechaPermiso.getDate() + 1);
-        this.minDate.setDate(this.minDate.getDate());
     }
     ngOnInit() {
         this.sidebarService.isCollapsed$.subscribe({
@@ -55,37 +56,38 @@ export class SolicitudPermisoComponent {
                 this.isCollapsed = data
             }
         })
-        this.permisoServices.getTipoPermiso().subscribe({
-            next: data => {
-                this.tipoPermiso = data;
-            }, error: error => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: error
-                });
-            }
-        })
+
         this.getSolicitudesPendientes();
-        this.vacacionesServices.getDiasFestivos().subscribe({
-            next: data => {
-                //   const nombres = miArray.map(objeto => objeto.nombre);
-                this.disabledDates = data.map(objeto => new Date(objeto.diaFestivo));
-
-            }, error: error => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: error
-
-                });
-            }
-        })
+        this.getListadoCantidadRebaje();
+    }
+    abrirCerrarMortizacion(event: any) {
+        console.log(event);
+        if (!event) {
+            this.loading = true;
+            this.prestamosServices.getSimulacionAmortizacion({
+                montoSolicitado: this.montoSolicitado,
+                idRebaje: this.selectedCantidadRebaje?.idRebajePrestamo
+            }).subscribe({
+                next: data => {
+                    this.simulacionAmortizacion = [];
+                    this.simulacionAmortizacion = data;
+                    this.loading = false;
+                }, error: error => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: error
+                    });
+                }, complete: () => {
+                    this.loading = false;
+                }
+            })
+        }
     }
     getSolicitudesPendientes() {
 
         this.loading = true;
-        this.permisoServices.getSolicitudesPendientesParaEmpleadoLogueado(this.idEmpleado).subscribe({
+        this.prestamosServices.getSolicitudesPendientesParaEmpleadoLogueado(this.idEmpleado).subscribe({
             next: data => {
                 this.solicitudesPermiso = data;
                 this.loading = false;
@@ -100,43 +102,71 @@ export class SolicitudPermisoComponent {
             }
         })
     }
+    getListadoCantidadRebaje() {
+        this.prestamosServices.getListadoCantidadRebaje().subscribe({
+            next: data => {
+                this.cantidadRebaje = data;
+            }, error: error => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: error
+                });
+            }, complete: () => {
+                this.loading = false;
+            }
+        })
+    }
+    envioSolicitud() {
+        if (!this.selectedCantidadRebaje) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Debe seleccionar una cantidad de rebaje'
+            });
+            return;
+        }
+        if (!this.montoSolicitado) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Debe ingresar un monto solicitado'
+            });
+            return;
+        }
+        if (!this.motivo) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Debe ingresar un motivo'
+            });
+            return;
+        }
+
+        this.veResumen = true;
+        this.simulacionAmortizacion = [];
+        this.abrirCerrarMortizacion(false);
+        console.log(this.selectedCantidadRebaje);
+    }
     handleSolcitud() {
-        if (this.solicitudesPermiso.find(solicitud => new Date(solicitud.fechaPermiso) == this.fechaPermiso)) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Ya tienes una solicitud pendiente para esta fecha'
-            });
-            this.loading = false;
-            return;
-        }
-        console.log(this.selectedTipoPermiso);
-        console.log(this.fechaPermiso);
-        if (this.selectedTipoPermiso == 0 || this.fechaPermiso == null) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Debe seleccionar un tipo de permiso y una fecha'
-            });
-            return;
-        }
-        let SolicitudPermisoRequest = {
-            idEmpleado: this.idEmpleado,
-            fechaPermiso: this.fechaPermiso,
-            idTipoPermiso: this.selectedTipoPermiso,
-            idUsuarioCreacion: this.idEmpleado
-        }
+
         this.loading = true;
-        this.permisoServices.postSolicitudPermiso(SolicitudPermisoRequest).subscribe({
+        let dataSend = {
+            idEmpleado: this.idEmpleado,
+            motivo: this.motivo,
+            idRebajePrestamo: this.selectedCantidadRebaje?.idRebajePrestamo,
+            montoSolicitado: this.montoSolicitado,
+            idUsuarioCreacion: this.idEmpleado,
+        }
+        this.prestamosServices.postSolicitudPrestamos(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Exito',
-                    detail: 'Permiso solicitado correctamente'
+                    detail: 'Solicitud creada correctamente'
                 });
                 this.getSolicitudesPendientes();
             }, error: error => {
-                this.loading = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
@@ -173,7 +203,7 @@ export class SolicitudPermisoComponent {
             motivoRechazo: 'Cancelacion por parte del colaborador',
             idUsuarioModificacion: this.idEmpleado
         }
-        this.permisoServices.actualizarSolicitudPermiso(dataSend).subscribe({
+        this.prestamosServices.actualizarSolicitudPrestamo(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
                     severity: 'success',
@@ -192,8 +222,7 @@ export class SolicitudPermisoComponent {
             }
         })
     }
-    verBotonCancelar(solicitud: any): boolean {
-        return new Date(solicitud.fechaPermiso) >= new Date()
-    }
+
+
 
 }

@@ -81,8 +81,9 @@
             </td>
 
             <td> <span class="nombre-empleado"> {{ solicitud.tipoPermiso }} </span></td>
-            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaPermiso )}}</span></td>
-            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( solicitud.fechaPermiso )}}</span></td>
+            <td> <p-tag [value]="solicitud.estatus" [severity]="globalHelpers.getSeverityStatus(solicitud.estatus)" />
+            </td>
             <td>
               <div class="action-buttons">
 

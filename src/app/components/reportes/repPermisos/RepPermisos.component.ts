@@ -20,13 +20,14 @@ import { Tag, TagModule } from 'primeng/tag';
 import { SolicitudPermiso } from '../../../models/SolicitudPermiso';
 import { PermisoServices } from '../../../services/permisos.services';
 import { VacacionesServices } from '../../../services/vacaciones.services';
+import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
 @Component({
     selector: 'repPermisos',
     templateUrl: 'RepPermisos.component.html',
     styleUrls: ['./RepPermisos.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, InputTextModule, TooltipModule, TagModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule, SelectModule],
-    providers: [MessageService, ConfirmationService]
+    providers: [MessageService, ConfirmationService, GlobalHelpers]
 })
 
 export class RepPermisos implements OnInit {
@@ -48,7 +49,8 @@ export class RepPermisos implements OnInit {
     showMotivos: boolean = false;
     constructor(private messageService: MessageService, public sidebarService: SideBarService, private permisosService: PermisoServices,
         private vacacionesService: VacacionesServices,
-        private rolService: RolService) {
+        private rolService: RolService,
+        public globalHelpers: GlobalHelpers) {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idAutorizandor = dataPerfil.usuario.idEmpleado;
@@ -123,38 +125,5 @@ export class RepPermisos implements OnInit {
             xlsx.writeFile(workbook, 'Solicitudes_' + new Date().getTime() + EXCEL_EXTENSION);
         });
     };
-    formatearFecha(fecha: Date): string {
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
-    formatearFechastr(fechastr: any): string {
-        let fecha = new Date(fechastr);
-
-        const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
-        const dia = fecha.getDate();
-        const mes = meses[fecha.getMonth()];
-        const año = fecha.getFullYear().toString().slice(-2);
-
-        return `${dia}-${mes}-${año}`;
-    }
-    getSeverityStatus(estatus: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" {
-        switch (estatus) {
-            case 'Pendiente':
-                return 'warn';
-            case 'Aprobada':
-                return 'success';
-            case 'Rechazada':
-                return 'danger';
-            default:
-                return 'info';
-        }
-    }
 }

@@ -4,7 +4,8 @@
       <h1>{{homeConfig.titulo}}</h1>
       <h3>{{homeConfig.subTitulo}}</h3>
     </div>
-    <div [innerHTML]="sanitizedHtmlSnippet"></div>
+    <div [innerHTML]="sanitizedHtmlSnippet" style="flex: 1;overflow: auto;white-space: pre-wrap;word-wrap: break-word;">
+    </div>
     <div class="container-general">
       <p-galleria [value]="imagenesCarrusel" [responsiveOptions]="responsiveOptions" [autoPlay]="true" [circular]="true"
         [containerStyle]="{ 'max-width': '440px','min-width': '440px' }" [numVisible]="5">

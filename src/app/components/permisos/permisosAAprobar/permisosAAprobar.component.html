@@ -115,9 +115,12 @@
             </td>
 
             <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
-            <td> <span class="default-texto"> {{this.formatearFechastr( solicitud.fechaPermiso )}}</span></td>
-            <td><span class="default-texto"> {{ this.formatearFechastr(solicitud.fechaCreacion) }}</span></td>
-            <td> <p-tag [value]="solicitud.estatus" [severity]="getSeverityStatus(solicitud.estatus)" /></td>
+            <td> <span class="default-texto"> {{this.globalHelpers.formatearFechastr( solicitud.fechaPermiso )}}</span>
+            </td>
+            <td><span class="default-texto"> {{ this.globalHelpers.formatearFechastr(solicitud.fechaCreacion) }}</span>
+            </td>
+            <td> <p-tag [value]="solicitud.estatus"
+                [severity]="this.globalHelpers.getSeverityStatus(solicitud.estatus)" /></td>
             <td> <span class="default-texto"> {{ solicitud.motivoRechazo || '—' }}</span></td>
             <td><span class="nombre-empleado"> {{ solicitud.autorizador || '—' }}</span></td>
             <td>
@@ -160,7 +163,7 @@
       <div class="container_solicitud">
 
         <h2>Fecha Permiso</h2>
-        <div class="date-box">{{this.formatearFechastr(selectSolicitud?.fechaPermiso)}}</div>
+        <div class="date-box">{{this.globalHelpers.formatearFechastr(selectSolicitud?.fechaPermiso)}}</div>
 
         <p-button label="Cerrar" icon="pi pi-window-minimize" (onClick)="showDialog =false"
           styleClass="p-button-outlined" [style]="{'margin-right':'10px'}"></p-button>
