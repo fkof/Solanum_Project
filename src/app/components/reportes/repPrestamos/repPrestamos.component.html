@@ -83,23 +83,21 @@
         </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="idSolicitud" style="width: 70px">
+            <th pSortableColumn="idSolicitud" style="width: 80px">
               ID <p-sortIcon field="idSolicitud"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombreCompleto" style="width: 200px">
-              Nombre Completo <p-sortIcon field="nombreCompleto"></p-sortIcon>
-            </th>
-            <th pSortableColumn="montoSolicitado">
+            <th pSortableColumn="montoSolicitado" style="min-width: 200px">
               Monto Solicitado <p-sortIcon field="montoSolicitado"></p-sortIcon>
             </th>
-            <th pSortableColumn="cantidadRebaje">
-              Desc. por semana <p-sortIcon field="cantidadRebaje"></p-sortIcon>
+            <th pSortableColumn="cantidadRebaje" style="min-width: 220px">
+              Descuento por semana <p-sortIcon field="cantidadRebaje"></p-sortIcon>
             </th>
-            <th pSortableColumn="fechaCreacion">
+            <th pSortableColumn="fechaCreacion" style="min-width: 220px">
               Fecha Creacion <p-sortIcon field="fechaCreacion"></p-sortIcon>
             </th>
-            <th pSortableColumn="estatus">
-              Estado Sol <p-sortIcon field="estatus"></p-sortIcon>
+
+            <th pSortableColumn="estatus" style="width: 120px">
+              Estado Sol.<p-sortIcon field="estatus"></p-sortIcon>
             </th>
             <th pSortableColumn="estatusPrestamo">
               Estado Prestamo <p-sortIcon field="estatusPrestamo"></p-sortIcon>
@@ -107,9 +105,7 @@
             <th pSortableColumn="motivoRechazo">
               Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>
             </th>
-            <th pSortableColumn="">
-              Cancelacion <p-sortIcon field=""></p-sortIcon>
-            </th>
+
           </tr>
         </ng-template>
 
@@ -120,31 +116,30 @@
                 {{ solicitud.idSolicitud }}
               </span>
             </td>
-            <td> <span class="nombre-empleado"> {{ solicitud.nombreCompleto }} </span></td>
 
             <td> <span class="nombre-empleado"> {{ solicitud.montoSolicitado }} </span></td>
             <td> <span class="default-texto"> {{ solicitud.cantidadRebaje }}</span></td>
-            <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( solicitud.fechaCreacion )}}</span></td>
-
+            <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( solicitud.fechaCreacion )}}</span>
+            </td>
             <td> <p-tag [value]="solicitud.estatus" [severity]="globalHelpers.getSeverityStatus(solicitud.estatus)" />
             </td>
             <td> <p-tag [value]="solicitud.estatusPrestamo"
                 [severity]="globalHelpers.getSeverityStatus(solicitud.estatusPrestamo)" />
             </td>
             <td> <span class="default-texto"> {{ solicitud.motivoRechazo || '—' }}</span></td>
-            <td>
+            <!-- <td>
               <div class="action-buttons">
                 <p-button icon="pi pi-eye" *ngIf="solicitud.estatus==='Pendiente'  "
                   styleClass="p-button-rounded p-button-text p-button-danger delete-btn" [pTooltip]="'Ver Solicitud'"
                   (onClick)="selectSolicitudApprove(solicitud)" tooltipPosition="top"></p-button>
               </div>
-              <div class="action-buttons">
+            <div class="action-buttons">
                 <p-button icon="pi pi-money-bill" *ngIf="solicitud.estatus==='Autorizada'  "
                   styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
                   [pTooltip]="'Ver Amortizaciones'" (onClick)="selectSolicitudApprove(solicitud)"
                   tooltipPosition="top"></p-button>
               </div>
-            </td>
+            </td> -->
           </tr>
         </ng-template>
 
@@ -272,7 +267,9 @@
                 <th style="width: 120px">
                   Pago Aplicado
                 </th>
-
+                <th style="width: 120px">
+                  Cobrar
+                </th>
               </tr>
             </ng-template>
 
@@ -288,13 +285,14 @@
                 </td>
                 <td> {{ amortizacion.monto }}</td>
                 <td><p-tag icon="pi pi-times" severity="danger" value="No" *ngIf="!amortizacion.pagoAplicado" /> </td>
+                <td> <p-tag icon="pi pi-check" severity="success" value="Si" *ngIf="amortizacion.cobrar" /> </td>
 
               </tr>
             </ng-template>
 
             <ng-template pTemplate="emptymessage">
               <tr>
-                <td colspan="6" class="empty-message">
+                <td colspan="5" class="empty-message">
                   <div class="empty-state">
                     <i class="pi pi-search empty-icon"></i>
                     <p>No se encontraron Solitudes pendientes.</p>
@@ -306,7 +304,7 @@
 
             <ng-template pTemplate="loadingbody">
               <tr>
-                <td colspan="6">
+                <td colspan="5">
                   <div class="loading-state">
                     <i class="pi pi-spin pi-spinner loading-icon"></i>
                     <p>Buscando Solicitudes...</p>

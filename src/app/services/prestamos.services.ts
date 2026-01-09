@@ -38,6 +38,9 @@ export class PrestamosServices {
         if (dataSend.fechaFin) {
             parametros += `fechaFin=${dataSend.fechaFin}&`;
         }
+        if (dataSend.idEstatusPrestamo) {
+            parametros += `idEstatusPrestamo=${dataSend.idEstatusPrestamo}&`;
+        }
         parametros = parametros.substring(0, parametros.length - 1);
         return this.http.get<SolicitudPrestamos[]>(`${this.apiUrl}/Prestamos/ObtenerSolicitudes?${parametros}`, this.httpOptions);
     }
@@ -69,6 +72,20 @@ export class PrestamosServices {
     getSimulacionAmortizacion(dataSend: any): Observable<any> {
         return this.http.get<any>(
             `${this.apiUrl}/Prestamos/SimulacionAmortizacion?montoSolicitado=${dataSend.montoSolicitado}&idRebaje=${dataSend.idRebaje}`,
+            this.httpOptions
+        ).pipe(catchError(this.handleError)
+        );
+    }
+    getAmortizacion(idSolicitud: number): Observable<any> {
+        return this.http.get<any>(
+            `${this.apiUrl}/Prestamos/Amortizacion?idSolicitud=${idSolicitud}`,
+            this.httpOptions
+        ).pipe(catchError(this.handleError)
+        );
+    }
+    getEstatusPrestamos(): Observable<any> {
+        return this.http.get<any>(
+            `${this.apiUrl}/Prestamos/Estatus`,
             this.httpOptions
         ).pipe(catchError(this.handleError)
         );

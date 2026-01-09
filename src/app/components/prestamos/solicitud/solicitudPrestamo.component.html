@@ -11,11 +11,8 @@
 
       <h2>Motivo</h2>
       <div class="date-box">{{motivo}}</div>
-      <p-panel header="Amortización" [toggleable]="true" collapsed="true"
-        (collapsedChange)="abrirCerrarMortizacion($event)">
-        <ng-template #icons>
-          <p-button icon="pi pi-cog" severity="secondary" rounded />
-        </ng-template>
+      <p-panel header="Amortización" [toggleable]="true" (collapsedChange)="abrirCerrarMortizacion($event)">
+
         <p-table #dt [value]="simulacionAmortizacion" [loading]="loading" [paginator]="true" [rows]="5"
           [rowsPerPageOptions]="[5]" [showCurrentPageReport]="true" scrollHeight="400px"
           [tableStyle]="{ 'min-width': '30rem','max-height': '20rem' }" styleClass="p-datatable-gridlines"
@@ -126,13 +123,13 @@
             <label class="field-label">Motivo</label>
 
             <input pInputText type="text" [(ngModel)]="motivo" placeholder="Capture su motivo" class="search-input" />
-            <p-message severity="error" size="small" variant="simple">*No puede solicitar prestamo por motivos
-              personales</p-message>
+            <p-message severity="error" size="small" variant="simple">*No se puede capturar "Por motivos personales",
+              por favor ingrese especificamente el motivo</p-message>
 
           </div>
           <div class="form-field" style="align-self: end;">
             <p-button label="Solicitar Prestamo" icon="pi pi-check" [loading]="loading" styleClass="p-button-primary"
-              (onClick)="envioSolicitud()" class="w-full"></p-button>
+              (onClick)="envioSolicitud()" [disabled]="solicitudesPrestamo.length> 0" class="w-full"></p-button>
           </div>
         </div>
       </div>
@@ -149,7 +146,7 @@
         Tus Solicitudes
       </h3>
 
-      <p-table #dt [value]="solicitudesPermiso" [loading]="loading" [paginator]="true" [rows]="10"
+      <p-table #dt [value]="solicitudesPrestamo" [loading]="loading" [paginator]="true" [rows]="10"
         [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '70rem' }"
         styleClass="p-datatable-gridlines"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
@@ -202,7 +199,7 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="5" class="empty-message">
+            <td colspan="7" class="empty-message">
               <div class="empty-state">
                 <i class="pi pi-search empty-icon"></i>
                 <p>No se encontraron Solitudes pendientes.</p>
@@ -214,7 +211,7 @@
 
         <ng-template pTemplate="loadingbody">
           <tr>
-            <td colspan="5">
+            <td colspan="7">
               <div class="loading-state">
                 <i class="pi pi-spin pi-spinner loading-icon"></i>
                 <p>Buscando Solicitudes...</p>

@@ -68,11 +68,18 @@
             <th pSortableColumn="fechaCreacion" style="min-width: 220px">
               Fecha Creacion <p-sortIcon field="fechaCreacion"></p-sortIcon>
             </th>
+
             <th pSortableColumn="estatus" style="width: 120px">
-              Estado <p-sortIcon field="estatus"></p-sortIcon>
+              Estado Sol.<p-sortIcon field="estatus"></p-sortIcon>
+            </th>
+            <th pSortableColumn="estatusPrestamo">
+              Estado Prestamo <p-sortIcon field="estatusPrestamo"></p-sortIcon>
             </th>
             <th pSortableColumn="motivoRechazo">
               Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="motivoRechazo">
+              Amortización
             </th>
           </tr>
         </ng-template>
@@ -91,13 +98,29 @@
             </td>
             <td> <p-tag [value]="solicitud.estatus" [severity]="globalHelpers.getSeverityStatus(solicitud.estatus)" />
             </td>
+            <td> <p-tag [value]="solicitud.estatusPrestamo"
+                [severity]="globalHelpers.getSeverityStatus(solicitud.estatusPrestamo)" />
+            </td>
             <td> <span class="default-texto"> {{ solicitud.motivoRechazo || '—' }}</span></td>
+            <td>
+              <div class="action-buttons">
+                <p-button icon="pi pi-eye" *ngIf="solicitud.estatus==='Pendiente'  "
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn" [pTooltip]="'Ver Solicitud'"
+                  (onClick)="selectSolicitudApprove(solicitud)" tooltipPosition="top"></p-button>
+              </div>
+              <div class="action-buttons">
+                <p-button icon="pi pi-money-bill" *ngIf="solicitud.estatus==='Autorizada'  "
+                  styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                  [pTooltip]="'Ver Amortizaciones'" (onClick)="selectSolicitudApprove(solicitud)"
+                  tooltipPosition="top"></p-button>
+              </div>
+            </td>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="5" class="empty-message">
+            <td colspan="6" class="empty-message">
               <div class="empty-state">
                 <i class="pi pi-search empty-icon"></i>
                 <p>No se encontraron Solitudes pendientes.</p>
@@ -109,7 +132,7 @@
 
         <ng-template pTemplate="loadingbody">
           <tr>
-            <td colspan="5">
+            <td colspan="6">
               <div class="loading-state">
                 <i class="pi pi-spin pi-spinner loading-icon"></i>
                 <p>Buscando Solicitudes...</p>
@@ -120,7 +143,154 @@
       </p-table>
     </div>
 
+    <p-dialog header="Resumen de Solicitud" [modal]="true" [(visible)]="showDialog" [style]="{'width': '50vw'}"
+      (onHide)="showDialog = false">
+      <div class="container_solicitud">
+        <h2>Monto solicitado</h2>
+        <div class="date-box">{{ selectSolicitud?.montoSolicitado }}</div>
 
+        <h2>Cantidad a rebajar por semana</h2>
+        <div class="date-box">{{selectSolicitud?.cantidadRebaje }}</div>
+
+        <h2>Motivo</h2>
+        <div class="date-box">{{selectSolicitud?.motivo}}</div>
+        <p-panel [header]="headerAmortizacion" [toggleable]="true">
+
+          <p-table #dt [value]="simulacionAmortizacion" [loading]="loading" [paginator]="true" [rows]="5"
+            *ngIf="selectSolicitud?.estatus !== 'Autorizada'" [rowsPerPageOptions]="[5]" [showCurrentPageReport]="true"
+            scrollHeight="400px" [tableStyle]="{ 'min-width': '30rem','max-height': '20rem' }"
+            styleClass="p-datatable-gridlines"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
+            [responsive]="true">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">
+                  No. Pago
+                </th>
+                <th style="min-width: 200px">
+                  Fecha Pago
+                </th>
+                <th style="min-width: 300px">
+                  Monto Pago
+                </th>
+                <th style="width: 120px">
+                  Saldo Pendiente
+                </th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-amortizacion>
+              <tr>
+                <td>
+                  <span class="numero-nomina">
+                    {{ amortizacion.numeroPago }}
+                  </span>
+                </td>
+
+                <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( amortizacion.fechaPago )}}</span>
+                </td>
+                <td> {{ amortizacion.monto }}</td>
+                <td> {{ amortizacion.saldoRestante }}</td>
+
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="empty-message">
+                  <div class="empty-state">
+                    <i class="pi pi-search empty-icon"></i>
+                    <p>No se encontraron Solitudes pendientes.</p>
+
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+              <tr>
+                <td colspan="5">
+                  <div class="loading-state">
+                    <i class="pi pi-spin pi-spinner loading-icon"></i>
+                    <p>Buscando Solicitudes...</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+          <p-table #dt [value]="simulacionAmortizacion" [loading]="loading" [paginator]="true" [rows]="5"
+            *ngIf="selectSolicitud?.estatus === 'Autorizada'" [rowsPerPageOptions]="[5]" [showCurrentPageReport]="true"
+            scrollHeight="400px" [tableStyle]="{ 'min-width': '30rem','max-height': '20rem' }"
+            styleClass="p-datatable-gridlines"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes" [scrollable]="true"
+            [responsive]="true">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 80px">
+                  No. Pago
+                </th>
+                <th style="min-width: 200px">
+                  Fecha Pago
+                </th>
+                <th style="min-width: 300px">
+                  Monto Pago
+                </th>
+                <th style="width: 120px">
+                  Pago Aplicado
+                </th>
+
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-amortizacion>
+              <tr>
+                <td>
+                  <span class="numero-nomina">
+                    {{ amortizacion.numeroPago }}
+                  </span>
+                </td>
+
+                <td> <span class="default-texto"> {{globalHelpers.formatearFechastr( amortizacion.fechaPago )}}</span>
+                </td>
+                <td> {{ amortizacion.monto }}</td>
+                <td><p-tag icon="pi pi-times" severity="danger" value="No" *ngIf="!amortizacion.pagoAplicado" /> </td>
+
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="6" class="empty-message">
+                  <div class="empty-state">
+                    <i class="pi pi-search empty-icon"></i>
+                    <p>No se encontraron Solitudes pendientes.</p>
+
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="loadingbody">
+              <tr>
+                <td colspan="6">
+                  <div class="loading-state">
+                    <i class="pi pi-spin pi-spinner loading-icon"></i>
+                    <p>Buscando Solicitudes...</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+        </p-panel>
+
+      </div>
+
+
+    </p-dialog>
 
 
 

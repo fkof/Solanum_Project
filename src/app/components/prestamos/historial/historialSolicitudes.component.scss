@@ -20,6 +20,30 @@
       gap: 1rem;
   }
 
+  h2 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 8px;
+  }
+
+  .date-box {
+      background-color: #eef2f7;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 16px;
+      color: #444;
+  }
+
+  .container_solicitud {
+      background-color: #ffffff;
+      border-radius: 12px;
+      // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 24px;
+      width: 45vm;
+      text-align: center;
+  }
+
   .header-content {
       color: white;
   }

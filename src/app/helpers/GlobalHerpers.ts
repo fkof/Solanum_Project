@@ -48,6 +48,10 @@ export class GlobalHelpers {
                 return 'danger';
             case 'Cancelada':
                 return 'contrast';
+            case 'Pendiente Por Liquidar':
+                return 'warn';
+            case 'Liquidado':
+                return 'success';
             default:
                 return 'info';
         }

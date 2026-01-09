@@ -36,7 +36,7 @@ export class SolicitudPrestamoComponent {
     idEmpleado: number = 0;
     motivo: string = "";
     montoSolicitado: number = 0;
-    solicitudesPermiso: any[] = [];
+    solicitudesPrestamo: any[] = [];
     cantidadRebaje: CantidadRebaje[] = [];
     veResumen: boolean = false;
     selectedCantidadRebaje: CantidadRebaje | null = null;
@@ -89,7 +89,7 @@ export class SolicitudPrestamoComponent {
         this.loading = true;
         this.prestamosServices.getSolicitudesPendientesParaEmpleadoLogueado(this.idEmpleado).subscribe({
             next: data => {
-                this.solicitudesPermiso = data;
+                this.solicitudesPrestamo = data;
                 this.loading = false;
             }, error: error => {
                 this.messageService.add({
@@ -142,7 +142,22 @@ export class SolicitudPrestamoComponent {
             });
             return;
         }
-
+        if (parseFloat(this.montoSolicitado.toString()) < parseFloat(this.selectedCantidadRebaje.descripcion)) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'El monto solicitado es menor al monto minimo a descontar'
+            });
+            return;
+        }
+        if (this.motivo.toLowerCase().trim() === "por motivos personales") {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'No se puede capturar "Por motivos personales", por favor ingrese especificamente el motivo'
+            });
+            return;
+        }
         this.veResumen = true;
         this.simulacionAmortizacion = [];
         this.abrirCerrarMortizacion(false);
@@ -172,6 +187,7 @@ export class SolicitudPrestamoComponent {
                     summary: 'Error',
                     detail: error
                 });
+                this.loading = false;
             }, complete: () => {
                 this.loading = false;
             }

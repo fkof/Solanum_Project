@@ -24,15 +24,15 @@ import { GlobalHelpers } from '../../../helpers/GlobalHerpers';
 import { Panel } from "primeng/panel";
 import { IconFieldModule } from 'primeng/iconfield';
 @Component({
-    selector: 'prestamosAAprobar',
-    templateUrl: 'prestamosAAprobar.component.html',
-    styleUrls: ['./prestamosAAprobar.component.scss'],
+    selector: 'repPrestamos',
+    templateUrl: 'repPrestamos.component.html',
+    styleUrls: ['./repPrestamos.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule, InputTextModule, TooltipModule, TagModule,
         FormsModule, ButtonModule, DatePickerModule, TableModule, SelectModule, Panel, IconFieldModule],
     providers: [MessageService, ConfirmationService, GlobalHelpers]
 })
 
-export class PrestamosAAprobar implements OnInit {
+export class repPrestamos implements OnInit {
     loading: boolean = false;
     disabledDates: Date[] = [];
     fechaInicial: Date | null = null;
@@ -53,6 +53,7 @@ export class PrestamosAAprobar implements OnInit {
     headerAmortizacion: string = "Simulación de Amortización";
     estatusPrestamoSeleccionado: number = 0;
     listEstatusPrestamo: any[] = [];
+
     constructor(private messageService: MessageService, public sidebarService: SideBarService,
         private prestamosService: PrestamosServices,
         private vacacionesService: VacacionesServices,
@@ -161,7 +162,7 @@ export class PrestamosAAprobar implements OnInit {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Solicitud Rechazada',
-                    detail: 'La solicitud del prestamo ha sido rechazada correctamente'
+                    detail: 'La solicitud del permiso ha sido rechazada correctamente'
 
                 })
                 this.showDialog = false;
@@ -192,7 +193,7 @@ export class PrestamosAAprobar implements OnInit {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Solicitud Aprobada',
-                    detail: 'La solicitud del prestamo ha sido aprobada correctamente'
+                    detail: 'La solicitud del permiso ha sido aprobada correctamente'
 
                 })
                 this.showDialog = false;

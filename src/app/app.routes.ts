@@ -22,6 +22,8 @@ import { HomeConfigComponent } from './components/home/ConfiguracionHome/homeCon
 import { SolicitudPrestamoComponent } from './components/prestamos/solicitud/solicitudPrestamo.component';
 import { HistorialSolicitudesPrestamos } from './components/prestamos/historial/historialSolicitudes.component';
 import { PrestamosAAprobar } from './components/prestamos/prestamosAAprobar/prestamosAAprobar.component';
+import { repPrestamos } from './components/reportes/repPrestamos/repPrestamos.component';
+import { NoticiasConfigComponent } from './components/noticias/confNoticias/noticiasConfig.component';
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'main', component: HomeComponent, canActivate: [AuthGuard] },
@@ -45,4 +47,6 @@ export const routes: Routes = [
   { path: 'solPrestamos', component: SolicitudPrestamoComponent, canActivate: [AuthGuard] },
   { path: 'solPrestamosEmpleados', component: HistorialSolicitudesPrestamos, canActivate: [AuthGuard] },
   { path: 'prestamosAAprobar', component: PrestamosAAprobar, canActivate: [AuthGuard] },
+  { path: 'repPrestamos', component: repPrestamos, canActivate: [AuthGuard] },
+  { path: 'confNoticias', component: NoticiasConfigComponent, canActivate: [AuthGuard] },
 ];

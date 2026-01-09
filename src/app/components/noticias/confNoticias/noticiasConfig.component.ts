@@ -21,14 +21,14 @@ import { HomeService } from '../../../services/home.services';
 import { Dialog } from "primeng/dialog";
 import { FileUpload } from "primeng/fileupload";
 @Component({
-    selector: 'app-homeConfig',
-    templateUrl: './homeConfig.component.html',
-    styleUrls: ['./homeConfig.component.scss'],
+    selector: 'app-noticiasConfig',
+    templateUrl: './noticiasConfig.component.html',
+    styleUrls: ['./noticiasConfig.component.scss'],
     imports: [Editor, FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule, DividerModule, InputTextModule, TextareaModule, TableModule, TooltipModule, GalleriaModule, Dialog, FileUpload],
     providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }, FileUpload]
 
 })
-export class HomeConfigComponent implements OnInit {
+export class NoticiasConfigComponent implements OnInit {
     sanitizedHtmlSnippet: SafeHtml = '';
     usuarioLogueado: number = 0;
     visible: boolean = false;
@@ -203,7 +203,6 @@ export class HomeConfigComponent implements OnInit {
                     summary: 'Exito',
                     detail: 'Imagen agregada correctamente'
                 });
-                this.visible = false
             }, error: (data) => {
                 this.messageService.add({
                     severity: 'error',
