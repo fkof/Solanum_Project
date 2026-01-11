@@ -65,10 +65,39 @@
     gap: 1.5rem;
 }
 
+.justify-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.empty-state,
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #999;
+}
+
+.empty-icon,
+.loading-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+.empty-state p,
+.loading-state p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
 .form-field {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    padding: 1rem;
 }
 
 .field-label {
@@ -76,6 +105,36 @@
     font-weight: 600;
     color: #666;
     margin-bottom: 0.25rem;
+}
+
+.image-wrapper {
+    position: relative;
+    /* referencia para el botón */
+    display: inline-block;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 25rem;
+    height: 25rem;
+    //  max-width: 100%;
+    border-radius: 8px;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    left: 23rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .vacation-container {

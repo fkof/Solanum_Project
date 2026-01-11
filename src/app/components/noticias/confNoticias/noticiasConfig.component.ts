@@ -16,36 +16,41 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TableModule } from "primeng/table";
 import { TooltipModule } from "primeng/tooltip";
 import { GalleriaModule } from "primeng/galleria";
-import { HomeConfig, HomeImage } from '../../../models/homeConfig';
-import { HomeService } from '../../../services/home.services';
+
 import { Dialog } from "primeng/dialog";
 import { FileUpload } from "primeng/fileupload";
+import { Noticias } from '../../../models/noticias';
+import { NoticiasService } from '../../../services/noticias.services';
+import { RolService } from '../../../services/rol.services';
+import { Rol } from '../../../models/rol';
+import { DropdownModule } from "primeng/dropdown";
 @Component({
     selector: 'app-noticiasConfig',
     templateUrl: './noticiasConfig.component.html',
     styleUrls: ['./noticiasConfig.component.scss'],
-    imports: [Editor, FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule, DividerModule, InputTextModule, TextareaModule, TableModule, TooltipModule, GalleriaModule, Dialog, FileUpload],
+    imports: [Editor, FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule,
+        DividerModule, InputTextModule, TextareaModule, TableModule, TooltipModule,
+        GalleriaModule, Dialog, FileUpload, DropdownModule],
     providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }, FileUpload]
 
 })
 export class NoticiasConfigComponent implements OnInit {
     sanitizedHtmlSnippet: SafeHtml = '';
     usuarioLogueado: number = 0;
+    arrayRoles: Rol[] = [];
     visible: boolean = false;
     formData = new FormData();
     @ViewChild('fileUploadRef') fileUpload!: FileUpload;
-    homeConfig: HomeConfig = {
-        titulo: "",
-        subTitulo: "",
-        mensaje: ""
+    arrayNoticias: Noticias[] = [];
+    selectedRol: number = 0;
+    noticia: Noticias = {
+        idNoticia: 0,
+        titulo: '',
+        descripcion: '',
+        rutaImagen: '',
+        idRol: 0,
+        descripcionSafe: ''
     };
-    homeimg: HomeImage = {
-        idImagen: 0,
-        titulo: "",
-        imagen: null,
-        ruta: "",
-        descripcion: ""
-    }
     loading: boolean = false;
     responsiveOptions: any[] = [
         {
@@ -57,7 +62,6 @@ export class NoticiasConfigComponent implements OnInit {
             numVisible: 1
         }
     ];
-    imagenesCarrusel: HomeImage[] = [];
     toolbarOptions = [
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 
@@ -72,68 +76,140 @@ export class NoticiasConfigComponent implements OnInit {
 
     ];
 
-    constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private homeServices: HomeService) {
-        this.getConfig();
-        this.getImagenes();
+    constructor(private messageService: MessageService,
+        private confirmationService: ConfirmationService,
+        private sanitizer: DomSanitizer,
+        private noticiasService: NoticiasService,
+        private rolService: RolService) {
+
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
     }
     ngOnInit(): void {
+        this.getNoticias();
+        this.getRoles();
+    }
+    getRoles() {
+        this.rolService.getAll().subscribe({
+            next: (data) => {
+                this.arrayRoles = data;
+            }, error: (data) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: data
+                });
+            }
+        })
+    }
+    getNoticias() {
+        this.noticiasService.getAllNoticias().subscribe({
+            next: (data) => {
+                this.arrayNoticias = data;
+            }, error: (data) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: data
+                });
+            }
+        })
     }
     updateSanitizedHtml(value: string) {
-        this.homeConfig.mensaje = value;
-        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
+        this.noticia.descripcion = value;
+        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.noticia.descripcion);
     }
-    saveConfiguracion() {
-        this.homeConfig.idUsuarioModificacion = this.usuarioLogueado;
-        this.homeServices.actualizarHome(this.homeConfig).subscribe({
-            next: (data) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Exito',
-                    detail: 'Configuración guardada correctamente'
-                });
-            }, error: (data) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: data
-                });
-            }
-        })
+    getSanitizedHtml(texto: string): SafeHtml {
+        let previewNoticia = texto.indexOf("<p>");
+        let clasep = ""
+        if (previewNoticia === -1) {
+            texto = "<p style='width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + texto + "</p>";
+        } else {
+            clasep = "width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+            let noticiaReemplazo = texto.replace("<p>", "<p style='" + clasep + "'>");
+            texto = noticiaReemplazo;
+        }
+        return this.sanitizer.bypassSecurityTrustHtml(texto);
     }
-    getConfig() {
-        this.homeServices.obtenerHome().subscribe({
-            next: (data) => {
-                console.log(data)
-                this.homeConfig = data;
-                this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
+    saveNoticias() {
+        this.noticia.idUsuarioModificacion = this.usuarioLogueado;
+        if (this.noticia.titulo === "" || this.noticia.titulo === null || this.noticia.titulo === undefined) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'El titulo es obligatorio'
+            });
+            return;
+        }
+        if (this.noticia.descripcion === "" || this.noticia.descripcion === null || this.noticia.descripcion === undefined) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'La descripcion es obligatoria'
+            });
+            return;
+        }
 
-            }, error: (data) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: data
-                });
-            }
-        })
-
-    }
-    getImagenes() {
-        this.homeServices.getAllImagenes().subscribe({
-            next: (data) => {
-                console.log(data)
-                this.imagenesCarrusel = data;
-                //  this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
-
-            }, error: (data) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: data
-                });
-            }
-        })
+        let noticia = this.noticia.descripcion.replace("&nbsp;", " ");
+        this.formData.append("titulo", this.noticia.titulo);
+        this.formData.append("descripcion", this.noticia.descripcion);
+        //  this.formData.append("idRol", this.noticia.idRol.toString());
+        this.formData.append("idUsuarioModificacion", this.usuarioLogueado.toString());
+        if (this.noticia.idNoticia === 0) {
+            this.noticiasService.createNoticias(this.formData).subscribe({
+                next: (data) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Exito',
+                        detail: 'Noticia guardada correctamente'
+                    });
+                    this.getNoticias();
+                    this.noticia = {
+                        idNoticia: 0,
+                        titulo: '',
+                        descripcion: '',
+                        rutaImagen: '',
+                        idRol: 0,
+                        descripcionSafe: ''
+                    };
+                    this.visible = false;
+                }, error: (data) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: data
+                    });
+                }
+            })
+        } else {
+            //  this.formData.delete("imagen");
+            this.formData.append("idNoticia", this.noticia.idNoticia.toString());
+            this.noticiasService.updateNoticias(this.formData).subscribe({
+                next: (data) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Exito',
+                        detail: 'Noticia actualizada correctamente'
+                    });
+                    this.getNoticias();
+                    this.noticia = {
+                        idNoticia: 0,
+                        titulo: '',
+                        descripcion: '',
+                        rutaImagen: '',
+                        idRol: 0,
+                        descripcionSafe: ''
+                    };
+                    this.visible = false;
+                }, error: (data) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: data
+                    });
+                }
+            })
+        }
     }
     onUploadFoto(event: any) {
         console.log(event)
@@ -184,52 +260,30 @@ export class NoticiasConfigComponent implements OnInit {
 
             console.log(this.formData.get("imagen"));
             //  this.homeimg.imagen = this.formData;
-            console.log(this.homeimg)
+
         }
     }
-    agregarImagenHome() {
-        this.loading = true;
-        this.formData.append("idImagen", this.homeimg.idImagen.toString());
-        this.formData.append("titulo", this.homeimg.titulo);
-        this.formData.append("descripcion", this.homeimg.descripcion);
-        this.formData.append("ruta", "");
-        this.homeServices.agregarImagenHome(this.formData).subscribe({
-            next: (data) => {
-                this.loading = false;
-                this.clearImgForm();
-                this.getImagenes()
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Exito',
-                    detail: 'Imagen agregada correctamente'
-                });
-            }, error: (data) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: data
-                });
-            }
-        })
-    }
+
     clearImgForm() {
         this.formData.delete("imagen");
         this.formData.delete("idImagen");
         this.formData.delete("titulo");
         this.formData.delete("descripcion");
         this.formData.delete("ruta");
-        this.homeimg = {
-            idImagen: 0,
-            titulo: "",
-            descripcion: "",
-            imagen: "",
-            ruta: ""
-        }
-        this.fileUpload.clear();
+
+        this.noticia = {
+            idNoticia: 0,
+            titulo: '',
+            descripcion: '',
+            rutaImagen: '',
+            idRol: 0,
+            descripcionSafe: ''
+        };
+        this.updateSanitizedHtml('');
     }
-    deleteImageHome(idImagen: number) {
+    deleteNoticia(idImagen: number) {
         this.confirmationService.confirm({
-            message: '¿Estás seguro de eliminar esta imagen?',
+            message: '¿Estás seguro de eliminar esta noticia?',
             header: 'Confirmación',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Aceptar',
@@ -237,15 +291,16 @@ export class NoticiasConfigComponent implements OnInit {
             rejectButtonStyleClass: 'p-button-danger',
             accept: () => {
                 this.loading = true;
-                this.homeServices.deleteImageHome(idImagen).subscribe({
+                this.noticiasService.deleteNoticias(idImagen).subscribe({
                     next: (data) => {
                         this.loading = false;
-                        this.getImagenes()
+                        this.getNoticias()
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Exito',
-                            detail: 'Imagen eliminada correctamente'
+                            detail: 'Noticia eliminada correctamente'
                         });
+                        this.getNoticias();
                     }, error: (data) => {
                         this.messageService.add({
                             severity: 'error',
@@ -256,5 +311,12 @@ export class NoticiasConfigComponent implements OnInit {
                 })
             }
         })
+    }
+    selectNoticiaEdit(noticia: Noticias) {
+        this.noticia = noticia;
+        this.visible = true;
+    }
+    deleteImage() {
+        this.noticia.rutaImagen = '';
     }
 }

@@ -17,6 +17,7 @@
 .main-content.with-sidebar {
   margin-left: 0;
 }
+
 /**/
 
 
@@ -26,16 +27,18 @@
 
 //Botones
 
-::ng-deep .p-button-primary{
+::ng-deep .p-button-primary {
   background: #00b398 !important;
 }
-::ng-deep .p-button-primary:hover{
+
+::ng-deep .p-button-primary:hover {
   background: #008f7a !important;
   //transform: translateY(-2px) !important;
   box-shadow: 0 4px 12px rgba(0, 179, 152, 0.4) !important;
 }
+
 ::ng-deep .p-button-outlined {
- // padding: 0.75rem 2rem;
+  // padding: 0.75rem 2rem;
   font-size: 1rem;
   border-radius: 8px;
   border-color: #00b398;
@@ -47,6 +50,7 @@
   border-color: #008f7a;
   color: #008f7a;
 }
+
 /////
 
 /*tags*/
@@ -92,27 +96,27 @@
   font-size: 1rem;
 }
 
-::ng-deep .p-float-label input:focus ~ label,
-::ng-deep .p-float-label textarea:focus ~ label,
-::ng-deep .p-float-label .p-inputwrapper-focus ~ label,
-::ng-deep .p-float-label input.p-filled ~ label,
-::ng-deep .p-float-label textarea.p-filled ~ label {
+::ng-deep .p-float-label input:focus~label,
+::ng-deep .p-float-label textarea:focus~label,
+::ng-deep .p-float-label .p-inputwrapper-focus~label,
+::ng-deep .p-float-label input.p-filled~label,
+::ng-deep .p-float-label textarea.p-filled~label {
   color: #00b398;
 }
-  
-  ::ng-deep .p-inputtext {
-    width: 100%;
-    //padding: 0.75rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s;
-  }
-  
-  ::ng-deep .p-inputtext:enabled:focus {
-    border-color: #00b398;
-    box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
-  }
+
+::ng-deep .p-inputtext {
+  width: 100%;
+  //padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-inputtext:enabled:focus {
+  border-color: #00b398;
+  box-shadow: 0 0 0 3px rgba(0, 179, 152, 0.1);
+}
 
 //upload button
 ::ng-deep .p-fileupload-choose-button {
@@ -139,12 +143,13 @@
 
 .dialogo {
   height: 57px;
-  width: 60px ;
+  width: 60px;
   padding-left: '15px';
   align-items: 'center';
   overflow: 'hidden';
 }
-.spinDialgo{
-   width: '50px';
-   height: '50px'
+
+.spinDialgo {
+  width: '50px';
+  height: '50px'
 }
