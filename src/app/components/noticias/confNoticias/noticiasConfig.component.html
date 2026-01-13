@@ -34,6 +34,9 @@
                         <th pSortableColumn="descripcion" style="max-width: 150px">
                             Descripción <p-sortIcon field="descripcion"></p-sortIcon>
                         </th>
+                        <th pSortableColumn="descripcion" style="max-width: 150px">
+                            Roles Asignados <p-sortIcon field="descripcion"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="imagen">
                             Imagen
                         </th>
@@ -48,10 +51,11 @@
                             <span class="nombre-rol">{{ img.titulo }}</span>
                         </td>
                         <td style="max-width: 150px">
-
-                            <div class="wrapNoticias" [innerHTML]="getSanitizedHtml(img.descripcion)"></div>
-
-
+                            <div class="wrapNoticias preview-text" [innerHTML]="getSanitizedHtml(img.descripcion)">
+                            </div>
+                        </td>
+                        <td style="max-width: 150px">
+                            <span class="nombre-rol">{{ img.rolesDescripcion }}</span>
                         </td>
                         <td style="max-width: 7rem">
                             <img [src]="'https://solanum.ledesing.com.mx/' + img.rutaImagen" alt="Imagen"
@@ -110,13 +114,13 @@
             </div>
             <div class="form-field">
                 <label class="field-label">Rol </label>
-                <p-dropdown [options]="arrayRoles" optionLabel="nombre" optionValue="idRol" [(ngModel)]="noticia.idRol"
-                    name="idRol"></p-dropdown>
+                <p-multiselect [options]="arrayRoles" [(ngModel)]="selectedRoles" optionLabel="nombre"
+                    placeholder="Select Cities" [maxSelectedLabels]="3" class="w-full md:w-80" />
             </div>
         </div>
         <div class="">
             <div class="form-field">
-                <label class="field-label">Texto de Noticia</label>{{noticia.descripcion}}
+                <label class="field-label">Texto de Noticia</label>
                 <p-editor *ngIf="visible" [(ngModel)]="noticia.descripcion"
                     (ngModelChange)="updateSanitizedHtml($event)" [modules]="{toolbar: toolbarOptions}"
                     [style]="{ height: '150px',position: 'relative' }">

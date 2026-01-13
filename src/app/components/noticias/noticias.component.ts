@@ -24,12 +24,19 @@ export class NoticiasComponent implements OnInit {
         descripcion: '',
         rutaImagen: '',
         idRol: 0,
-        descripcionSafe: ''
+        descripcionSafe: '',
+        rolesDescripcion: '',
+        idRoles: '',
     };
-    constructor(private noticiasService: NoticiasService, private sanitizer: DomSanitizer,) { }
+    rolesUsuario: string = '';
+    constructor(private noticiasService: NoticiasService, private sanitizer: DomSanitizer,) {
+        let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+        this.rolesUsuario = dataPerfil.usuario.idRoles//.replaceAll(",", "%2C");
+        console.log(this.rolesUsuario);
+    }
 
     ngOnInit(): void {
-        this.noticiasService.getAllNoticias().subscribe((data: any) => {
+        this.noticiasService.getNoticiasByRoles(this.rolesUsuario).subscribe((data: any) => {
             this.arrayNoticias = data;
             this.arrayNoticias.forEach(element => {
                 let noticiaReemplazo2 = element.descripcion.replaceAll("&nbsp;", " ");
@@ -49,7 +56,7 @@ export class NoticiasComponent implements OnInit {
         } else {
             let noticiaReemplazo = texto.replace("<p>",
                 "<p class='demo-class'>");
-            texto = noticiaReemplazo;
+            //  texto = noticiaReemplazo;
         }
         return this.sanitizer.bypassSecurityTrustHtml(texto);
     }

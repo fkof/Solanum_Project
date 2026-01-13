@@ -8,4 +8,6 @@ export interface Noticias extends commons {
     rutaImagen: string;
     idRol: number;
     descripcionSafe: SafeHtml;
+    rolesDescripcion: string;
+    idRoles: string;
 }

@@ -1,0 +1,158 @@
+<div class="container-general">
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+    <p-card>
+        <ng-template pTemplate="header">
+            <div class="card-header">
+                <div class="header-content">
+                    <h2 class="header-title">Configuración de Encuestas</h2>
+                    <p class="header-subtitle">Configura las encuestas para los colaboradores</p>
+                </div>
+
+            </div>
+        </ng-template>
+
+        <div class="form-field">
+
+            <p-table #dt [value]="arrayNoticias" [loading]="loading" [paginator]="true" [rows]="10"
+                [rowsPerPageOptions]="[5, 10, 20, 50]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} roles"
+                [globalFilterFields]="['nombre', 'descripcion']" [tableStyle]="{ 'min-width': '50rem' }"
+                styleClass="p-datatable-gridlines">
+
+                <ng-template #caption>
+                    <div class="flex items-center justify-between">
+                        <p-button icon="pi pi-plus" rounded raised (onClick)="visible=true" />
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="nombre" style="max-width: 70px">
+                            Titulo <p-sortIcon field="nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="descripcion" style="max-width: 150px">
+                            Descripción <p-sortIcon field="descripcion"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="imagen">
+                            Imagen
+                        </th>
+                        <th style="width: 140px">Acciones</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-img>
+                    <tr>
+
+                        <td style="max-width: 70px">
+                            <span class="nombre-rol">{{ img.titulo }}</span>
+                        </td>
+                        <td style="max-width: 150px">
+
+                            <div class="wrapNoticias" [innerHTML]="getSanitizedHtml(img.descripcion)"></div>
+
+
+                        </td>
+                        <td style="max-width: 7rem">
+                            <img [src]="'https://solanum.ledesing.com.mx/' + img.rutaImagen" alt="Imagen"
+                                style="width: 5rem; height: 5rem; border-radius: .25rem;" class="w-24 rounded">
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <p-button icon="pi pi-pencil" (onClick)="selectNoticiaEdit(img)" [pTooltip]="'Editar'"
+                                    styleClass="p-button-rounded p-button-text p-button-info edit-btn"
+                                    tooltipPosition="top"></p-button>
+                                <p-button icon="pi pi-trash" (onClick)="deleteNoticia(img.idNoticia)"
+                                    styleClass="p-button-rounded p-button-text p-button-danger delete-btn"
+                                    [pTooltip]="'Eliminar'" tooltipPosition="top"></p-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="5" class="empty-message">
+                            <div class="empty-state">
+                                <i class="pi pi-inbox empty-icon"></i>
+                                <p>No se encontraron noticias</p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="5">
+                            <div class="loading-state">
+                                <i class="pi pi-spin pi-spinner loading-icon"></i>
+                                <p>Cargando noticias...</p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+
+
+
+
+    </p-card>
+    <p-dialog header="Agregar Noticia" [modal]="true" [(visible)]="visible" maximizable="true" (onHide)="clearImgForm()"
+        [style]="{ width: '100%', height: '100vh' }">
+
+
+        <div class="form-grid">
+            <div class="form-field">
+                <label class="field-label">Titulo</label>
+                <input pInputText type="text" [(ngModel)]="noticia.titulo" placeholder="Titulo" class="search-input" />
+            </div>
+            <div class="form-field">
+                <label class="field-label">Rol </label>
+                <p-dropdown [options]="arrayRoles" optionLabel="nombre" optionValue="idRol" [(ngModel)]="noticia.idRol"
+                    name="idRol"></p-dropdown>
+            </div>
+        </div>
+        <div class="">
+            <div class="form-field">
+                <label class="field-label">Texto de Noticia</label>{{noticia.descripcion}}
+                <p-editor *ngIf="visible" [(ngModel)]="noticia.descripcion"
+                    (ngModelChange)="updateSanitizedHtml($event)" [modules]="{toolbar: toolbarOptions}"
+                    [style]="{ height: '150px',position: 'relative' }">
+                    <ng-template #header>
+
+                    </ng-template>
+                </p-editor>
+            </div>
+            <div class="form-field" *ngIf="noticia.rutaImagen.length>0">
+                <div class="image-wrapper">
+                    <img [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen" alt="Imagen"
+                        style="width: 25rem; height: 25rem; border-radius: .25rem;" class="w-24 rounded">
+                    <p-button icon="pi pi-times" [rounded]="true" severity="danger"
+                        [style]="{left: '23rem',top: '0rem',position: 'absolute'}" (onClick)="deleteImage()" />
+
+                </div>
+
+
+            </div>
+            <div class="form-field" style="padding-top: 1rem;" *ngIf="noticia.rutaImagen.length===0">
+                <p-fileUpload chooseLabel="Selecciona una imagen" #fileUploadRef accept="image/*"
+                    [maxFileSize]="2097152" invalidFileSizeMessageSummary="'{0}', archivo excede el peso permitido"
+                    invalidFileSizeMessageDetail="El peso maximo permitido es de: {0}"
+                    invalidFileTypeMessageDetail=", favor de seleccionar un formato valido"
+                    invalidFileTypeMessageSummary="'{0}', Archivo invalido solamente se perminten imagenes"
+                    (onSelect)="onUploadFoto($event)" [auto]="true" chooseIcon="pi pi-upload"></p-fileUpload>
+
+            </div>
+        </div>
+
+        <ng-template #footer>
+            <div class="flex justify-end gap-2">
+                <p-button label="Cancelar" severity="secondary" (click)="visible = false"
+                    [style]="{ marginRight: '1rem' }" />
+                <p-button icon="pi pi-save" styleClass="p-button-primary" label="Guardar" (onClick)="saveNoticias()" />
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

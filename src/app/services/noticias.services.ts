@@ -34,6 +34,10 @@ export class NoticiasService {
         return this.http.delete<any>(`${this.apiUrl}?idNoticia=${id}`)
             .pipe(catchError(this.handleError));
     }
+    getNoticiasByRoles(idRoles: string): Observable<Noticias[]> {
+        return this.http.get<Noticias[]>(`${this.apiUrl}/NoticiaPorRol?idRoles=${idRoles}`)
+            .pipe(catchError(this.handleError));
+    }
     private handleError(error: any): Observable<never> {
         let errorMessage = 'Ha ocurrido un error en el servidor';
 

@@ -24,13 +24,14 @@ import { NoticiasService } from '../../../services/noticias.services';
 import { RolService } from '../../../services/rol.services';
 import { Rol } from '../../../models/rol';
 import { DropdownModule } from "primeng/dropdown";
+import { MultiSelectModule } from "primeng/multiselect";
 @Component({
     selector: 'app-noticiasConfig',
     templateUrl: './noticiasConfig.component.html',
     styleUrls: ['./noticiasConfig.component.scss'],
     imports: [Editor, FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule,
         DividerModule, InputTextModule, TextareaModule, TableModule, TooltipModule,
-        GalleriaModule, Dialog, FileUpload, DropdownModule],
+        GalleriaModule, Dialog, FileUpload, DropdownModule, MultiSelectModule],
     providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }, FileUpload]
 
 })
@@ -42,15 +43,18 @@ export class NoticiasConfigComponent implements OnInit {
     formData = new FormData();
     @ViewChild('fileUploadRef') fileUpload!: FileUpload;
     arrayNoticias: Noticias[] = [];
-    selectedRol: number = 0;
+    selectedRoles: Rol[] = [];
     noticia: Noticias = {
         idNoticia: 0,
         titulo: '',
         descripcion: '',
         rutaImagen: '',
         idRol: 0,
-        descripcionSafe: ''
+        descripcionSafe: '',
+        rolesDescripcion: '',
+        idRoles: ''
     };
+    deleteimg: boolean = false;
     loading: boolean = false;
     responsiveOptions: any[] = [
         {
@@ -123,9 +127,9 @@ export class NoticiasConfigComponent implements OnInit {
         let previewNoticia = texto.indexOf("<p>");
         let clasep = ""
         if (previewNoticia === -1) {
-            texto = "<p style='width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + texto + "</p>";
+            texto = "<p style='width: 250px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + texto + "</p>";
         } else {
-            clasep = "width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+            clasep = "width: 250px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
             let noticiaReemplazo = texto.replace("<p>", "<p style='" + clasep + "'>");
             texto = noticiaReemplazo;
         }
@@ -133,6 +137,8 @@ export class NoticiasConfigComponent implements OnInit {
     }
     saveNoticias() {
         this.noticia.idUsuarioModificacion = this.usuarioLogueado;
+        this.noticia.idRoles = this.selectedRoles.map((rol) => rol.idRol).join(',');
+
         if (this.noticia.titulo === "" || this.noticia.titulo === null || this.noticia.titulo === undefined) {
             this.messageService.add({
                 severity: 'error',
@@ -150,11 +156,20 @@ export class NoticiasConfigComponent implements OnInit {
             return;
         }
 
-        let noticia = this.noticia.descripcion.replace("&nbsp;", " ");
+        let noticia = this.noticia.descripcion.replaceAll("&nbsp;", " ");
         this.formData.append("titulo", this.noticia.titulo);
-        this.formData.append("descripcion", this.noticia.descripcion);
-        //  this.formData.append("idRol", this.noticia.idRol.toString());
+        this.formData.append("descripcion", noticia);
+        this.formData.append("idRoles", this.noticia.idRoles);
         this.formData.append("idUsuarioModificacion", this.usuarioLogueado.toString());
+        console.info(this.formData);
+
+        const formDataObject = Object.fromEntries(this.formData.entries());
+        console.log(formDataObject);
+
+        // For a cleaner, stringified view:
+        console.log(JSON.stringify(formDataObject, null, 2));
+
+
         if (this.noticia.idNoticia === 0) {
             this.noticiasService.createNoticias(this.formData).subscribe({
                 next: (data) => {
@@ -164,14 +179,7 @@ export class NoticiasConfigComponent implements OnInit {
                         detail: 'Noticia guardada correctamente'
                     });
                     this.getNoticias();
-                    this.noticia = {
-                        idNoticia: 0,
-                        titulo: '',
-                        descripcion: '',
-                        rutaImagen: '',
-                        idRol: 0,
-                        descripcionSafe: ''
-                    };
+                    this.clearImgForm
                     this.visible = false;
                 }, error: (data) => {
                     this.messageService.add({
@@ -192,14 +200,7 @@ export class NoticiasConfigComponent implements OnInit {
                         detail: 'Noticia actualizada correctamente'
                     });
                     this.getNoticias();
-                    this.noticia = {
-                        idNoticia: 0,
-                        titulo: '',
-                        descripcion: '',
-                        rutaImagen: '',
-                        idRol: 0,
-                        descripcionSafe: ''
-                    };
+                    this.clearImgForm();
                     this.visible = false;
                 }, error: (data) => {
                     this.messageService.add({
@@ -270,14 +271,18 @@ export class NoticiasConfigComponent implements OnInit {
         this.formData.delete("titulo");
         this.formData.delete("descripcion");
         this.formData.delete("ruta");
-
+        this.formData.delete("idNoticia");
+        this.formData.delete("idUsuarioModificacion");
+        this.formData.delete("idRoles");
         this.noticia = {
             idNoticia: 0,
             titulo: '',
             descripcion: '',
             rutaImagen: '',
             idRol: 0,
-            descripcionSafe: ''
+            descripcionSafe: '',
+            rolesDescripcion: '',
+            idRoles: ''
         };
         this.updateSanitizedHtml('');
     }
@@ -314,9 +319,15 @@ export class NoticiasConfigComponent implements OnInit {
     }
     selectNoticiaEdit(noticia: Noticias) {
         this.noticia = noticia;
+
+        let selectRoles = this.noticia.idRoles.split(',').map(Number);
+
+        this.selectedRoles = this.arrayRoles.filter(element => selectRoles.includes(element.idRol));
+
         this.visible = true;
     }
     deleteImage() {
+        this.deleteimg = true;
         this.noticia.rutaImagen = '';
     }
 }

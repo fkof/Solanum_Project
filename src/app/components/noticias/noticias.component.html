@@ -16,7 +16,7 @@
                     <div class="noticia-texto">
                         <h2>{{noticia.titulo}}</h2>
 
-                        <p [innerHTML]="noticia.descripcionSafe"></p>
+                        <p class="demo-class" [innerHTML]="noticia.descripcionSafe"></p>
 
 
                         <p-button label="leer mas.." [link]="true" (click)="showDialog(noticia)" />
@@ -32,10 +32,15 @@
         </div>
     </p-card>
     <p-dialog [(visible)]="visible" [modal]="true" header="{{noticia.titulo}}"
-        [style]="{ width: '100%', height: '100vh' }" maximizable="true">
-        <img class="img-noticiaDialog" [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen"
-            alt="Imagen de la noticia 1">
-        <p [innerHTML]="noticia.descripcionSafe"></p>
+        [style]="{ width: '50rem', height: '100vh' }" maximizable="true">
+        <div style="width: 40rem;">
+            <div style="text-align: center; background-color: #ecf9f8;  border-radius: 8px;">
+                <img class="img-noticiaDialog" [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen"
+                    alt="Imagen de la noticia 1">
+            </div>
+            <p [innerHTML]="noticia.descripcionSafe"></p>
+        </div>
+
         <ng-template #footer>
             <div class="flex justify-end gap-2">
                 <p-button label="Cerrar" (click)="visible = false" full />

@@ -56,7 +56,10 @@ export class HomeComponent {
       next: (data) => {
         console.log(data)
         this.homeConfig = data;
-        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
+        let clasep = "width: 450px;"
+        let noticiaReemplazo = this.homeConfig.mensaje.replace("<p>", "<p style='" + clasep + "'>");
+        let noticiaReemplazo2 = noticiaReemplazo.replaceAll("&nbsp;", " ");
+        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(noticiaReemplazo2);
 
       }, error: (data) => {
         this.messageService.add({
