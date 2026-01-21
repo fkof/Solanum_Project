@@ -181,14 +181,18 @@ export class SolicitudPrestamoComponent {
                     detail: 'Solicitud creada correctamente'
                 });
                 this.getSolicitudesPendientes();
+                this.veResumen = false;
+
             }, error: error => {
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
                     detail: error
                 });
+                this.veResumen = false;
                 this.loading = false;
             }, complete: () => {
+                this.veResumen = false;
                 this.loading = false;
             }
         })

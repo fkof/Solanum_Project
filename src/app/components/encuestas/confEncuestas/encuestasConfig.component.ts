@@ -19,75 +19,51 @@ import { GalleriaModule } from "primeng/galleria";
 
 import { Dialog } from "primeng/dialog";
 import { FileUpload } from "primeng/fileupload";
-import { Noticias } from '../../../models/noticias';
-import { NoticiasService } from '../../../services/noticias.services';
 import { RolService } from '../../../services/rol.services';
+import { MultiSelectModule } from "primeng/multiselect";
+import { Encuestas } from '../../../models/encuestas';
+import { EncuestasService } from '../../../services/encuestas.services';
 import { Rol } from '../../../models/rol';
-import { DropdownModule } from "primeng/dropdown";
 @Component({
     selector: 'app-encuestasConfig',
     templateUrl: './encuestasConfig.component.html',
     styleUrls: ['./encuestasConfig.component.scss'],
-    imports: [Editor, FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule,
+    imports: [FormsModule, Button, ToastModule, ConfirmDialogModule, CardModule,
         DividerModule, InputTextModule, TextareaModule, TableModule, TooltipModule,
-        GalleriaModule, Dialog, FileUpload, DropdownModule],
+        GalleriaModule, MultiSelectModule],
     providers: [MessageService, ConfirmationService, { provide: LOCALE_ID, useValue: 'es-MX' }, FileUpload]
 
 })
 export class EncuestasConfigComponent implements OnInit {
-    sanitizedHtmlSnippet: SafeHtml = '';
+
     usuarioLogueado: number = 0;
-    arrayRoles: Rol[] = [];
-    visible: boolean = false;
-    formData = new FormData();
-    @ViewChild('fileUploadRef') fileUpload!: FileUpload;
-    arrayNoticias: Noticias[] = [];
-    selectedRol: number = 0;
-    noticia: Noticias = {
-        idNoticia: 0,
+    arrayEncuestas: Encuestas[] = [];
+    encuesta: Encuestas = {
+        idEncuesta: 0,
         titulo: '',
         descripcion: '',
-        rutaImagen: '',
-        idRol: 0,
-        descripcionSafe: ''
+        link: '',
+        idUsuarioModificacion: 0,
+        idRoles: '',
+        rolesDescripcion: '',
+        idUsuarioCreacion: 0,
+        linksafe: ''
     };
+    arrayRoles: Rol[] = [];
     loading: boolean = false;
-    responsiveOptions: any[] = [
-        {
-            breakpoint: '1300px',
-            numVisible: 4
-        },
-        {
-            breakpoint: '575px',
-            numVisible: 1
-        }
-    ];
-    toolbarOptions = [
-        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-
-        //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-
-
-
-    ];
+    selectedRoles: Rol[] = [];
 
     constructor(private messageService: MessageService,
         private confirmationService: ConfirmationService,
-        private sanitizer: DomSanitizer,
-        private noticiasService: NoticiasService,
+        private encuestasService: EncuestasService,
         private rolService: RolService) {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
     }
     ngOnInit(): void {
-        this.getNoticias();
         this.getRoles();
+        this.getEncuestas();
     }
     getRoles() {
         this.rolService.getAll().subscribe({
@@ -102,10 +78,10 @@ export class EncuestasConfigComponent implements OnInit {
             }
         })
     }
-    getNoticias() {
-        this.noticiasService.getAllNoticias().subscribe({
+    getEncuestas() {
+        this.encuestasService.getAllEncuestas().subscribe({
             next: (data) => {
-                this.arrayNoticias = data;
+                this.arrayEncuestas = data;
             }, error: (data) => {
                 this.messageService.add({
                     severity: 'error',
@@ -115,25 +91,29 @@ export class EncuestasConfigComponent implements OnInit {
             }
         })
     }
-    updateSanitizedHtml(value: string) {
-        this.noticia.descripcion = value;
-        this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.noticia.descripcion);
-    }
-    getSanitizedHtml(texto: string): SafeHtml {
-        let previewNoticia = texto.indexOf("<p>");
-        let clasep = ""
-        if (previewNoticia === -1) {
-            texto = "<p style='width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + texto + "</p>";
-        } else {
-            clasep = "width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-            let noticiaReemplazo = texto.replace("<p>", "<p style='" + clasep + "'>");
-            texto = noticiaReemplazo;
+
+    saveEncuesta() {
+        this.encuesta.idUsuarioModificacion = this.usuarioLogueado;
+        this.encuesta.idUsuarioCreacion = this.usuarioLogueado;
+        if (this.encuesta.link === "" || this.encuesta.link === null || this.encuesta.link === undefined) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'El link es obligatorio'
+            });
+            return;
         }
-        return this.sanitizer.bypassSecurityTrustHtml(texto);
-    }
-    saveNoticias() {
-        this.noticia.idUsuarioModificacion = this.usuarioLogueado;
-        if (this.noticia.titulo === "" || this.noticia.titulo === null || this.noticia.titulo === undefined) {
+        if (this.selectedRoles.length === 0) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Se debe seleccionar al menos un rol'
+            });
+            return;
+        }
+        this.encuesta.idRoles = this.selectedRoles.map((rol) => rol.idRol).join(',');
+
+        /*if (this.encuesta.titulo === "" || this.encuesta.titulo === null || this.encuesta.titulo === undefined) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
@@ -141,149 +121,94 @@ export class EncuestasConfigComponent implements OnInit {
             });
             return;
         }
-        if (this.noticia.descripcion === "" || this.noticia.descripcion === null || this.noticia.descripcion === undefined) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'La descripcion es obligatoria'
-            });
-            return;
-        }
-
-        let noticia = this.noticia.descripcion.replace("&nbsp;", " ");
-        this.formData.append("titulo", this.noticia.titulo);
-        this.formData.append("descripcion", this.noticia.descripcion);
-        //  this.formData.append("idRol", this.noticia.idRol.toString());
-        this.formData.append("idUsuarioModificacion", this.usuarioLogueado.toString());
-        if (this.noticia.idNoticia === 0) {
-            this.noticiasService.createNoticias(this.formData).subscribe({
+*/
+        if (this.encuesta.idEncuesta === 0) {
+            this.loading = true;
+            let formData = new FormData();
+            formData.append("link", this.encuesta.link);
+            formData.append("idUsuarioCreacion", this.usuarioLogueado.toString());
+            formData.append("idRoles", this.encuesta.idRoles);
+            this.encuestasService.createEncuestas(formData).subscribe({
                 next: (data) => {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Exito',
-                        detail: 'Noticia guardada correctamente'
+                        detail: 'Encuesta guardada correctamente'
                     });
-                    this.getNoticias();
-                    this.noticia = {
-                        idNoticia: 0,
+                    this.getEncuestas();
+                    this.encuesta = {
+                        idEncuesta: 0,
                         titulo: '',
                         descripcion: '',
-                        rutaImagen: '',
-                        idRol: 0,
-                        descripcionSafe: ''
+                        link: '',
+                        linksafe: '',
+                        idUsuarioModificacion: 0,
+                        idRoles: '',
+                        rolesDescripcion: ''
                     };
-                    this.visible = false;
+                    formData.delete("link");
+                    formData.delete("idUsuarioCreacion");
+                    formData.delete("idRoles");
+
+                    this.selectedRoles = [];
+                    this.loading = false;
                 }, error: (data) => {
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
                         detail: data
                     });
+                    this.loading = false;
                 }
             })
         } else {
             //  this.formData.delete("imagen");
-            this.formData.append("idNoticia", this.noticia.idNoticia.toString());
-            this.noticiasService.updateNoticias(this.formData).subscribe({
+            this.loading = true;
+            this.encuesta.idUsuarioModificacion = this.usuarioLogueado;
+            let formData = new FormData();
+            formData.append("idEncuesta", this.encuesta.idEncuesta.toString());
+            formData.append("link", this.encuesta.link);
+            formData.append("idUsuarioModificacion", this.usuarioLogueado.toString());
+            formData.append("idRoles", this.encuesta.idRoles);
+            this.encuestasService.updateEncuestas(formData).subscribe({
                 next: (data) => {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Exito',
-                        detail: 'Noticia actualizada correctamente'
+                        detail: 'Encuesta actualizada correctamente'
                     });
-                    this.getNoticias();
-                    this.noticia = {
-                        idNoticia: 0,
+                    this.getEncuestas();
+                    this.encuesta = {
+                        idEncuesta: 0,
                         titulo: '',
                         descripcion: '',
-                        rutaImagen: '',
-                        idRol: 0,
-                        descripcionSafe: ''
+                        linksafe: '',
+                        link: '',
+                        idUsuarioModificacion: 0,
+                        idRoles: '',
+                        rolesDescripcion: ''
                     };
-                    this.visible = false;
+                    formData.delete("link");
+                    formData.delete("idUsuarioModificacion");
+                    formData.delete("idRoles");
+                    formData.delete("idEncuesta");
+                    this.selectedRoles = [];
+                    this.loading = false;
                 }, error: (data) => {
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
                         detail: data
                     });
+                    this.loading = false;
                 }
             })
         }
     }
-    onUploadFoto(event: any) {
-        console.log(event)
-        const file = event.files[0];
-        if (file) {
-            console.log("archivo", file.type)
-            // Verificar si el archivo es una imagen
-            if (!file.type.startsWith('image/')) {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Formato inválido',
-                    detail: 'Solo se permiten archivos de imagen (jpg, png, etc.)'
-                });
-                if (event.options && event.options.clear) {
-                    event.options.clear();
-                } else if (event.originalEvent && event.originalEvent.target && event.originalEvent.target.value) {
-                    event.originalEvent.target.value = '';
-                }
-                /*if (this.fileUploadRef && this.fileUploadRef.clear) {
-                  this.fileUploadRef.clear();
-                }*/
-                return;
-            }
-            // this.extensionFotografia = file.type.split("/")[1]
 
-            // Validar peso máximo de 2MB (2 * 1024 * 1024 bytes)
-            const maxSize = 2 * 1024 * 1024;
-            if (file.size > maxSize) {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Archivo demasiado grande',
-                    detail: 'El tamaño máximo permitido es de 2 MB'
-                });
-                if (event.options && event.options.clear) {
-                    event.options.clear();
-                } else if (event.originalEvent && event.originalEvent.target && event.originalEvent.target.value) {
-                    event.originalEvent.target.value = '';
-                }
-                /*if (this.fileUploadRef && this.fileUploadRef.clear) {
-                  this.fileUploadRef.clear();
-                }*/
-                return;
-            }
-            const reader = new FileReader();
-
-
-            this.formData.append("imagen", file);
-
-            console.log(this.formData.get("imagen"));
-            //  this.homeimg.imagen = this.formData;
-
-        }
-    }
-
-    clearImgForm() {
-        this.formData.delete("imagen");
-        this.formData.delete("idImagen");
-        this.formData.delete("titulo");
-        this.formData.delete("descripcion");
-        this.formData.delete("ruta");
-
-        this.noticia = {
-            idNoticia: 0,
-            titulo: '',
-            descripcion: '',
-            rutaImagen: '',
-            idRol: 0,
-            descripcionSafe: ''
-        };
-        this.updateSanitizedHtml('');
-    }
-    deleteNoticia(idImagen: number) {
+    deleteEncuesta(idEncuesta: number) {
         this.confirmationService.confirm({
-            message: '¿Estás seguro de eliminar esta noticia?',
+            message: '¿Estás seguro de eliminar esta encuesta?',
             header: 'Confirmación',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Aceptar',
@@ -291,16 +216,16 @@ export class EncuestasConfigComponent implements OnInit {
             rejectButtonStyleClass: 'p-button-danger',
             accept: () => {
                 this.loading = true;
-                this.noticiasService.deleteNoticias(idImagen).subscribe({
+                this.encuestasService.deleteEncuestas(idEncuesta).subscribe({
                     next: (data) => {
                         this.loading = false;
-                        this.getNoticias()
+                        this.getEncuestas()
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Exito',
-                            detail: 'Noticia eliminada correctamente'
+                            detail: 'Encuesta eliminada correctamente'
                         });
-                        this.getNoticias();
+                        this.getEncuestas();
                     }, error: (data) => {
                         this.messageService.add({
                             severity: 'error',
@@ -312,11 +237,10 @@ export class EncuestasConfigComponent implements OnInit {
             }
         })
     }
-    selectNoticiaEdit(noticia: Noticias) {
-        this.noticia = noticia;
-        this.visible = true;
+    selectEncuestaEdit(encuesta: Encuestas) {
+        this.encuesta = encuesta;
+        this.selectedRoles = this.arrayRoles.filter((rol) => this.encuesta.idRoles.split(',').includes(rol.idRol.toString()));
     }
-    deleteImage() {
-        this.noticia.rutaImagen = '';
-    }
+
+
 }

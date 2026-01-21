@@ -1,1 +1,13 @@
-<div class="container-general"></div>
+<div class="container-general">
+    <p-card>
+        <div style="text-align: center;" *ngFor="let encuesta of arrayEncuestas; let i = index;">
+            <iframe width="840px" height="480px" [src]="encuesta.link | safe" frameborder="0" marginwidth="0"
+                marginheight="0" style="border: none; max-width:100%; max-height:100vh ;padding-top: 20px;
+                " allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
+        </div>
+
+    </p-card>
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
+
+</div>

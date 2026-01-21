@@ -158,8 +158,26 @@
     }
 }
 
-@media (max-width: 768px) {
+.wrapColumna {
+    display: inline-block;
+    max-width: 450px;
+    /* ajusta según tu diseño */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
+}
+
+@media (max-width: 768px) {
+    .wrapColumna {
+        display: inline-block;
+        max-width: 250px;
+        /* ajusta según tu diseño */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
 
     .header-title {
         font-size: 1.5rem;

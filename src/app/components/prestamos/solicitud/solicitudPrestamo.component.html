@@ -11,7 +11,13 @@
 
       <h2>Motivo</h2>
       <div class="date-box">{{motivo}}</div>
-      <p-panel header="Amortización" [toggleable]="true" (collapsedChange)="abrirCerrarMortizacion($event)">
+      <div style="display: flex; justify-content: left !important; text-align: left !important;">
+        <p-message severity="error" size="small" variant="simple">Nota: Este escenario es una simulación del rebaje del
+          préstamo en caso de ser aprobado en esta semana, sujeto a cambios.</p-message>
+
+      </div>
+      <p-panel header="Simulación de Amortización" [toggleable]="true"
+        (collapsedChange)="abrirCerrarMortizacion($event)">
 
         <p-table #dt [value]="simulacionAmortizacion" [loading]="loading" [paginator]="true" [rows]="5"
           [rowsPerPageOptions]="[5]" [showCurrentPageReport]="true" scrollHeight="400px"
@@ -22,16 +28,16 @@
           <ng-template pTemplate="header">
             <tr>
               <th style="width: 80px">
-                numeroPago
+                No. Pago
               </th>
               <th style="min-width: 200px">
-                fecha Pago
+                Fecha Pago
               </th>
               <th style="min-width: 300px">
-                monto Pago
+                Monto Pago
               </th>
               <th style="width: 120px">
-                saldo Pendiente
+                Saldo Pendiente
               </th>
             </tr>
           </ng-template>
@@ -139,7 +145,8 @@
     <div class="separator"></div>
 
     <!-- Tabla de resultados -->
-
+    <p-message severity="error" size="small" variant="simple">Recordatorio: Los préstamos emitidos después del miércoles
+      a las 16:30 horas, pasarán a revisión hasta la siguiente semana.</p-message>
     <div class="results-section">
       <h3 class="results-title">
         <i class="pi pi-list"></i>

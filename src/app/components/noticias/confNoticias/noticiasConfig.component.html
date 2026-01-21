@@ -28,8 +28,8 @@
                 <ng-template pTemplate="header">
                     <tr>
 
-                        <th pSortableColumn="nombre" style="max-width: 70px">
-                            Titulo <p-sortIcon field="nombre"></p-sortIcon>
+                        <th pSortableColumn="titulo" style="max-width: 70px">
+                            Titulo <p-sortIcon field="titulo"></p-sortIcon>
                         </th>
                         <th pSortableColumn="descripcion" style="max-width: 150px">
                             Descripción <p-sortIcon field="descripcion"></p-sortIcon>
@@ -115,7 +115,7 @@
             <div class="form-field">
                 <label class="field-label">Rol </label>
                 <p-multiselect [options]="arrayRoles" [(ngModel)]="selectedRoles" optionLabel="nombre"
-                    placeholder="Select Cities" [maxSelectedLabels]="3" class="w-full md:w-80" />
+                    placeholder="Selecciona un rol" [maxSelectedLabels]="3" class="w-full md:w-80" />
             </div>
         </div>
         <div class="">
