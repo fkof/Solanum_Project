@@ -49,8 +49,9 @@ export class VacacionesServices {
 
     putConfiguracion(config: any): Observable<any> {
         return this.http
-            .put<any>(`${this.apiUrl}/ConfiguracionVacacion?idConfiguracion=${config.idConfiguracion}&valor=${config.valor}&idUsuarioModificacion=${config.idUsuarioModificacion}`, this.httpOptions)
-            .pipe(catchError(this.handleError));
+            .put<any>(`${this.apiUrl}/ConfiguracionVacacion`, config, this.httpOptions)
+            .pipe(catchError(this.handleError)
+            );
     }
     getSolicitudesVacaciones(dataSend: any): Observable<SolicitudVacaciones[]> {
         let parametros = "";
@@ -59,7 +60,7 @@ export class VacacionesServices {
         }
         if (dataSend.idEmpleado) {
             parametros += `idEmpleado=${dataSend.idEmpleado}&`;
-        }   
+        }
         if (dataSend.idAutorizador) {
             parametros += `idAutorizador=${dataSend.idAutorizador}&`;
         }
@@ -91,9 +92,9 @@ export class VacacionesServices {
             .get<SolicitudVacaciones[]>(`${this.apiUrl}/Vacaciones/ObtenerSolicitudes?idEmpleado=${idEmpleado}&idEstatus=1`, this.httpOptions)
             .pipe(catchError(this.handleError));
     }
-    putActualizarSolicitud(dataSend:any):Observable<any>{
+    putActualizarSolicitud(dataSend: any): Observable<any> {
         return this.http
-            .put<any>(`${this.apiUrl}/Vacaciones/ActualizarSolicitud`, dataSend,this.httpOptions)
+            .put<any>(`${this.apiUrl}/Vacaciones/ActualizarSolicitud`, dataSend, this.httpOptions)
             .pipe(catchError(this.handleError));
     }
     private handleError(error: any): Observable<never> {

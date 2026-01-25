@@ -11,16 +11,18 @@ import { Card } from "primeng/card";
 import { FormsModule } from "@angular/forms";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SafePipe } from '../../helpers/safe.pipe';
+import { TabsModule } from 'primeng/tabs';
 @Component({
     selector: 'app-encuestas',
     templateUrl: './encuestas.component.html',
-    imports: [ToastModule, ConfirmDialogModule, Card, FormsModule, CommonModule, SafePipe],
+    imports: [ToastModule, ConfirmDialogModule, Card, FormsModule, CommonModule, SafePipe, TabsModule],
     providers: [ConfirmationService, MessageService],
     styleUrls: ['./encuestas.component.scss'],
 })
 export class EncuestasComponent {
     arrayEncuestas: Encuestas[] = [];
     rolesUsuario: string = '';
+    tabActivo: number = 0;
     constructor(private confirmationService: ConfirmationService,
         private encuestasService: EncuestasService,
         private messageService: MessageService,
@@ -33,10 +35,11 @@ export class EncuestasComponent {
         this.getEncuestas();
     }
     getEncuestas() {
+        this.tabActivo = 0;
         this.encuestasService.getEncuestasByRoles(this.rolesUsuario).subscribe({
             next: (data) => {
-
-
+                const maxId = Math.min(...data.map(item => item.idEncuesta));
+                this.tabActivo = maxId;
                 this.arrayEncuestas = data;
             }, error: (data) => {
                 this.messageService.add({

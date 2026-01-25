@@ -14,6 +14,8 @@ import { SideBarService } from '../../../services/sideBar.services';
 import { VacacionesServices } from '../../../services/vacaciones.services';
 import { EditorModule } from 'primeng/editor';
 import { ConfiguracionVacaciones as Conf } from '../../../models/configuracionVacaciones';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+
 
 @Component({
     selector: 'configuracionVacaciones',
@@ -21,7 +23,7 @@ import { ConfiguracionVacaciones as Conf } from '../../../models/configuracionVa
     styleUrls: ['./configuracionVacaciones.component.scss'],
     imports: [ToastModule, DialogModule, ConfirmDialogModule, CardModule, CommonModule,
         FormsModule, ButtonModule, TableModule, TooltipModule, EditorModule],
-    providers: [MessageService, ConfirmationService]
+    providers: [MessageService, ConfirmationService,]
 })
 
 export class ConfiguracionVacaciones implements OnInit {
@@ -38,7 +40,22 @@ export class ConfiguracionVacaciones implements OnInit {
     configuraciones: Conf[] = [];
     clonedConfig: { [s: string]: Conf } = {};
     idEmpleado: number = 0;
-    constructor(private messageService: MessageService, public sidebarService: SideBarService, public vacacionesService: VacacionesServices) {
+    toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+
+        //[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+
+
+    ];
+
+    constructor(private messageService: MessageService, public sidebarService: SideBarService,
+        public vacacionesService: VacacionesServices, private sanitizer: DomSanitizer) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idEmpleado = dataPerfil.usuario.idEmpleado;
 
@@ -80,6 +97,11 @@ export class ConfiguracionVacaciones implements OnInit {
             this.vacacionesService.putConfiguracion(dataSend).subscribe({
                 next: data => {
                     this.messageService.add({ severity: 'success', summary: 'Extio', detail: data.mensaje });
+                    this.vacacionesService.getConfiguracion().subscribe({
+                        next: data => {
+                            this.configuraciones = data;
+                        }
+                    })
                 }
             })
 
@@ -93,5 +115,19 @@ export class ConfiguracionVacaciones implements OnInit {
     onRowEditCancel(config: Conf, index: number) {
         this.configuraciones[index] = this.clonedConfig[config.idConfiguracion as number];
         delete this.clonedConfig[config.idConfiguracion as number];
+    }
+    getSanitizedHtml(texto: string): SafeHtml {
+
+        let previewNoticia = texto.indexOf("<p>");
+        let clasep = ""
+        if (previewNoticia === -1) {
+            texto = "<p style='width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;'>" + texto + "</p>";
+        } else {
+            clasep = "width: 350px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+            let noticiaReemplazo = texto.replaceAll("<p>", "<p style='" + clasep + "'>");
+            texto = noticiaReemplazo;
+        }
+        let sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(texto);
+        return sanitizedHtml;
     }
 }

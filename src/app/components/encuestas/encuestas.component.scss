@@ -1,0 +1,42 @@
+::ng-deep .p-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .p-card .p-card-header {
+    padding: 0;
+    border-bottom: none;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-content {
+    color: white;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.header-subtitle {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+::ng-deep .p-card .p-card-body {
+    padding: 2rem;
+}

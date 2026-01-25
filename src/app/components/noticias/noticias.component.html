@@ -4,6 +4,15 @@
 <div class="container-general">
 
     <p-card>
+        <ng-template pTemplate="header">
+            <div class="card-header">
+                <div class="header-content">
+                    <h2 class="header-title">Noticias</h2>
+                    <p class="header-subtitle">Consulta las ultimas noticias.</p>
+                </div>
+
+            </div>
+        </ng-template>
         <div class="noticias-container">
             <!-- Noticia 1 -->
             <div class="noticia" *ngFor="let noticia of arrayNoticias;let i = index;">

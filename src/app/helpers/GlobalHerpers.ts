@@ -1,4 +1,6 @@
+
 export class GlobalHelpers {
+
     public formatearFechastr(fechastr: any): string {
         let fecha = new Date(fechastr);
 
@@ -56,4 +58,5 @@ export class GlobalHelpers {
                 return 'info';
         }
     }
+
 }

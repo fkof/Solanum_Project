@@ -64,6 +64,13 @@ export class LoginComponent {
       }
     })
   }
+  onResetPassword() {
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Contacta al Equpo de RH',
+      detail: 'Por favor contacta al equipo de Recursos Humanos para restablecer tu contraseña'
+    });
+  }
 
   onLogin() {
     // Validaciones

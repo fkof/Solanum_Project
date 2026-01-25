@@ -40,7 +40,7 @@ export class EncuestasConfigComponent implements OnInit {
     arrayEncuestas: Encuestas[] = [];
     encuesta: Encuestas = {
         idEncuesta: 0,
-        titulo: '',
+        nombre: '',
         descripcion: '',
         link: '',
         idUsuarioModificacion: 0,
@@ -128,6 +128,7 @@ export class EncuestasConfigComponent implements OnInit {
             formData.append("link", this.encuesta.link);
             formData.append("idUsuarioCreacion", this.usuarioLogueado.toString());
             formData.append("idRoles", this.encuesta.idRoles);
+            formData.append("nombre", this.encuesta.nombre);
             this.encuestasService.createEncuestas(formData).subscribe({
                 next: (data) => {
                     this.messageService.add({
@@ -138,7 +139,7 @@ export class EncuestasConfigComponent implements OnInit {
                     this.getEncuestas();
                     this.encuesta = {
                         idEncuesta: 0,
-                        titulo: '',
+                        nombre: '',
                         descripcion: '',
                         link: '',
                         linksafe: '',
@@ -149,7 +150,7 @@ export class EncuestasConfigComponent implements OnInit {
                     formData.delete("link");
                     formData.delete("idUsuarioCreacion");
                     formData.delete("idRoles");
-
+                    formData.delete("nombre");
                     this.selectedRoles = [];
                     this.loading = false;
                 }, error: (data) => {
@@ -170,6 +171,7 @@ export class EncuestasConfigComponent implements OnInit {
             formData.append("link", this.encuesta.link);
             formData.append("idUsuarioModificacion", this.usuarioLogueado.toString());
             formData.append("idRoles", this.encuesta.idRoles);
+            formData.append("nombre", this.encuesta.nombre);
             this.encuestasService.updateEncuestas(formData).subscribe({
                 next: (data) => {
                     this.messageService.add({
@@ -180,7 +182,7 @@ export class EncuestasConfigComponent implements OnInit {
                     this.getEncuestas();
                     this.encuesta = {
                         idEncuesta: 0,
-                        titulo: '',
+                        nombre: '',
                         descripcion: '',
                         linksafe: '',
                         link: '',
@@ -192,6 +194,7 @@ export class EncuestasConfigComponent implements OnInit {
                     formData.delete("idUsuarioModificacion");
                     formData.delete("idRoles");
                     formData.delete("idEncuesta");
+                    formData.delete("nombre");
                     this.selectedRoles = [];
                     this.loading = false;
                 }, error: (data) => {

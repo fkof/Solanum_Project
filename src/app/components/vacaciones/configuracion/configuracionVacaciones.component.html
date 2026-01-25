@@ -5,8 +5,8 @@
     <ng-template pTemplate="header">
       <div class="card-header">
         <div class="header-content">
-          <h2 class="header-title">Configuración de Vacaciones</h2>
-          <p class="header-subtitle">Configura comportamiento del modulo de vacaciones.</p>
+          <h2 class="header-title">Configuración de Parametros</h2>
+          <p class="header-subtitle">Configuración de parametros generales del sistema.</p>
         </div>
 
       </div>
@@ -48,6 +48,9 @@
             <th pSortableColumn="nombre">
               Nombre <p-sortIcon field="nombre"></p-sortIcon>
             </th>
+            <th pSortableColumn="descripcion" style="min-width: 250px">
+              Descripción <p-sortIcon field="descripcion"></p-sortIcon>
+            </th>
             <th pSortableColumn="valor">
               Valor <p-sortIcon field="valor"></p-sortIcon>
             </th>
@@ -65,17 +68,28 @@
               </span>
             </td>
 
-            <td> <span class="nombre-empleado"> {{ config.nombre }} </span></td>
-            <td>
+            <td style="width: 150px"> <span class="nombre-empleado"> {{ config.nombre }} </span></td>
+            <td style="width: 150px"> <span class="nombre-empleado"> {{ config.descripcion }} </span></td>
+            <td style="width: 450px">
               <p-cellEditor>
                 <ng-template #input>
                   <input pInputText type="text" name="{{config.idConfiguracion}}" [(ngModel)]="config.valor"
-                    class="p-inputtextEdicion" *ngIf="config.idConfiguracion != 7" />
+                    class="p-inputtextEdicion"
+                    *ngIf="config.idConfiguracion != 7 && config.idConfiguracion != 9 && config.idConfiguracion != 11" />
                   <p-editor [(ngModel)]="config.valor" [style]="{ height: '320px' }"
-                    *ngIf="config.idConfiguracion == 7" />
+                    *ngIf="config.idConfiguracion == 7 || config.idConfiguracion == 9 || config.idConfiguracion == 11"
+                    [modules]="{toolbar: toolbarOptions}">
+                    <ng-template #header>
+
+                    </ng-template>
+                  </p-editor>
                 </ng-template>
                 <ng-template #output>
-                  <span class="default-texto"> {{ config.valor }}</span>
+                  <div style="max-width: 150px" class="wrapNoticias preview-text"
+                    [innerHTML]="getSanitizedHtml(config.valor)">
+                  </div>
+
+                  <!-- <span class="default-texto"> {{ config.valor }}</span> -->
                 </ng-template>
               </p-cellEditor>
             </td>

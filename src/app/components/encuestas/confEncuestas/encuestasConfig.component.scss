@@ -41,11 +41,43 @@
     padding: 2rem;
 }
 
+.card-header {
+    background: linear-gradient(135deg, #00b398 0%, #008f7a 100%);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
 
+.header-content {
+    color: white;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.header-subtitle {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.separator {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #00b398, transparent);
+    margin: 2rem 0;
+}
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
@@ -182,12 +214,6 @@
     .header-title {
         font-size: 1.5rem;
     }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
 
 
 

@@ -3,7 +3,7 @@ import { commons } from "./commons";
 export interface Encuestas extends commons {
     linksafe: any;
     idEncuesta: number;
-    titulo: string;
+    nombre: string;
     descripcion: string;
     link: string;
     idRoles: string;

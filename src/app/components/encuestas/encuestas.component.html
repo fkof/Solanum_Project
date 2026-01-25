@@ -1,10 +1,31 @@
 <div class="container-general">
     <p-card>
-        <div style="text-align: center;" *ngFor="let encuesta of arrayEncuestas; let i = index;">
-            <iframe width="840px" height="480px" [src]="encuesta.link | safe" frameborder="0" marginwidth="0"
-                marginheight="0" style="border: none; max-width:100%; max-height:100vh ;padding-top: 20px;
+        <ng-template pTemplate="header">
+            <div class="card-header">
+                <div class="header-content">
+                    <h2 class="header-title">Encuestas</h2>
+                    <p class="header-subtitle">Encuestas para los colaboradores</p>
+                </div>
+
+            </div>
+        </ng-template>
+        <p-tabs value="{{tabActivo}}">
+            <p-tablist>
+                @for (tab of arrayEncuestas; track tab.idEncuesta) {
+                <p-tab [value]="tab.idEncuesta">{{ tab.nombre }}</p-tab>
+                }
+            </p-tablist>
+            <p-tabpanels>
+                @for (tab of arrayEncuestas; track tab.idEncuesta) {
+                <p-tabpanel [value]="tab.idEncuesta">
+                    <iframe width="840px" height="480px" [src]="tab.link | safe" frameborder="0" marginwidth="0"
+                        marginheight="0" style="border: none; max-width:100%; max-height:100vh ;padding-top: 20px;
                 " allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
-        </div>
+                </p-tabpanel>
+                }
+            </p-tabpanels>
+        </p-tabs>
+
 
     </p-card>
     <p-toast></p-toast>

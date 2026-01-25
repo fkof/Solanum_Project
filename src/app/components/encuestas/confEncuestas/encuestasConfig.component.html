@@ -12,20 +12,41 @@
             </div>
         </ng-template>
 
-        <div class="form-field">
-            <div class="form-grid">
-                <div class="form-field">
-                    <label class="field-label">Link</label>
-                    <input pInputText type="text" [(ngModel)]="encuesta.link" placeholder="Link" class="search-input" />
+        <div class="encuestas-container">
+
+            <div class="">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label class="field-label">Nombre</label>
+                        <input pInputText type="text" [(ngModel)]="encuesta.nombre" placeholder="Nombre"
+                            class="search-input" />
+
+                    </div>
+                    <div class="form-field">
+                        <label class="field-label">Link</label>
+                        <input pInputText type="text" [(ngModel)]="encuesta.link" placeholder="Link"
+                            class="search-input" />
+                    </div>
+                    <div class="form-field">
+                        <label class="field-label">Rol </label>
+                        <p-multiselect [options]="arrayRoles" [(ngModel)]="selectedRoles" optionLabel="nombre"
+                            placeholder="Selecciona un rol" [maxSelectedLabels]="3" class="w-full md:w-80" />
+                    </div>
+
+                    <div class="form-field" style="align-self: end;">
+                        <p-button label="Guardar Encuesta" icon="pi pi-save" (onClick)="saveEncuesta()"
+                            styleClass="p-button-primary"></p-button>
+                    </div>
                 </div>
-                <div class="form-field">
-                    <label class="field-label">Rol </label>
-                    <p-multiselect [options]="arrayRoles" [(ngModel)]="selectedRoles" optionLabel="nombre"
-                        placeholder="Selecciona un rol" [maxSelectedLabels]="3" class="w-full md:w-80" />
-                </div>
-                <p-button label="Guardar Encuesta" icon="pi pi-save" (onClick)="saveEncuesta()"
-                    styleClass="p-button-primary"></p-button>
             </div>
+
+        </div>
+
+        <!-- Separador -->
+        <div class="separator"></div>
+
+
+        <div>
             <p-table #dt [value]="arrayEncuestas" [loading]="loading" [paginator]="true" [rows]="10"
                 [rowsPerPageOptions]="[5, 10, 20, 50]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} roles"
@@ -35,7 +56,9 @@
 
                 <ng-template pTemplate="header">
                     <tr>
-
+                        <th pSortableColumn="nombre" style="max-width: 170px;min-width: 170px">
+                            Nombre <p-sortIcon field="nombre"></p-sortIcon>
+                        </th>
                         <th pSortableColumn="link" style="max-width: 170px;min-width: 170px">
                             Link <p-sortIcon field="link"></p-sortIcon>
                         </th>
@@ -48,8 +71,10 @@
 
                 <ng-template pTemplate="body" let-img>
                     <tr>
-
-                        <td style="max-width: 170px;min-width: 170px">
+                        <td style="width: 100px">
+                            <span class="wrapColumna">{{ img.nombre }}</span>
+                        </td>
+                        <td style="width: 100px">
                             <span class="wrapColumna">{{ img.link }}</span>
                         </td>
                         <td style="max-width: 150px;min-width: 150px">
@@ -92,10 +117,6 @@
             </p-table>
 
         </div>
-
-
-
-
     </p-card>
 
 </div>

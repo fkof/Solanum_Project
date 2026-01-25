@@ -110,7 +110,8 @@
         <div class="form-grid">
             <div class="form-field">
                 <label class="field-label">Titulo</label>
-                <input pInputText type="text" [(ngModel)]="noticia.titulo" placeholder="Titulo" class="search-input" />
+                <input pInputText type="text" [maxlength]="150" [(ngModel)]="noticia.titulo" placeholder="Titulo"
+                    class="search-input" />
             </div>
             <div class="form-field">
                 <label class="field-label">Rol </label>
