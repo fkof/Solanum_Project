@@ -48,7 +48,7 @@ export class VacacionesAAprobar implements OnInit {
     showMotivos: boolean = false;
     constructor(private messageService: MessageService, public sidebarService: SideBarService,
         private vacacionesService: VacacionesServices,
-        private rolService: RolService, public globalHelpers: GlobalHelpers) {
+        private rolService: RolService, public confirmationService: ConfirmationService, public globalHelpers: GlobalHelpers) {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.idAutorizandor = dataPerfil.usuario.idEmpleado;
@@ -128,6 +128,26 @@ export class VacacionesAAprobar implements OnInit {
         this.selectSolicitud = solicitud;
         this.showDialog = true;
     }
+    preguntaCancelar() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de rechazar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.cancelarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud ha sido cancelada correctamente'
+                });
+            }
+        });
+    }
     cancelarSolicitud() {
         let dataSend = {
             idSolicitud: this.selectSolicitud?.idSolicitud,
@@ -135,6 +155,9 @@ export class VacacionesAAprobar implements OnInit {
             motivoRechazo: this.motivoRechazo,
             idUsuarioModificacion: this.idAutorizandor
         }
+        this.showDialog = false;
+        this.showMotivos = false;
+        this.loading = false;
         this.vacacionesService.putActualizarSolicitud(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
@@ -146,7 +169,9 @@ export class VacacionesAAprobar implements OnInit {
                 this.showDialog = false;
                 this.showMotivos = false;
                 this.buscarsolicitudes();
+                this.loading = false;
             }, error: error => {
+                this.loading = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
@@ -155,6 +180,26 @@ export class VacacionesAAprobar implements OnInit {
                 });
             }
         })
+    }
+    preguntaAprobar() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de aprobar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.aprobarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud no ha sido aprobada'
+                });
+            }
+        });
     }
     aprobarSolicitud() {
         if (!this.selectSolicitud) {
@@ -166,6 +211,8 @@ export class VacacionesAAprobar implements OnInit {
             motivoRechazo: 'Aprobación por parte del autorizador',
             idUsuarioModificacion: this.idAutorizandor
         }
+        this.showDialog = false;
+        this.loading = true;
         this.vacacionesService.putActualizarSolicitud(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
@@ -174,8 +221,9 @@ export class VacacionesAAprobar implements OnInit {
                     detail: 'La solicitud de vacaciones ha sido aprobada correctamente'
 
                 })
-                this.showDialog = false;
+
                 this.buscarsolicitudes();
+                this.loading = false;
             }, error: error => {
                 this.messageService.add({
                     severity: 'error',

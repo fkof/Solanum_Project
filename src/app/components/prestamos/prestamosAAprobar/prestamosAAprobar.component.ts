@@ -57,6 +57,7 @@ export class PrestamosAAprobar implements OnInit {
         private prestamosService: PrestamosServices,
         private vacacionesService: VacacionesServices,
         private rolService: RolService,
+        public confirmationService: ConfirmationService,
         public globalHelpers: GlobalHelpers) {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
@@ -149,6 +150,26 @@ export class PrestamosAAprobar implements OnInit {
         this.showDialog = true;
         this.abrirCerrarMortizacion();
     }
+    preguntaCancelar() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de rechazar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.cancelarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud no ha sido cancelada'
+                });
+            }
+        });
+    }
     cancelarSolicitud() {
         let dataSend = {
             idSolicitud: this.selectSolicitud?.idSolicitud,
@@ -156,6 +177,10 @@ export class PrestamosAAprobar implements OnInit {
             motivoRechazo: this.motivoRechazo,
             idUsuarioModificacion: this.idAutorizandor
         }
+        this.showDialog = false;
+        this.loading = true;
+        this.showMotivos = false;
+
         this.prestamosService.actualizarSolicitudPrestamo(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
@@ -164,9 +189,9 @@ export class PrestamosAAprobar implements OnInit {
                     detail: 'La solicitud del prestamo ha sido rechazada correctamente'
 
                 })
-                this.showDialog = false;
-                this.showMotivos = false;
+
                 this.buscarsolicitudes();
+                this.loading = false;
             }, error: error => {
                 this.messageService.add({
                     severity: 'error',
@@ -176,6 +201,26 @@ export class PrestamosAAprobar implements OnInit {
                 });
             }
         })
+    }
+    preguntaAprobarSolicitud() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de aprobar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.aprobarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud no ha sido aprobada'
+                });
+            }
+        });
     }
     aprobarSolicitud() {
         if (!this.selectSolicitud) {
@@ -187,6 +232,9 @@ export class PrestamosAAprobar implements OnInit {
             motivoRechazo: 'Aprobación por parte del autorizador',
             idUsuarioModificacion: this.idAutorizandor
         }
+
+        this.showDialog = false;
+        this.loading = true;
         this.prestamosService.actualizarSolicitudPrestamo(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
@@ -197,6 +245,7 @@ export class PrestamosAAprobar implements OnInit {
                 })
                 this.showDialog = false;
                 this.buscarsolicitudes();
+                this.loading = false;
             }, error: error => {
                 this.messageService.add({
                     severity: 'error',
@@ -204,6 +253,7 @@ export class PrestamosAAprobar implements OnInit {
                     detail: error
 
                 });
+                this.loading = false;
             }
         })
     }

@@ -171,7 +171,7 @@
         <p-button label="Rechazar Solicitud" icon="pi pi-times" severity="danger" [style]="{'margin-right':'10px'}"
           (onClick)="showMotivos =true"></p-button>
 
-        <p-button label="Aprobar" icon="pi pi-check" (onClick)="aprobarSolicitud()" [loading]="loading"
+        <p-button label="Aprobar" icon="pi pi-check" (onClick)="preguntaAprobar()" [loading]="loading"
           styleClass="p-button-primary" class="w-full mx-12"></p-button>
       </div>
 
@@ -186,7 +186,7 @@
         <p-button label="Cancelar" severity="secondary" (click)="showMotivos = false" styleClass="p-button-outlined"
           [style]="{'margin-right':'10px'}" />
         <p-button label="Rechazar Solicitud" icon="pi pi-times" severity="danger" [style]="{'margin-right':'10px'}"
-          (onClick)="cancelarSolicitud()"></p-button>
+          (onClick)="preguntaCancelar()"></p-button>
       </div>
     </p-dialog>
 

@@ -49,6 +49,7 @@ export class PermisosAAprobar implements OnInit {
     showMotivos: boolean = false;
     constructor(private messageService: MessageService, public sidebarService: SideBarService,
         public globalHelpers: GlobalHelpers, private permisosService: PermisoServices,
+        private confirmationService: ConfirmationService,
         private vacacionesService: VacacionesServices,
         private rolService: RolService) {
 
@@ -130,13 +131,38 @@ export class PermisosAAprobar implements OnInit {
         this.selectSolicitud = solicitud;
         this.showDialog = true;
     }
+    preguntaCancelar() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de rechazar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.cancelarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud no ha sido cancelada'
+                });
+            }
+        });
+    }
     cancelarSolicitud() {
+        this.loading = true;
         let dataSend = {
             idSolicitud: this.selectSolicitud?.idSolicitud,
             idEstatus: 3,
             motivoRechazo: this.motivoRechazo,
             idUsuarioModificacion: this.idAutorizandor
         }
+        this.showDialog = false;
+        this.loading = true;
+        this.showMotivos = false;
+
         this.permisosService.actualizarSolicitudPermiso(dataSend).subscribe({
             next: data => {
                 this.messageService.add({
@@ -145,10 +171,10 @@ export class PermisosAAprobar implements OnInit {
                     detail: 'La solicitud del permiso ha sido rechazada correctamente'
 
                 })
-                this.showDialog = false;
-                this.showMotivos = false;
+
                 this.buscarsolicitudes();
             }, error: error => {
+                this.loading = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
@@ -158,10 +184,32 @@ export class PermisosAAprobar implements OnInit {
             }
         })
     }
+    preguntaAprobar() {
+        this.confirmationService.confirm({
+            message: '¿Estás seguro de aprobar la solicitud?',
+            header: 'Confirmación',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Aceptar',
+            rejectLabel: 'Cancelar',
+            rejectButtonStyleClass: 'p-button-danger',
+            accept: () => {
+                this.aprobarSolicitud();
+            },
+            reject: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Cancelado',
+                    detail: 'La solicitud no ha sido aprobada'
+                });
+            }
+        });
+    }
     aprobarSolicitud() {
+        this.loading = true;
         if (!this.selectSolicitud) {
             return;
         }
+        this.showDialog = false;
         let dataSend = {
             idSolicitud: this.selectSolicitud?.idSolicitud,
             idEstatus: 2,
@@ -176,9 +224,11 @@ export class PermisosAAprobar implements OnInit {
                     detail: 'La solicitud del permiso ha sido aprobada correctamente'
 
                 })
-                this.showDialog = false;
+
                 this.buscarsolicitudes();
+                this.loading = false;
             }, error: error => {
+                this.loading = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
