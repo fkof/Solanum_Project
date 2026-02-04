@@ -115,6 +115,7 @@
           <tr>
             <td>
               <span class="numero-nomina">
+                <i *ngIf="solicitud.cantidadDiasAdelantados>0" class="pi pi-exclamation-triangle icono-brillante"></i>
                 {{ solicitud.idSolicitud }}
               </span>
             </td>

@@ -12,6 +12,6 @@ export interface SolicitudVacaciones {
   idEstatus: number;
   idAutorizador: number;
   autorizador: string;
-  motivoRechazo:string;
-
+  motivoRechazo: string;
+  cantidadDiasAdelantados: number;
 }

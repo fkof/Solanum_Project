@@ -11,10 +11,16 @@
 
       <h2>Fecha Regreso</h2>
       <div class="date-box">{{this.globalHelpers.formatearFecha(this.getFechaRetorno())}}</div>
-
+      <h2>Total de dias a Solicitar</h2>
       <div class="days-count">{{diasPedidos}}</div>
       <div class="days-label">Días</div>
 
+      <h2 *ngIf="diasExtras > 0"><i class="pi pi-exclamation-triangle icono-brillante"></i>Dias a descontar proximo
+        periodo </h2>
+      <p-tag severity="warn" value={{diasExtras}} *ngIf="diasExtras > 0"
+        [style]="{'margin-right':'10px', 'margin-left':'10px', 'margin-bottom':'10px','font-size':'48px'}" />
+      <br>
+      <!-- <div class="days-count" *ngIf="diasExtras > 0">{{diasExtras}}</div> -->
       <p-button label="Cancelar" icon="pi pi-times" (onClick)="showDialog =false" styleClass="p-button-outlined"
         [style]="{'margin-right':'10px'}"></p-button>
 
@@ -40,6 +46,9 @@
     <div class="vacation-container">
       <div class="info-block">
         <div class="main-balance">Tu saldo en días es: <span class="results-count">({{saldoDias }})</span></div>
+        <div *ngIf="diasExtrasTotal>0" class="sub-balance">Dias a descontar proximo periodo: <span
+            class="results-count">({{
+            diasExtrasTotal }})</span></div>
         @for (item of saldosAcomulados; track item.idSaldoPeriodo) {
         <div class="sub-balance" *ngIf="vacAcomuladas">Días Periodo {{item.periodo}}: {{item.saldoDias}}</div>
         } @empty {

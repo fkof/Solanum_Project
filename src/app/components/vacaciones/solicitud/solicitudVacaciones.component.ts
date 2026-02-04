@@ -49,7 +49,8 @@ export class SolicitudVacacionesEmp implements OnInit {
     diasPedidos: number = 0;
     solicitudRequest: SolicitudVacacionesRequest = {} as SolicitudVacacionesRequest;
     correoEmpleado: string = "";
-
+    diasExtras: number = 0;
+    diasExtrasTotal: number = 0;
     constructor(private messageService: MessageService, private confirmationService: ConfirmationService,
         public sidebarService: SideBarService, private vacacionesServices: VacacionesServices,
         public globalHelpers: GlobalHelpers) {
@@ -110,7 +111,7 @@ export class SolicitudVacacionesEmp implements OnInit {
     }
     Solicitar() {
         let diasDiff = 0
-
+        debugger;
         if (this.fechaInicial && this.fechaFinal) {
             if (this.fechaFinal <= this.fechaInicial) {
                 this.messageService.add({
@@ -137,14 +138,6 @@ export class SolicitudVacacionesEmp implements OnInit {
             });
             return;
         }
-        if (diasDiff > this.saldoDias) {
-            this.messageService.add({
-                severity: 'info',
-                summary: 'Saldo insuficiente',
-                detail: `No cuentas con los dias suficientes, tu saldo actual es de ${this.saldoDias} dias`
-            });
-            return;
-        }
 
         if (this.exiteEnSolicitudes(this.fechaInicial!, this.fechaFinal!)) {
             this.messageService.add({
@@ -154,10 +147,48 @@ export class SolicitudVacacionesEmp implements OnInit {
             });
             return;
         }
+        if (diasDiff > this.saldoDias) {
+            this.diasExtras = this.saldoDias - diasDiff;
+            this.confirmationService.confirm({
+                message: `Tienes saldo insuficiente, el excedente se tomara de tus dias de vacaciones de tu próximo periodo, ¿Deseas continuar?`,
+                header: 'Confirmación',
+                icon: 'pi pi-exclamation-triangle',
+                acceptLabel: 'Aceptar',
+                rejectLabel: 'Cancelar',
+                rejectButtonStyleClass: 'p-button-danger',
+                accept: () => {
 
 
-        this.showDialog = true;
-        this.diasPedidos = diasDiff
+                    this.showDialog = true;
+                    this.diasPedidos = diasDiff
+                    this.diasExtras = Math.abs(this.diasExtras)
+                },
+                reject: () => {
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Solicitud cancelada',
+                        detail: `La solicitud ha sido cancelada`
+                    });
+                    return;
+                }
+
+            });
+
+
+
+
+            // this.messageService.add({
+            //     severity: 'info',
+            //     summary: 'Saldo insuficiente',
+            //     detail: `No cuentas con los dias suficientes, tu saldo actual es de ${this.saldoDias} dias`
+            // });
+            // return;
+        } else {
+            this.showDialog = true;
+            this.diasPedidos = diasDiff
+        }
+
+
 
     }
     envioSolicitud() {
@@ -170,7 +201,9 @@ export class SolicitudVacacionesEmp implements OnInit {
             fechaRegreso: this.getFechaRetorno(),
             idEstatus: 1,
             idUsuarioCreacion: this.idEmpleado,
-            correo: this.correoEmpleado
+            correo: this.correoEmpleado,
+            cantidadDiasAdelantados: this.diasExtras,
+
         }
         this.loading = true;
         this.vacacionesServices.postSolicitudVacaciones(this.solicitudRequest).subscribe({
@@ -320,8 +353,10 @@ export class SolicitudVacacionesEmp implements OnInit {
                 this.saldosAcomulados = saldos;
                 if (saldos.length > 0) {
                     this.saldoDias = 0;
+                    this.diasExtrasTotal = 0;
                     saldos.forEach(element => {
                         this.saldoDias += element.saldoDias
+                        this.diasExtrasTotal += element.diasAdelantados
                     });
                 } else {
                     this.saldoDias = 0;

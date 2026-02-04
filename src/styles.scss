@@ -18,3 +18,34 @@
 .invalido:focus {
   border-color: #00b398 !important;
 }
+
+@keyframes pulsoVerde {
+  0% {
+    text-shadow: 0px 0px 5px #059669, 0px 0px 10px #059669;
+  }
+
+  50% {
+    text-shadow: 0px 0px 15px #059669, 0px 0px 30px #059669;
+  }
+
+  100% {
+    text-shadow: 0px 0px 5px #059669, 0px 0px 10px #059669;
+  }
+}
+
+.icono-brillante {
+  color: #059669;
+  /* Color base del icono */
+  animation: pulsoVerde 1.5s infinite ease-in-out;
+}
+
+#resplandorverde {
+  -moz-box-shadow: 0px 0px 30px #A3FF0F;
+  -webkit-box-shadow: 0px 0px 30px #A3FF0F;
+  box-shadow: 0px 0px 30px #A3FF0F;
+  animation: pulsoVerde 1.5s infinite ease-in-out;
+  padding: 10px;
+  border: 1px solid #66ff00;
+  width: 160px;
+  margin: 40px;
+}

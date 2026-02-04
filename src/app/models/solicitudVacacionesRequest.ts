@@ -1,5 +1,4 @@
-export interface SolicitudVacacionesRequest
-{
+export interface SolicitudVacacionesRequest {
   idEmpleado: number,
   fechaInicio: Date,
   fechaFin: Date,
@@ -7,5 +6,6 @@ export interface SolicitudVacacionesRequest
   cantidadDias: number,
   idEstatus: number,
   idUsuarioCreacion: number,
-  correo: string
+  correo: string,
+  cantidadDiasAdelantados: number
 }

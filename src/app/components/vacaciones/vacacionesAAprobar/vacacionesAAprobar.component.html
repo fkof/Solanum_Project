@@ -117,6 +117,7 @@
           <tr>
             <td>
               <span class="numero-nomina">
+                <i *ngIf="solicitud.cantidadDiasAdelantados>0" class="pi pi-exclamation-triangle icono-brillante"></i>
                 {{ solicitud.idSolicitud }}
               </span>
             </td>
@@ -180,7 +181,13 @@
 
         <div class="days-count">{{selectSolicitud?.cantidadDias}}</div>
         <div class="days-label">Días</div>
-
+        <h2 *ngIf="selectSolicitud && selectSolicitud.cantidadDiasAdelantados > 0"><i
+            class="pi pi-exclamation-triangle icono-brillante"></i>Dias a descontar proximo
+          periodo </h2>
+        <p-tag severity="warn" value={{selectSolicitud.cantidadDiasAdelantados}}
+          *ngIf="selectSolicitud && selectSolicitud.cantidadDiasAdelantados > 0"
+          [style]="{'margin-right':'10px', 'margin-left':'10px', 'margin-bottom':'10px','font-size':'48px'}" />
+        <br>
         <p-button label="Cerrar" icon="pi pi-window-minimize" (onClick)="showDialog =false"
           styleClass="p-button-outlined" [style]="{'margin-right':'10px'}"></p-button>
 
