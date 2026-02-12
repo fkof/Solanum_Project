@@ -75,7 +75,7 @@ export class PermisosAAprobar implements OnInit {
     }
     buscarsolicitudes() {
         this.loading = true;
-        console.log(this.isAdminOrRecursosHumanos(this.idRoles))
+        //console.log(this.isAdminOrRecursosHumanos(this.idRoles))
         let isAdminORRH = this.isAdminOrRecursosHumanos(this.idRoles)
         let dataSend = {
             nombre: this.nombreBusqueda,

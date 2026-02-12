@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
   @Output() isLogin: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() dataMenu: EventEmitter<MenuItem[]> = new EventEmitter<MenuItem[]>();
   logueado = false;
-  correoUsuario :string='';
+  correoUsuario: string = '';
   showUserMenu = false;
   userMenuItems: primeMenuItem[] = [];
 
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
     this.isAuthenticated$ = this.authService.isAuthenticated$;
     this.currentUser$ = this.authService.currentUser$;
     this.isLogin.emit(this.isAuthenticated$ ? false : this.isAuthenticated$)
-    let perfilLocal = JSON.parse(sessionStorage.getItem("dataPerfil")?? JSON.stringify( {usuario:{cooreo:""}}))
+    let perfilLocal = JSON.parse(sessionStorage.getItem("dataPerfil") ?? JSON.stringify({ usuario: { cooreo: "" } }))
     this.correoUsuario = perfilLocal.usuario.correo;
     this.initUserMenu();
   }
@@ -84,11 +84,11 @@ export class HeaderComponent implements OnInit {
   }
 
   abrirRestablecerPassword() {
-  this.showModal=true;
+    this.showModal = true;
   }
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe(nombre => {
-      console.log("nombre desde el init", nombre)
+      //console.log("nombre desde el init", nombre)
       this.isLogin.emit(nombre)
 
     });
@@ -115,21 +115,21 @@ export class HeaderComponent implements OnInit {
       this.showError = true;
       return;
     }
-    let perfilLocal = JSON.parse(sessionStorage.getItem("dataPerfil")??"")
-    let dataSend = {correo:perfilLocal.usuario.correo,nuevaPassword:this.newPassword}
+    let perfilLocal = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
+    let dataSend = { correo: perfilLocal.usuario.correo, nuevaPassword: this.newPassword }
     this.usuarioService.reestablecerContrasena(dataSend).subscribe({
-      next:data=>{
+      next: data => {
         this.messageService.add({
           severity: 'success',
           summary: 'Exito',
-          detail: data.mensaje??''
+          detail: data.mensaje ?? ''
         });
-        this.newPassword= '';
+        this.newPassword = '';
         this.confirmPassword = '';
       }
-      
+
     })
-    this.showModal=false;
+    this.showModal = false;
     this.showError = false;
 
   }

@@ -74,7 +74,7 @@ export class RepPermisos implements OnInit {
     }
     buscarsolicitudes() {
         this.loading = true;
-        console.log(this.isAdminOrRecursosHumanos(this.idRoles))
+        //console.log(this.isAdminOrRecursosHumanos(this.idRoles))
         let isAdminORRH = true
         let dataSend = {
             nombre: this.nombreBusqueda,

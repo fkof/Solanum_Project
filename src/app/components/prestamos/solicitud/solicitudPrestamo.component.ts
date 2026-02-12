@@ -61,7 +61,7 @@ export class SolicitudPrestamoComponent {
         this.getListadoCantidadRebaje();
     }
     abrirCerrarMortizacion(event: any) {
-        console.log(event);
+        //console.log(event);
         if (!event) {
             this.loading = true;
             this.prestamosServices.getSimulacionAmortizacion({
@@ -161,7 +161,7 @@ export class SolicitudPrestamoComponent {
         this.veResumen = true;
         this.simulacionAmortizacion = [];
         this.abrirCerrarMortizacion(false);
-        console.log(this.selectedCantidadRebaje);
+        //console.log(this.selectedCantidadRebaje);
     }
     handleSolcitud() {
 

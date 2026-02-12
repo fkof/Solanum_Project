@@ -33,7 +33,7 @@ export class SidebarComponent {
   isMobileMenuOpen = false;
   isMobile = false;
 
-  constructor(private authService: AuthService, private usuarioService: UsuarioService, 
+  constructor(private authService: AuthService, private usuarioService: UsuarioService,
     private loadingService: LoadingServices, private sidebarService: SideBarService) {
 
     this.isAuthenticated$ = this.authService.isAuthenticated$;
@@ -128,14 +128,14 @@ export class SidebarComponent {
         })
 
       }
-      console.log("this.menuGroups", this.menuGroups)
+      //console.log("this.menuGroups", this.menuGroups)
     }
   }
 
   formarMenu() {
     this.usuarioService.obtenerOpcionesMenu().subscribe({
       next: (data) => {
-      
+
         this.menuGroups = [
           {
             groupName: 'Principal',
@@ -198,7 +198,7 @@ export class SidebarComponent {
         if (dataPerfilStr) {
           try {
             dataPerfil = JSON.parse(dataPerfilStr);
-          } catch(e) {
+          } catch (e) {
             dataPerfil = null;
           }
         }
@@ -209,15 +209,15 @@ export class SidebarComponent {
           : [];
 
         // Filter the data using idMenus (array of permitted menu IDs)
-        let menuForUser =idMenus.split(',')// Array.isArray(idMenus.split(','))
-        console.log("menuForUser",menuForUser)
-        
-        
-       let dataFilter=  data.filter(item => menuForUser.includes(item.idMenu.toString()))
-          
+        let menuForUser = idMenus.split(',')// Array.isArray(idMenus.split(','))
+        //console.log("menuForUser",menuForUser)
 
-          
-          console.log("dataFilter",dataFilter)
+
+        let dataFilter = data.filter(item => menuForUser.includes(item.idMenu.toString()))
+
+
+
+        //console.log("dataFilter",dataFilter)
         if (dataFilter.length > 0) {
           dataFilter.map(item => {
 

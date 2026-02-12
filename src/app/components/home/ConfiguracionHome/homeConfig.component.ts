@@ -105,7 +105,7 @@ export class HomeConfigComponent implements OnInit {
     getConfig() {
         this.homeServices.obtenerHome().subscribe({
             next: (data) => {
-                console.log(data)
+                //console.log(data)
                 this.homeConfig = data;
                 this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
 
@@ -122,7 +122,7 @@ export class HomeConfigComponent implements OnInit {
     getImagenes() {
         this.homeServices.getAllImagenes().subscribe({
             next: (data) => {
-                console.log(data)
+                //console.log(data)
                 this.imagenesCarrusel = data;
                 //  this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
 
@@ -136,10 +136,10 @@ export class HomeConfigComponent implements OnInit {
         })
     }
     onUploadFoto(event: any) {
-        console.log(event)
+        //console.log(event)
         const file = event.files[0];
         if (file) {
-            console.log("archivo", file.type)
+            //console.log("archivo", file.type)
             // Verificar si el archivo es una imagen
             if (!file.type.startsWith('image/')) {
                 this.messageService.add({
@@ -182,9 +182,9 @@ export class HomeConfigComponent implements OnInit {
 
             this.formData.append("imagen", file);
 
-            console.log(this.formData.get("imagen"));
+            //console.log(this.formData.get("imagen"));
             //  this.homeimg.imagen = this.formData;
-            console.log(this.homeimg)
+            //console.log(this.homeimg)
         }
     }
     agregarImagenHome() {

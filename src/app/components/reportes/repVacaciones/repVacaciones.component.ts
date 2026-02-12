@@ -72,7 +72,7 @@ export class RepVacaciones implements OnInit {
     }
     buscarsolicitudes() {
         this.loading = true;
-        console.log(this.isAdminOrRecursosHumanos(this.idRoles))
+        //console.log(this.isAdminOrRecursosHumanos(this.idRoles))
         let isAdminORRH = true// this.isAdminOrRecursosHumanos(this.idRoles)
         let dataSend = {
             nombre: this.nombreBusqueda,

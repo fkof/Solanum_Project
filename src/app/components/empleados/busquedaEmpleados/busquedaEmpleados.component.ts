@@ -102,7 +102,6 @@ export class BusquedaEmpleadosComponent implements OnInit {
 
     this.empleadoService.buscarEmpleados(filtros).subscribe({
       next: (data) => {
-        console.log(data)
         this.empleados = data;
         this.totalRegistros = this.empleados.length;
         this.loading = false;
@@ -138,7 +137,6 @@ export class BusquedaEmpleadosComponent implements OnInit {
   }
 
   editarEmpleado(empleado: EmpleadoBusqueda) {
-    console.log('Editar empleado:', empleado);
     this.messageService.add({
       severity: 'info',
       summary: 'Editar empleado',

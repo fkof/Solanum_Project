@@ -65,7 +65,7 @@ export class UsuariosComponent {
   }
 
   inicializarRoles(usuario: Usuario) {
-    console.log("data");
+    //console.log("data");
     this.rolService.getAll().subscribe(data => {
 
       // Aquí se obtiene un array de roles a partir de usuario.idRoles separado por comas

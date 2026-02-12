@@ -81,7 +81,7 @@ export class SolicitudVacacionesEmp implements OnInit {
 
 
 
-                console.log(this.minDate)
+                //console.log(this.minDate)
             }, error: error => {
                 this.messageService.add({
                     severity: 'error',

@@ -297,7 +297,7 @@ export class RegistroEmpleadoComponent implements OnInit {
 
     this.EmpleadosService.obtenerJefeInmediato(this.jefeInmediato).subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
         this.jefeInmediatoSelect = data[0];
         this.jefeImediatos = data;
         if (this.jefeImediatos.length > 0) {
@@ -329,7 +329,7 @@ export class RegistroEmpleadoComponent implements OnInit {
   onUploadFoto(event: any) {
     const file = event.files[0];
     if (file) {
-      console.log("archivo", file.type)
+      //console.log("archivo", file.type)
       // Verificar si el archivo es una imagen
       if (!file.type.startsWith('image/')) {
         this.messageService.add({
@@ -404,7 +404,7 @@ export class RegistroEmpleadoComponent implements OnInit {
   }
 
   guardarEmpleado() {
-    console.log(this.jefeInmediatoSelect)
+    //console.log(this.jefeInmediatoSelect)
     // Validaciones
     if (!this.nombres || !this.apellidoPaterno || !this.fechaNacimiento ||
       !this.correoPersonal || !this.fechaIngreso ||
@@ -437,7 +437,7 @@ export class RegistroEmpleadoComponent implements OnInit {
     }
 
     const nombreCompleto = `${this.nombres} ${this.apellidoPaterno}${this.apellidoMaterno ? ' ' + this.apellidoMaterno : ''}`.trim();
-    console.log(this.empresaSeleccionada)
+    //console.log(this.empresaSeleccionada)
     const dataSend: Empleado = {
       idEmpleado: this.idEmpleado != '' ? parseInt(this.idEmpleado) : 0,
       nombre: this.nombres,
@@ -463,7 +463,7 @@ export class RegistroEmpleadoComponent implements OnInit {
       fotografiaConversion: this.fotografia.split(',')[1],
     }
     this.loadingService.setLogin(true);
-    console.log('Guardando empleado:', dataSend);
+    //console.log('Guardando empleado:', dataSend);
     if (dataSend.idEmpleado == 0) {
       this.EmpleadosService.crearEmpleado(dataSend).subscribe({
         next: (data) => {
@@ -508,7 +508,7 @@ export class RegistroEmpleadoComponent implements OnInit {
           gerenteDepartamento: this.gerenteDepartamento
         };
     */
-    console.log('Guardando empleado:', dataSend);
+    //console.log('Guardando empleado:', dataSend);
 
 
 

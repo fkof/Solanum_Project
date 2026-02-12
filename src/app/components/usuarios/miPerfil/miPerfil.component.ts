@@ -171,7 +171,7 @@ export class MiPerfilComponent implements OnInit {
   editHijo(hijo: HijosEmpleado) {
     this.hijosSeleccionados = hijo;
     this.hijosSeleccionados.fechaNacimiento = new Date(this.hijosSeleccionados.fechaNacimiento)
-    console.log(this.hijosSeleccionados)
+    //console.log(this.hijosSeleccionados)
     this.addHijos = true;
   }
   onHideModal() {
@@ -184,7 +184,7 @@ export class MiPerfilComponent implements OnInit {
         if (this.informacionAdicional.idGenero > 0) {
           this.actualizarInformacionAdicional = true;
         }
-        console.log(data)
+        //console.log(data)
       }, error: error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
       }
@@ -249,7 +249,7 @@ export class MiPerfilComponent implements OnInit {
 
     this.empleadoService.obtenerEmpleadoPorNomina(numeroNominaJefe).subscribe({
       next: (data) => {
-        console.log(data);
+        //console.log(data);
 
         this.jefeInmediato = data.length > 0 ? data[0].nombreCompleto ?? '' : '';
 

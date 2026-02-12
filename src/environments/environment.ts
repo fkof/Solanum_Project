@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://solanum.ledesing.com.mx/api'
+  apiUrl: 'http://localhost/PortalSolanumServicios/api'
 };

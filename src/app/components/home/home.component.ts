@@ -54,7 +54,7 @@ export class HomeComponent {
   getConfig() {
     this.homeServices.obtenerHome().subscribe({
       next: (data) => {
-        console.log(data)
+        //console.log(data)
         this.homeConfig = data;
         let clasep = "width: 450px;"
         let noticiaReemplazo = this.homeConfig.mensaje.replace("<p>", "<p style='" + clasep + "'>");
@@ -73,7 +73,7 @@ export class HomeComponent {
   getImagenes() {
     this.homeServices.getAllImagenes().subscribe({
       next: (data) => {
-        console.log(data)
+        //console.log(data)
         this.imagenesCarrusel = data;
         //  this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.homeConfig.mensaje);
 

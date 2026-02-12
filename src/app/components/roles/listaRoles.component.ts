@@ -94,7 +94,7 @@ export class ListaRolesComponent implements OnInit {
 
     this.rolService.getAll().subscribe({
       next: (data) => {
-        console.log("roles cargados", data)
+        //console.log("roles cargados", data)
         this.roles = data;
         this.loading = false;
       },
@@ -181,7 +181,7 @@ export class ListaRolesComponent implements OnInit {
   }
 
   nuevoRol() {
-    console.log('Crear nuevo rol');
+    //console.log('Crear nuevo rol');
     this.cargarMenus();
     this.addRol = true;
     // this.router.navigate(['/roles/nuevo']);
@@ -202,7 +202,7 @@ export class ListaRolesComponent implements OnInit {
         idUsuarioModificacion: this.usuarioLogueado
 
       }
-      console.log("data a enviar :", dataSend)
+      //console.log("data a enviar :", dataSend)
       if (!this.isEdit) {
         this.rolService.create(dataSend).subscribe({
           next: (data) => {

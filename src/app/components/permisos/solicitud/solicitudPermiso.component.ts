@@ -110,8 +110,8 @@ export class SolicitudPermisoComponent {
             this.loading = false;
             return;
         }
-        console.log(this.selectedTipoPermiso);
-        console.log(this.fechaPermiso);
+        //console.log(this.selectedTipoPermiso);
+        //console.log(this.fechaPermiso);
         if (this.selectedTipoPermiso == 0 || this.fechaPermiso == null) {
             this.messageService.add({
                 severity: 'error',

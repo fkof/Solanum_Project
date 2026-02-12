@@ -81,7 +81,7 @@ export class ConfiguracionVacaciones implements OnInit {
 
     onRowEditInit(config: Conf) {
         this.clonedConfig[config.idConfiguracion as number] = { ...config };
-        console.log("clonedConfig", this.clonedConfig);
+        //console.log("clonedConfig", this.clonedConfig);
     }
 
     onRowEditSave(config: Conf, index: number) {

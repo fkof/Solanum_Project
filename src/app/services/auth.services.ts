@@ -32,70 +32,70 @@ export class AuthService {
       this.userSubject.next(dataPerfil.usuario.nombreCompleto)
     }
   }
-  setIsAuthenticated(isAuthenticated:boolean){
+  setIsAuthenticated(isAuthenticated: boolean) {
     this.isAuthenticatedSubject.next(isAuthenticated);
   }
   setUsuario(nombre: string) {
-    console.log("aqui se seta el usuario", nombre)
+    //console.log("aqui se seta el usuario", nombre)
     this.userSubject.next(nombre);
   }
 
-login(username: string, password: string,idEmpresa:number){
-  return this.http.post<any>(
-    `${this.apiUrl}/Usuario/login`,
-    {
-      "correo": username,
-      "password": password,
-      "idEmpresa":idEmpresa
-    },
-    this.httpOptions
-  ).pipe(
+  login(username: string, password: string, idEmpresa: number) {
+    return this.http.post<any>(
+      `${this.apiUrl}/Usuario/login`,
+      {
+        "correo": username,
+        "password": password,
+        "idEmpresa": idEmpresa
+      },
+      this.httpOptions
+    ).pipe(
 
-    catchError(this.handleError)
-  );
-}
- /* 
-  login(username: string, password: string):  boolean {
-    // Aquí puedes agregar lógica de validación real
-    this.http.post<dataPerfil>(`${this.apiUrl}/Usuario/login`, {
-      "correo": username,
-      "password": password
-    }, this.httpOptions).subscribe({
-      next: data => {
-        sessionStorage.setItem("isLogin", 'true');
-        sessionStorage.setItem("dataPerfil", JSON.stringify(data));
-        this.userSubject.next('Mexico');
-        this.isAuthenticatedSubject.next(true)
-        this.currentUserSubject.next(data.usuario.nombreCompleto)
-        this.router.navigate(['/main']);
-        return true;
-      }, error: error => {
-        return false;
-      }
-    });
-
-    /*
-        if (username && password) {
-          let dataPerfil = {
-            idEmpleado: 1,
-            numeroNomina: 'NOM-45678',
-            nombreCompleto: 'Laura Martínez Gómez',
-            empresa: 'TechSolutions S.A. de C.V.',
-            puesto: 'Líder de Proyecto',
-            jefeInmediato: 'Carlos Ruiz',
-            numero: 'Carlos Ruiz',
-            roles: '3, 1, 4'
-          }
-          sessionStorage.setItem("isLogin", 'true');
-          sessionStorage.setItem("dataPerfil", JSON.stringify(dataPerfil));
-          this.userSubject.next('Mexico');
-          this.isAuthenticatedSubject.next(true)
-          this.currentUserSubject.next(dataPerfil.nombreCompleto)
-          return true;
-
-
+      catchError(this.handleError)
+    );
   }
-*/
+  /* 
+   login(username: string, password: string):  boolean {
+     // Aquí puedes agregar lógica de validación real
+     this.http.post<dataPerfil>(`${this.apiUrl}/Usuario/login`, {
+       "correo": username,
+       "password": password
+     }, this.httpOptions).subscribe({
+       next: data => {
+         sessionStorage.setItem("isLogin", 'true');
+         sessionStorage.setItem("dataPerfil", JSON.stringify(data));
+         this.userSubject.next('Mexico');
+         this.isAuthenticatedSubject.next(true)
+         this.currentUserSubject.next(data.usuario.nombreCompleto)
+         this.router.navigate(['/main']);
+         return true;
+       }, error: error => {
+         return false;
+       }
+     });
+ 
+     /*
+         if (username && password) {
+           let dataPerfil = {
+             idEmpleado: 1,
+             numeroNomina: 'NOM-45678',
+             nombreCompleto: 'Laura Martínez Gómez',
+             empresa: 'TechSolutions S.A. de C.V.',
+             puesto: 'Líder de Proyecto',
+             jefeInmediato: 'Carlos Ruiz',
+             numero: 'Carlos Ruiz',
+             roles: '3, 1, 4'
+           }
+           sessionStorage.setItem("isLogin", 'true');
+           sessionStorage.setItem("dataPerfil", JSON.stringify(dataPerfil));
+           this.userSubject.next('Mexico');
+           this.isAuthenticatedSubject.next(true)
+           this.currentUserSubject.next(dataPerfil.nombreCompleto)
+           return true;
+ 
+ 
+   }
+ */
   logout(): void {
     this.isAuthenticatedSubject.next(false);
     this.currentUserSubject.next('');

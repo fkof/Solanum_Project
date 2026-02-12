@@ -47,7 +47,6 @@ export class AppComponent implements OnInit {
     this.isAuthenticated = e;
   }
   passDataMenu(e: MenuItem[]) {
-    console.log("desde passdatamneu", e)
     this.dataMenu = e;
   }
 }

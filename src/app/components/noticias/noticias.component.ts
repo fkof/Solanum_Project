@@ -32,7 +32,7 @@ export class NoticiasComponent implements OnInit {
     constructor(private noticiasService: NoticiasService, private sanitizer: DomSanitizer,) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.rolesUsuario = dataPerfil.usuario.idRoles//.replaceAll(",", "%2C");
-        console.log(this.rolesUsuario);
+        //console.log(this.rolesUsuario);
     }
 
     ngOnInit(): void {

@@ -164,10 +164,10 @@ export class NoticiasConfigComponent implements OnInit {
         console.info(this.formData);
 
         const formDataObject = Object.fromEntries(this.formData.entries());
-        console.log(formDataObject);
+        //console.log(formDataObject);
 
         // For a cleaner, stringified view:
-        console.log(JSON.stringify(formDataObject, null, 2));
+        //console.log(JSON.stringify(formDataObject, null, 2));
 
 
         if (this.noticia.idNoticia === 0) {
@@ -213,10 +213,10 @@ export class NoticiasConfigComponent implements OnInit {
         }
     }
     onUploadFoto(event: any) {
-        console.log(event)
+        //console.log(event)
         const file = event.files[0];
         if (file) {
-            console.log("archivo", file.type)
+            //console.log("archivo", file.type)
             // Verificar si el archivo es una imagen
             if (!file.type.startsWith('image/')) {
                 this.messageService.add({
@@ -259,7 +259,7 @@ export class NoticiasConfigComponent implements OnInit {
 
             this.formData.append("imagen", file);
 
-            console.log(this.formData.get("imagen"));
+            //console.log(this.formData.get("imagen"));
             //  this.homeimg.imagen = this.formData;
 
         }
