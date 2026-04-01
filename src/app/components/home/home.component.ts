@@ -5,6 +5,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HomeService } from '../../services/home.services';
 import { MessageService } from 'primeng/api';
 import { HomeConfig, HomeImage } from '../../models/homeConfig';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -14,6 +15,7 @@ import { HomeConfig, HomeImage } from '../../models/homeConfig';
   providers: [MessageService]
 })
 export class HomeComponent {
+  public apiUrl: string;
   configuracion: any = { texto: "" }
   sanitizedHtmlSnippet: SafeHtml = '';
   homeConfig: HomeConfig = {
@@ -24,6 +26,8 @@ export class HomeComponent {
   imagenesCarrusel: HomeImage[] = [];
   constructor(private sanitizer: DomSanitizer, private homeServices: HomeService, private messageService: MessageService) {
     this.configuracion = localStorage.getItem("configuracion") ?? "{}";
+    this.apiUrl = environment?.baseUrl || 'http://localhost:3000/api';
+
     this.sanitizedHtmlSnippet = this.sanitizer.bypassSecurityTrustHtml(this.configuracion);
     this.getConfig();
     this.getImagenes();

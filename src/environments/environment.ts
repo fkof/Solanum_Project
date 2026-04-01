@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost/PortalSolanumServicios/api'
+  baseUrl: 'http://portalsolanum.com.mx/PortalSolanumServicios/',
+  apiUrl: 'http://portalsolanum.com.mx/PortalSolanumServicios/api'
 };

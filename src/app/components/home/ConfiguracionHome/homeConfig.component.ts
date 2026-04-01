@@ -20,6 +20,7 @@ import { HomeConfig, HomeImage } from '../../../models/homeConfig';
 import { HomeService } from '../../../services/home.services';
 import { Dialog } from "primeng/dialog";
 import { FileUpload } from "primeng/fileupload";
+import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-homeConfig',
     templateUrl: './homeConfig.component.html',
@@ -29,6 +30,8 @@ import { FileUpload } from "primeng/fileupload";
 
 })
 export class HomeConfigComponent implements OnInit {
+    apiUrl: string;
+
     sanitizedHtmlSnippet: SafeHtml = '';
     usuarioLogueado: number = 0;
     visible: boolean = false;
@@ -73,6 +76,7 @@ export class HomeConfigComponent implements OnInit {
     ];
 
     constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private sanitizer: DomSanitizer, private homeServices: HomeService) {
+        this.apiUrl = environment?.baseUrl || 'http://localhost:3000/api';
         this.getConfig();
         this.getImagenes();
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")

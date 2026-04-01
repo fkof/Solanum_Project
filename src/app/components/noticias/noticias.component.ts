@@ -7,6 +7,7 @@ import { NoticiasService } from '../../services/noticias.services';
 import { Noticias } from '../../models/noticias';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
+import { environment } from '../../../environments/environment';
 //import { NgForOf } from "../../../../node_modules/@angular/common/common_module.d-C8_X2MOZ";
 //import { NgForOf } from "../../../../node_modules/@angular/common/common_module.d-C8_X2MOZ";
 @Component({
@@ -16,6 +17,7 @@ import { CommonModule } from "@angular/common";
     styleUrls: ['./noticias.component.scss'],
 })
 export class NoticiasComponent implements OnInit {
+    apiUrl: string;
     public visible: boolean = false
     public arrayNoticias: Noticias[] = []
     public noticia: Noticias = {
@@ -32,6 +34,8 @@ export class NoticiasComponent implements OnInit {
     constructor(private noticiasService: NoticiasService, private sanitizer: DomSanitizer,) {
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.rolesUsuario = dataPerfil.usuario.idRoles//.replaceAll(",", "%2C");
+        this.apiUrl = environment?.baseUrl || 'http://localhost:3000/api';
+
         //console.log(this.rolesUsuario);
     }
 

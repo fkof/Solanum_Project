@@ -83,6 +83,7 @@ export class MiPerfilComponent implements OnInit {
   perfilUsuario: any = {};
   informacionAdicional: InformacionAdicionalEmpleado = {} as InformacionAdicionalEmpleado;
   cantidadHijos: number = 0;
+  disabledGuardar: boolean = false;
   actualizarInformacionAdicional: boolean = false;
   constructor(private empleadoService: EmpleadosService, private catalogosService: CatalogosService, private messageService: MessageService) {
     this.perfilUsuario = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
@@ -181,7 +182,7 @@ export class MiPerfilComponent implements OnInit {
     this.empleadoService.obtenerInformacionAdicional(this.perfilUsuario.usuario.idEmpleado).subscribe({
       next: data => {
         this.informacionAdicional = data;
-        if (this.informacionAdicional.idGenero > 0) {
+        if (this.informacionAdicional.idAdicional > 0) {
           this.actualizarInformacionAdicional = true;
         }
         //console.log(data)
@@ -304,6 +305,7 @@ export class MiPerfilComponent implements OnInit {
         next: data => {
           this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Informacion adicional creada correctamente' });
           this.addHijos = false;
+          this.disabledGuardar = true;
         }, error: error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
         }

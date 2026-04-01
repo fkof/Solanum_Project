@@ -10,12 +10,10 @@
       <p-galleria [value]="imagenesCarrusel" [responsiveOptions]="responsiveOptions" [autoPlay]="true" [circular]="true"
         [containerStyle]="{ 'min-width': '440px' }" [numVisible]="5">
         <ng-template #item let-item>
-          <img [src]="'https://solanum.ledesing.com.mx/' + item.ruta"
-            style="width: 100%;height: 25rem;  display: block;" />
+          <img [src]="apiUrl + item.ruta" style="width: 100%;height: 25rem;  display: block;" />
         </ng-template>
         <ng-template #thumbnail let-item>
-          <img [src]="'https://solanum.ledesing.com.mx/' + item.ruta"
-            style="display: block; width: 3rem; height: 3rem; border-radius: .25rem;" />
+          <img [src]="apiUrl + item.ruta" style="display: block; width: 3rem; height: 3rem; border-radius: .25rem;" />
         </ng-template>
         <ng-template #caption let-item>
           <div class="text-xl mb-2 font-bold text-white">{{ item.titulo }}</div>

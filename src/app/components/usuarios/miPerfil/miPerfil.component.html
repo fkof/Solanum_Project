@@ -344,8 +344,8 @@
         </div>
       </div>
       <div class="button-section">
-        <p-button label="Guardar" icon="pi pi-check" (onClick)="onSaveInformacionAdicional()"
-          styleClass="p-button-primary"></p-button>
+        <p-button label="Guardar" icon="pi pi-check" [disabled]="disabledGuardar"
+          (onClick)="onSaveInformacionAdicional()" styleClass="p-button-primary"></p-button>
 
       </div>
     </div>

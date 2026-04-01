@@ -18,8 +18,7 @@
             <div class="noticia" *ngFor="let noticia of arrayNoticias;let i = index;">
                 <div class="noticia-item">
                     <div class="noticia-imagen izquierda" *ngIf="i % 2 === 0">
-                        <img class="img-noticia" [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen"
-                            alt="Imagen de la noticia 1">
+                        <img class="img-noticia" [src]="apiUrl+noticia.rutaImagen" alt="Imagen de la noticia 1">
                     </div>
 
                     <div class="noticia-texto">
@@ -33,8 +32,7 @@
 
                     <div class="noticia-imagen derecha" *ngIf="i % 2 !== 0">
 
-                        <img class="img-noticia" [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen"
-                            alt="Imagen de la noticia 1">
+                        <img class="img-noticia" [src]="apiUrl+noticia.rutaImagen" alt="Imagen de la noticia 1">
                     </div>
                 </div>
             </div>
@@ -44,8 +42,7 @@
         [style]="{ width: '50rem', height: '100vh' }" maximizable="true">
         <div style="width: 40rem;">
             <div style="text-align: center; background-color: #ecf9f8;  border-radius: 8px;">
-                <img class="img-noticiaDialog" [src]="'https://solanum.ledesing.com.mx/'+noticia.rutaImagen"
-                    alt="Imagen de la noticia 1">
+                <img class="img-noticiaDialog" [src]="apiUrl+noticia.rutaImagen" alt="Imagen de la noticia 1">
             </div>
             <p [innerHTML]="noticia.descripcionSafe"></p>
         </div>

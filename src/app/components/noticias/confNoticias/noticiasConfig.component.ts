@@ -25,6 +25,7 @@ import { RolService } from '../../../services/rol.services';
 import { Rol } from '../../../models/rol';
 import { DropdownModule } from "primeng/dropdown";
 import { MultiSelectModule } from "primeng/multiselect";
+import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-noticiasConfig',
     templateUrl: './noticiasConfig.component.html',
@@ -36,6 +37,7 @@ import { MultiSelectModule } from "primeng/multiselect";
 
 })
 export class NoticiasConfigComponent implements OnInit {
+    apiUrl: string;
     sanitizedHtmlSnippet: SafeHtml = '';
     usuarioLogueado: number = 0;
     arrayRoles: Rol[] = [];
@@ -88,6 +90,8 @@ export class NoticiasConfigComponent implements OnInit {
 
         let dataPerfil = JSON.parse(sessionStorage.getItem("dataPerfil") ?? "")
         this.usuarioLogueado = dataPerfil.usuario.idEmpleado;
+        this.apiUrl = environment?.baseUrl || 'http://localhost:3000/api';
+
     }
     ngOnInit(): void {
         this.getNoticias();
