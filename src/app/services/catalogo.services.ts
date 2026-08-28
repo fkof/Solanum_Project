@@ -49,8 +49,8 @@ export class CatalogosService {
    * @param idDepartamento Id del departamento seleccionado
    * @returns
    */
-  obtenerGerentePorDepartamento(idDepartamento: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/catalogo/Gerente?idDepartamento=${idDepartamento}`)
+  obtenerGerentePorDepartamento(idDepartamento: number, idEmpresa: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/catalogo/GerentePorEmpresa?idDepartamento=${idDepartamento}&empresas=${idEmpresa}`)
       .pipe(catchError(this.handleError));
   }
   /**

@@ -240,8 +240,8 @@ export class MiPerfilComponent implements OnInit {
           this.perfil.fechaIngreso = this.formatearFecha(new Date(this.perfil.fechaIngreso))
           this.perfil.fechaNacimiento = this.formatearFecha(new Date(this.perfil.fechaNacimiento))
           this.fotoBD = `data:image/${data.extensionFotografia};base64` + ',' + data.fotografiaConversion
-          this.getDataJerarquica(data.idJefeInmediato, data.idDepartamento);
-
+          this.jefeInmediato = data.jefeInmediato;
+          this.gerenteDepartamento = data.gerente;
         }
       })
     }
@@ -258,16 +258,8 @@ export class MiPerfilComponent implements OnInit {
 
       }
     });
+    this.gerenteDepartamento = this.perfil?.gerente ?? "";
 
-    this.catalogosService.obtenerGerentePorDepartamento(idDepartamento).subscribe({
-      next: (data) => {
-
-        this.gerenteDepartamento = data.length > 0 ? data[0].nombreCompleto : '';
-
-      }, error: (error) => {
-
-      }
-    })
   }
   // Formato de fecha establecido por auditoría: 13-oct-25
   formatearFecha(fecha: Date): string {

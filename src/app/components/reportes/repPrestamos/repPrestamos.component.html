@@ -45,10 +45,10 @@
               class="w-full"></p-select>
           </div>
           <div class="form-field">
-            <label class="field-label">Estatus Prestamo</label>
+            <label class="field-label">Estatus Préstamo</label>
             <p-select styleClass="{'padding:0.75rem'}" inputId="empresa" [options]="listEstatusPrestamo"
               [(ngModel)]="estatusPrestamoSeleccionado" name="empresa" optionLabel="descripcion" [filter]="true"
-              optionValue="id" filterBy="name" placeholder="Estatus de prestamos" [showClear]="true"
+              optionValue="id" filterBy="name" placeholder="Estatus de préstamos" [showClear]="true"
               class="w-full"></p-select>
           </div>
           <div class="form-field" style="align-self: end;">
@@ -93,14 +93,14 @@
               Descuento por semana <p-sortIcon field="cantidadRebaje"></p-sortIcon>
             </th>
             <th pSortableColumn="fechaCreacion" style="min-width: 220px">
-              Fecha Creacion <p-sortIcon field="fechaCreacion"></p-sortIcon>
+              Fecha Creación <p-sortIcon field="fechaCreacion"></p-sortIcon>
             </th>
 
             <th pSortableColumn="estatus" style="width: 120px">
               Estado Sol.<p-sortIcon field="estatus"></p-sortIcon>
             </th>
             <th pSortableColumn="estatusPrestamo">
-              Estado Prestamo <p-sortIcon field="estatusPrestamo"></p-sortIcon>
+              Estado Préstamo <p-sortIcon field="estatusPrestamo"></p-sortIcon>
             </th>
             <th pSortableColumn="motivoRechazo">
               Motivo Rechazo <p-sortIcon field="motivoRechazo"></p-sortIcon>

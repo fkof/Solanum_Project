@@ -21,8 +21,9 @@ export interface Empleado extends commons {
     extensionFotografia: string,
     idEmpleado: number,
     fotografiaConversion: string,
-    jefeInmediato: string
-
+    jefeInmediato: string,
+    idGerente: number,
+    gerente: string,
 }
 
 export interface EmpleadoBusqueda {

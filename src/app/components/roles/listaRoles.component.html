@@ -9,7 +9,7 @@
           <h2 class="header-title">Gestión de Roles</h2>
           <p class="header-subtitle">Administra los roles del sistema</p>
         </div>
-    
+
       </div>
     </ng-template>
 
@@ -17,19 +17,18 @@
       [rowsPerPageOptions]="[5, 10, 20, 50]" [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} roles"
       [globalFilterFields]="['nombre', 'descripcion']" [tableStyle]="{ 'min-width': '50rem' }"
-      styleClass="p-datatable-gridlines" >
+      styleClass="p-datatable-gridlines">
 
       <ng-template pTemplate="caption">
         <div class="table-header">
-   
+
           <p-iconfield style="min-width: 250px;">
             <p-inputicon class="pi pi-search" />
-             <input pInputText type="text" [(ngModel)]="searchValue"
+            <input pInputText type="text" [(ngModel)]="searchValue"
               (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Buscar roles..."
-              class="search-input"/>
+              class="search-input" />
           </p-iconfield>
-          <p-button label="Nuevo Rol" icon="pi pi-plus" (onClick)="nuevoRol()"
-          styleClass="p-button-primary"></p-button>
+          <p-button label="Nuevo Rol" icon="pi pi-plus" (onClick)="nuevoRol()" styleClass="p-button-primary"></p-button>
           <p-button type="button" icon="pi pi-filter-slash" label="Limpiar" (onClick)="clear(dt)"
             styleClass="p-button-outlined"></p-button>
         </div>
@@ -102,7 +101,7 @@
       </ng-template>
     </p-table>
 
-    <p-dialog header="Creacion de nuevo Rol" [modal]="true" [(visible)]="addRol" [style]="{ width: '70rem' }"
+    <p-dialog header="Creación de nuevo Rol" [modal]="true" [(visible)]="addRol" [style]="{ width: '70rem' }"
       [breakpoints]="{ '1199px': '90vw', '575px': '90vw' }" [maximizable]="true" (onHide)="onHideModal()">
       <div class="form-container" [style]="{'margin-top': '25px'}">
         <div class="form-grid">
@@ -145,7 +144,8 @@
         <div class="button-section">
           <p-button label="Guardar Rol" icon="pi pi-check" (onClick)="onSave()"
             styleClass="p-button-primary"></p-button>
-          <p-button label="Cancelar" icon="pi pi-times" (onClick)="addRol =false" styleClass="p-button-outlined"></p-button>
+          <p-button label="Cancelar" icon="pi pi-times" (onClick)="addRol =false"
+            styleClass="p-button-outlined"></p-button>
         </div>
       </ng-template>
     </p-dialog>

@@ -126,10 +126,6 @@
               optionLabel="nombre" (onChange)="onDepartamentoChange()" placeholder="Seleccione un departamento"
               class="w-full md:w-56" />
 
-
-            <!--p-dropdown inputId="departamento" [options]="departamentos" [(ngModel)]="departamentoSeleccionado"
-              name="departamento" optionLabel="name" (onChange)="onDepartamentoChange()" [filter]="true" filterBy="name"
-              placeholder="Seleccione un departamento" class="w-full"></p-dropdown-->
           </div>
 
           <div class="form-field">
@@ -139,38 +135,35 @@
               [ngClass]="{'invalido':!puestoSeleccionado}" optionLabel="nombre" [filter]="true" filterBy="nombre"
               placeholder="Seleccione un puesto" class="w-full"></p-select>
           </div>
-
           <div class="form-field">
-            <label class="field-label" for="gerenteDepartamento">Gerente de Departamento</label>
-            <input pInputText id="gerenteDepartamento" [(ngModel)]="gerenteDepartamento" name="gerenteDepartamento"
-              [disabled]="true" class="w-full" />
+            <label class="field-label" for="jefeInmediato">Jefe Inmediato *</label>
+            <p-select [options]="jefeImediatos" inputId="jefeImediatos" [(ngModel)]="jefeInmediatoSelect"
+              [filter]="true" [ngClass]="{'invalido':!jefeInmediatoSelect}" optionLabel="nombreCompleto"
+              [ngModelOptions]="{standalone: true}" (onFilter)="filterJefeInmediato($event)"
+              placeholder="Busca el jefe inmediato" class="w-full md:w-56" />
+          </div>
+          <div class="form-field">
+            <label class="field-label" for="gerenteDepartamento">Gerente de Departamento *</label>
 
+            <p-select [options]="gerentes" inputId="gerenteDepartamento" [(ngModel)]="gerenteDepartamento"
+              [filter]="true" [ngClass]="{'invalido':!gerenteDepartamento}" [ngModelOptions]="{standalone: true}"
+              optionLabel="nombreCompleto" (onChange)="onGerenteChange($event)" placeholder="Seleccione un departamento"
+              class="w-full md:w-56" />
           </div>
         </div>
       </div>
 
       <!-- Jerarquía -->
-      <div class="form-section">
+      <!-- <div class="form-section">
         <h3 class="section-title">
           <i class="pi pi-sitemap"></i>
           Jerarquía Organizacional
         </h3>
 
         <div class="form-grid">
-          <div class="form-field">
-            <label class="field-label" for="jefeInmediato">Jefe Inmediato *</label>
 
-
-            <!-- <p-autocomplete [(ngModel)]="jefeInmediato" [suggestions]="filteredJefeInmediato"
-                (completeMethod)="filterJefeInmediato($event)" optionLabel="name" /> -->
-
-            <p-select [options]="jefeImediatos" inputId="jefeImediatos" [(ngModel)]="jefeInmediatoSelect"
-              [filter]="true" [ngClass]="{'invalido':!jefeInmediatoSelect}" optionLabel="nombreCompleto"
-              [ngModelOptions]="{standalone: true}" (onFilter)="filterJefeInmediato($event)"
-              placeholder="Busca el jefe inmediato" class="w-full md:w-56" />
-          </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Botones de acción -->
       <div class="button-section">

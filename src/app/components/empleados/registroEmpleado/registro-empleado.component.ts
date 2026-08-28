@@ -70,7 +70,7 @@ export class RegistroEmpleadoComponent implements OnInit {
   puestoSeleccionado: Puesto | null = null;
   jefeInmediato: string = '';
   jefeValidado: boolean = false;
-  gerenteDepartamento: string = '';
+  gerenteDepartamento: { idEmpleado: number, nombreCompleto: string } | null = null;
   jefeInmediatoNomina: string = '';
   empezoCapturaNomina: boolean = false;
   idEmpleado: string = '';
@@ -85,6 +85,7 @@ export class RegistroEmpleadoComponent implements OnInit {
   jefeInmediatoSelect: any | null = null;
   loading: boolean = false;
   usuarioLogueado: number = 0;
+  gerentes: { idEmpleado: number, nombreCompleto: string }[] = [];
   constructor(private messageService: MessageService,
     private route: ActivatedRoute,
     private CatalogosService: CatalogosService, private router: Router,
@@ -133,7 +134,16 @@ export class RegistroEmpleadoComponent implements OnInit {
             this.onDepartamentoChangeFromEdit({ idPuesto: data.idPuesto, nombre: data.puesto });
 
 
+            this.CatalogosService.obtenerGerentePorDepartamento(data.idDepartamento, data.idEmpresas).subscribe({
+              next: (datagerente) => {
+                this.gerentes = datagerente;
+                this.gerenteDepartamento = this.gerentes.find((x: any) => x.idEmpleado === data.idGerente) ?? { idEmpleado: 0, nombreCompleto: '' };
 
+              }, error: (error) => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+
+              }
+            })
 
 
 
@@ -196,25 +206,25 @@ export class RegistroEmpleadoComponent implements OnInit {
 
         }
       });
-      this.CatalogosService.obtenerGerentePorDepartamento(this.departamentoSeleccionado.idDepartamento).subscribe({
-        next: (data) => {
+      // this.CatalogosService.obtenerGerentePorDepartamento(this.departamentoSeleccionado.idDepartamento).subscribe({
+      //   next: (data) => {
 
-          this.gerenteDepartamento = data.length > 0 ? data[0].nombreCompleto : '';
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Gerente asignado',
-            detail: `Gerente: ${this.gerenteDepartamento}`
-          });
-        }, error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+      //     this.gerenteDepartamento = data.length > 0 ? data[0].nombreCompleto : '';
+      //     this.messageService.add({
+      //       severity: 'info',
+      //       summary: 'Gerente asignado',
+      //       detail: `Gerente: ${this.gerenteDepartamento}`
+      //     });
+      //   }, error: (error) => {
+      //     this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
 
-        }
-      })
+      //   }
+      // })
 
 
 
     } else {
-      this.gerenteDepartamento = '';
+      this.gerenteDepartamento = { idEmpleado: 0, nombreCompleto: '' };
     }
   }
   onDepartamentoChange() {
@@ -229,26 +239,29 @@ export class RegistroEmpleadoComponent implements OnInit {
 
         }
       });
-      this.CatalogosService.obtenerGerentePorDepartamento(this.departamentoSeleccionado.idDepartamento).subscribe({
-        next: (data) => {
+      if (this.empresaSeleccionada.length > 0) {
+        this.CatalogosService.obtenerGerentePorDepartamento(this.departamentoSeleccionado!.idDepartamento, this.empresaSeleccionada.map((x: Empresa) => x.idEmpresa).join(',')).subscribe({
+          next: (data) => {
 
-          this.gerenteDepartamento = data.length > 0 ? data[0].nombreCompleto : '';
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Gerente asignado',
-            detail: `Gerente: ${this.gerenteDepartamento}`
-          });
-        }, error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+            this.gerentes = data;
 
-        }
-      })
+          }, error: (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+
+          }
+        })
+
+      }
 
 
 
     } else {
-      this.gerenteDepartamento = '';
+      this.gerenteDepartamento = { idEmpleado: 0, nombreCompleto: '' };
     }
+  }
+  onGerenteChange(gerente: any) {
+    this.gerenteDepartamento = gerente.value;
+    console.log(this.gerenteDepartamento);
   }
   setPuestosFromEdit(data: Empleado) {
     if (this.departamentoSeleccionado) {
@@ -376,7 +389,25 @@ export class RegistroEmpleadoComponent implements OnInit {
   }
 
   onEmpresaChange() {
+    if (this.departamentoSeleccionado) {
+      if (this.empresaSeleccionada.length > 0) {
+        console.log("empresas", this.empresaSeleccionada)
+        console.log("departamento", this.departamentoSeleccionado.idDepartamento)
+        this.CatalogosService.obtenerGerentePorDepartamento(this.departamentoSeleccionado!.idDepartamento, this.empresaSeleccionada.map(x => x.idEmpresa).join(',')).subscribe({
+          next: (data) => {
 
+            this.gerentes = data;
+
+          }, error: (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+
+          }
+        })
+      } else {
+        this.gerentes = [];
+        this.gerenteDepartamento = null;
+      }
+    }
     //this.numeroNomina = ''//this.empresaSeleccionada?.prefijo + '-';
   }
   limpiarFormulario() {
@@ -395,12 +426,13 @@ export class RegistroEmpleadoComponent implements OnInit {
     this.puestoSeleccionado = null;
     this.jefeInmediato = '';
     this.jefeValidado = false;
-    this.gerenteDepartamento = '';
+    this.gerenteDepartamento = { idEmpleado: 0, nombreCompleto: '' };
     this.jefeInmediatoNomina = '';
     this.empezoCapturaNomina = false;
     this.jefeInmediatoSelect = null;
     this.loading = false;
     this.loadingService.setLogin(false);
+    this.gerentes = [];
   }
 
   guardarEmpleado() {
@@ -435,7 +467,14 @@ export class RegistroEmpleadoComponent implements OnInit {
       });
       return;
     }
-
+    if (!this.gerenteDepartamento?.idEmpleado) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Gerente no validado',
+        detail: 'Debes seleccionar un gerente antes de guardar'
+      });
+      return;
+    }
     const nombreCompleto = `${this.nombres} ${this.apellidoPaterno}${this.apellidoMaterno ? ' ' + this.apellidoMaterno : ''}`.trim();
     //console.log(this.empresaSeleccionada)
     const dataSend: Empleado = {
@@ -461,6 +500,9 @@ export class RegistroEmpleadoComponent implements OnInit {
       extensionFotografia: this.extensionFotografia,
       jefeInmediato: this.jefeInmediatoSelect.nombreCompleto,
       fotografiaConversion: this.fotografia.split(',')[1],
+      idGerente: this.gerenteDepartamento?.idEmpleado ?? 0,
+      gerente: ''
+
     }
     this.loadingService.setLogin(true);
     //console.log('Guardando empleado:', dataSend);
